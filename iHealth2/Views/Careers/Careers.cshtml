@@ -1,0 +1,302 @@
+﻿@model iHealth2.Models.RegisterCareerViewModel
+@using iHealth2.Models
+
+@{
+    ViewBag.Title = "Career";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext();
+    var jb = db.jobs.ToList();
+}
+<div class="page-title">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title-heading">
+                    <h1 class="h1-title">Career</h1>
+                </div><!-- /.page-title-heading -->
+                <ul class="breadcrumbs">
+                    <li><a href="#" title="">Home<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    <li><a href="#" title="">Career</a></li>
+                </ul><!-- /.breadcrumbs -->
+                <div class="clearfix"></div><!-- /.clearfix -->
+            </div>
+        </div>
+    </div>
+</div><!-- /.page-title -->
+<section class="flat-row pd-aboutv3">
+    <div class="container">
+        <div class="row">
+            <h1 class="center">WHAT DOES IT TAKE TO BE PART OF OUR GREAT TEAM?</h1>
+            <hr />
+            <h3 class="center">iHealth Nigeria GSFM is looking for young, engaged professionals who have bright ideas, value teamwork and seek to outperform.</h3>
+            <br /><br />
+            <div class="wrap-main-post about-v3">
+                <div class="box-content">
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        <h3>Apply for job</h3>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    @using (Html.BeginForm("careers", "careers", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+      
+        @Html.EditorFor(model => model.FName, new { htmlAttributes = new { @class = "form-control", placeholder = "Firstname*", autofocus = true } })
+        @Html.ValidationMessageFor(model => model.FName, "", new { @class = "text-danger" })
+    </div>
+                                         
+
+                                        <div class="form-group">
+                                         
+                                           
+                                            <div class="controls">
+                                                @Html.EditorFor(model => model.LName, new { htmlAttributes = new { @class = "form-control", placeholder = "Lastname*" } })
+                                                 @Html.ValidationMessageFor(model => model.LName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = "Mobile*" } })
+                                                     @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email*" } })
+                                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label" })
+                                            <span class="text-danger">*</span>
+                                            <div class="controls">
+                                                @Html.RadioButtonFor(model => model.Gender, "Male", new { @class = "rdClass" }) &nbsp;&nbsp; <b class="text-success">
+                                                    Male
+                                                </b>
+                                                &nbsp;&nbsp; &nbsp;&nbsp;    @Html.RadioButtonFor(model => model.Gender, "Female", false) &nbsp;&nbsp; <b class="text-warning">
+                                                    Female
+                                                </b>
+                                                 <br /> @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">                                      
+                                            <div class="controls">
+                                                <select class="form-control" name="Country" id="Country" required>
+                                                    <option value="">Select Country</option>
+                                                    @{
+                                        var contry = db.country.ToList();
+                                        foreach (var con3 in contry)
+                                        {
+                                                    <option value="@con3.ID">@con3.CountryName</option>
+                                        }
+
+                                                    }
+                                                </select>
+                                                    @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">                                       
+                                            <div class="controls">
+                                                @Html.DropDownList("state", new List<SelectListItem> { new SelectListItem { Value = "", Text = "" } }, "Select State", new { id = "state", required = true, @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">                                       
+                                            <div class="controls">
+                                                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", placeholder = "City*" } })
+                                                      @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">                                         
+                                            <div class="controls">
+                                                <textarea name="Address"placeholder="Address*" class="form-control" required></textarea>
+                                                @*@Html.TextAreaFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                     @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+    <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+        <div style="width: 100%; height: 20px; border-bottom: 1px solid black; text-align: center">
+            <span style="font-size: 20px; background-color: #ffffff; padding: 0 10px;">
+                Job Position
+            </span>
+        </div>
+    </div>
+    <br/>    <br />
+                                        <div class="form-group">                                          
+                                            <div class="controls">
+                                                @Html.EditorFor(model => model.JobTitle, new { htmlAttributes = new { @class = "form-control", placeholder = "Job Title" } })
+                                                     @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                @Html.EditorFor(model => model.Specialization, new { htmlAttributes = new { @class = "form-control", placeholder = "Specialization" } })
+                                                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">Please upload your CV <span class="text-danger">(5MB max, .pdf,.doc|.docx)</span></label><span class="text-danger"></span>
+                                            <div class="controls">
+                                                <input id="cv" name="cv" type="file" class="file-loading" accept="object/*" placeholder="Select a file" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                           
+                                                <button type="submit" class="btn btn-success btn-block">Apply</button>
+                                           
+                                        </div>
+                                    }
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-8">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <h3><b style="text-decoration:underline"> Interested in joining our team?</b></h3>
+
+                                    <h4> We have great advantages for you:</h4>
+
+                                    &spades; &nbsp; Preferred Employer
+                                    <br />
+                                    &spades;&nbsp;Great colleagues to work with
+                                    <br />
+                                    &spades; &nbsp;Great atmosphere
+                                    <br />
+                                    &spades; &nbsp; Accelerated career progression
+                                    <br />
+
+                                    &spades;&nbsp; Annual employee training
+
+
+                                </div>
+                                <div class="panel-body">
+                                    <h3><b style="text-decoration:underline">Available Job @@iHealth Nigeria GSFM</b></h3>
+                                    <table id="jobTb">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Job Title
+                                                </th>
+                                                <th>
+                                                    Specialization
+                                                </th>
+                                                <th>Min. Experience(Yrs)</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var j in jb)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @j.JobTitle
+                                                    </td>
+                                                    <td>
+                                                        @j.Specialization
+                                                    </td>
+                                                    <td>@j.Min_Experience</td>
+                                                </tr>
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section scripts{
+    <script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+    <script src="~/Scripts/Plugins/fileinput.js"></script>
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+
+    <script>
+        $(document).ready(function (e) {
+
+            $('input[type="checkbox"],input[type="radio"]').iCheck({
+                checkboxClass: 'icheckbox_flat-green',
+                radioClass: 'iradio_flat-green'
+
+            });
+            $("#cv").fileinput({
+
+
+                autoReplace: true,
+                maxFileCount: 1,
+                allowedFileExtensions: ["pdf", "doc", "docx"],
+                removeIcon: '<i class="icon icon icon-trash text-danger"></i>',
+                removeClass: 'btn  btn-danger',
+                removeTitle: 'Remove file',
+                //uploadIcon: '<i class="icon icon-upload text-info"></i>',
+                //uploadClass: 'btn btn-xs btn-success',
+                //uploadTitle: 'Upload file',
+                maxFileSize: 5000,
+                showCaption: false,
+                showUpload: false,
+                browseLabel: "Browse CV...",
+
+                previewFileIconSettings: {
+
+                    'doc': '<i class="fa fa-file-word-o text-primary"></i>',
+
+                    'pdf': '<i class="fa fa-file-pdf-o text-danger"></i>',
+
+                },
+                previewFileExtSettings: {
+                    'doc': function (ext) {
+                        return ext.match(/(doc|docx)$/i);
+                    },
+
+                    'pdf': function (ext) {
+                        return ext.match(/(pdf|pdf)$/i);
+                    }
+                }
+
+            });
+            $('#jobTb').bootstrapTable({
+
+                striped: true,
+                // cardView: true,
+                pagination: true,
+                pageSize: 10,
+                pageList: [10, 30, 50, 100, 200],
+                smartDisplay: false,
+                showToggle: false,
+
+                //    border : true
+                //align: 'center',
+                //valign: 'bottom'
+
+            });
+
+        })
+    </script>
+    <script src="~/Scripts/CustomScript/myHomeCust.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,108 @@
+﻿@model IPagedList<iHealth2.Models.blog_Post>
+@using IhealthPaging;
+@using iHealth2.CustomClasses;
+@using iHealth2.Models
+@{
+    ViewBag.Title = "Blog";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    SEO_Friendly_URL seo = new SEO_Friendly_URL();
+    ApplicationDbContext dbs = new ApplicationDbContext();
+    var news = dbs.News.OrderByDescending(n => n.EntryDate).ToList().Take(3);
+}
+
+<!-- MAIN CONTENT -->
+<div class="page-title">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title-heading">
+                    <h1 class="h1-title">Blog</h1>
+                </div><!-- /.page-title-heading -->
+                <ul class="breadcrumbs">
+                    <li><a href="/" title="">Home<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    <li><a href="#" title="">Blog</a></li>
+                </ul><!-- /.breadcrumbs -->
+                <div class="clearfix"></div><!-- /.clearfix -->
+            </div>
+        </div>
+    </div>
+</div><!-- /.page-title -->
+
+<section class="main-content blog-single-post">
+    <div class="container">
+        @if (Model.Count() > 0)
+        {
+            <div class="row">
+                <div class="post-wrap">
+                    @foreach (var item in Model)
+                {
+                        <div class="col-md-4">
+                            <article class="post style2">
+                                <div class="featured-post">
+                                    <a href="#" title="" class="post-image">
+                                        @{
+                                            var featureImg = "";
+                                            if (item.Feature_Image != null)
+                                            {
+                                                featureImg = "data:image/png;base64," + Convert.ToBase64String(item.Feature_Image);
+                                            }
+                                            var pdate = Convert.ToDateTime(item.publish_date);
+                                        }
+                                        @if (item.use_video_as_cover_img == true)
+                                        {
+
+                                            <div class="embed-responsive embed-responsive-16by9">
+                                                <iframe class="embed-responsive-item" src="@item.video_url"></iframe>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <img src="@featureImg" alt="img">
+                                        }
+                                    </a>
+                                    <ul class="post-date">
+                                        <li class="day">@pdate.Day</li>
+                                        <li class="month">@Convert.ToDateTime(item.publish_date).ToString("MMM")</li>
+                                    </ul>
+                                </div><!-- /.featured-post -->
+                                <div class="content-post">
+                                    <h4 class="title-post">
+                                        <a href="/blog/post_details/@seo.GenerateSlug(item.post_id.ToString(),item.post_url)" title="@item.post_Title">@item.post_Title</a>
+                                    </h4>
+                                    <div class="position">
+                                        Posted by:
+                                        <h3 class="title-post"><a href="#" style="color:#18ba60">@item.blog_creator.FullName</a></h3>
+                                        @Convert.ToDateTime(item.publish_date).ToString("MMMM dd, yyy")
+                                    </div>
+                                    <div class="entry-post">
+                                        <p>
+                                            @Html.Raw(Server.HtmlDecode(item.short_description))
+                                        </p>
+
+
+                                        <div class="more-link">
+                                            <a href="/blog/post_details/@seo.GenerateSlug(item.post_id.ToString(),item.post_url)" title="">Readmore</a>
+                                        </div>
+                                    </div><!-- /.entry-post -->
+                                </div><!-- /.content-post -->
+                            </article><!-- /.post -->
+                        </div><!-- /.col-md-4 -->
+                                            }
+                </div><!-- /.post-wrap -->
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pager">
+                        @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount)
+                    </div>
+                </div>
+            </div>
+                                            }
+                                            else
+                                            {
+                                                <h2><b class="text-danger">NO POST YET!</b></h2>
+                                            }
+
+    </div>
+</section><!-- /.main-content -->

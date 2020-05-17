@@ -1,0 +1,349 @@
+﻿@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@using iHealth2.Models;
+@{
+    ViewBag.Title = Session["Name"];
+    Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+    String UserID = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(user.Id, s);
+    UserID = UserID.Replace("/", "$25");
+    UserID = UserID.Replace("+", "$24");
+
+    String UserName = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(user.UserName, s);
+    UserName = UserName.Replace("/", "$25");
+    UserName = UserName.Replace("+", "$24");
+    int requireNumberofReferers = 2;
+    //int RegFee = 5000;
+    // char x = (char)8358;
+}
+
+
+@if (user.INISubcriberExtraDetails.BenefitCategory != "CarreerBenefit")
+{
+    Response.Redirect("/ing/Userpanel");
+}
+
+
+
+<!-- Content Header (Page header) -->
+<!-- Main content -->
+<!-- Small boxes (Stat box) -->
+<div class="row">
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-check"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">iNG Status</span>
+                <span class="info-box-number">@user.INISubcriberExtraDetails.INI_Status</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+
+    </div><!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+
+        <!-- small box -->
+        <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="fa fa-group"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Referral</span>
+                <span class="info-box-number" style="font-size:x-large">@user.INISubcriberExtraDetails.Total_dl_Size</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+
+    </div><!-- ./col -->
+
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-tripadvisor"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Service Booster</span>
+                <span class="info-box-number">
+                    @if (user.isClientBooster == true)
+                    {
+                    <span style="font-size:x-large">Yes</span>
+                    }
+                    else
+                    {
+                    <span style="font-size:x-large">No</span>
+                    }
+                </span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+    </div><!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+        <div class="info-box">
+            <span class="info-box-icon bg-orange"><i class="fa fa-bookmark-o"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text"> My Referral Code</span>
+                <span class="info-box-number" style="font-size:x-large">@user.MyRefferalCode</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+
+    </div><!-- ./col -->
+    <!--TODO-->
+</div><!-- /.row -->
+@if (user.isClientBooster == true)
+{
+    var biz = db.BusinessInfoes.Where(b => b.UserID == user.Id);
+    if (biz.Count() <= 0)
+    {
+        Response.Redirect("/ing/SBoosterREGCompanyAlert");
+    }
+}
+else
+{
+    <div class="row">
+        <div class="box-body">
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h4>
+                    <i class="fa fa fa-info-circle fa-2x"></i>
+                    &nbsp;&nbsp; Are you a professional in health sector? Become a SERVICE BOOSTER
+                    and enjoy amazing benefits on iHealth.
+                    <a href="/Ing/Become_a_service_booster/?j=@UserID" class="btn btn-danger" style="text-decoration:none">Subscribe</a>
+                </h4>
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="box-body">
+        <div class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4>
+
+                <marquee>
+                    sign up as a premium user today and enjoy amazing health insurance benefits <a href="/premium/premium_package_signup">click here</a> to sign up
+                    &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;
+                    &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;
+                    &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;
+                    &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;
+                    &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;
+                    &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;
+                    Refer others to become a premium user and earn 5% premium user sign up fee.
+                </marquee>
+
+            </h4>
+        </div>
+    </div>
+</div>
+<!-- top row -->
+<div class="row">
+    <div class="col-xs-12 connectedSortable">
+        @if (user.INISubcriberExtraDetails.Promotional_Target_Subscription_Status == "InActive")
+        {
+            <div class="alert alert-block alert-danger">
+
+                <marquee>
+                    <h4>
+                        Meet our monthly promotional target by referring 2 or more people
+                        to iHealth Networking Group and enjoy 10% additional bonus along with 50%
+                        bonus on each referral registration fee. &nbsp; <a href="/ing/activate_promo/?p=@UserID" class="btn btn-success" style="text-decoration:none;">Click here to subcribe</a>
+                    </h4>
+
+                </marquee>
+
+            </div>
+
+        }
+        @if (user.INISubcriberExtraDetails.Promotional_Target_Subscription_Status == "Active")
+        {
+            <div class="panel panel-info">
+
+                <div class="panel-body">
+
+                    <table class="table table-no-bordered table-responsive table-striped">
+                        <tr>
+
+                            <th style="width:300px">
+                                Minimum numbers of promo period target referrals
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+                            <td style="font-size:14pt">
+                                @requireNumberofReferers
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width:300px">Number currently referred during promo period</th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+
+                            <td style="font-size:14pt">
+                                @user.INISubcriberExtraDetails.promo_dl_size
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width:300px">
+                                Promo Expiry Date
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+
+                            <td style="font-size:14pt">
+
+                                @{
+                                    var dtc = Convert.ToDateTime(user.INISubcriberExtraDetails.Promo_end_date).Date.ToString("dd MMM, yyyy");
+                                }
+                                @dtc
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width:300px"> Numbers of days left to expiry date</th>
+                            <td><i style="align-items:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+
+                            <td>
+                                @{ TimeSpan spanc = Convert.ToDateTime(user.INISubcriberExtraDetails.Promo_end_date).Date.Subtract(DateTime.UtcNow.Date);
+                                    <span id="wa" style="font-size:20pt">@spanc.TotalDays &nbsp;&nbsp; Days &nbsp; Left</span>
+                                }
+                            </td>
+
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+                                    }
+                                    else if (user.INISubcriberExtraDetails.Promotional_Target_Subscription_Status == "Expired")
+                                    {
+                                        if (user.INISubcriberExtraDetails.CurrentBonus != 0)
+                                        {
+                                            <div class="alert alert-success">
+        <span class="" style="font-size:14pt"><b>Your promotional period has ended </b> &nbsp;&nbsp;&nbsp;&nbsp;<a style="font-size:12pt" class="btn btn-danger" href="/ING/activate_promo/?p=@UserID">Click Here</a>&nbsp;&nbsp;&nbsp;&nbsp; <b>to reactivate now!</b></span>
+    </div>
+
+                                            <br />
+
+                                            var checkBenefitTb = db.BenefitClaimersTb.Where(u => u.SubRefCode == user.MyRefferalCode && u.BenefitProcessStatus.ToLower() != "settled");
+                                            if (checkBenefitTb.Count() == 0)
+                                            {
+                                                <div class="alert alert-warning">
+                                                    <span class="" style="font-size:14pt"><b>You have unclaim benefit(s),</b> &nbsp;&nbsp;&nbsp;&nbsp; <a style="font-size:12pt" class="btn btn-danger" href="/ING/ClaimBenefits/?ids=@UserID">Click Here</a> &nbsp;&nbsp;&nbsp;&nbsp;<b> to claim now!</b></span>
+                                                </div>
+                                            }
+
+
+                                        }
+                                        else
+                                        {
+                                            <div class="alert alert-success">
+                                                  <span class="" style="font-size:14pt"><b>Your promotional period has ended </b> &nbsp;&nbsp;&nbsp;&nbsp;<a style="font-size:12pt" class="btn btn-danger" href="/ING/activate_promo/?p=@UserID">Click Here</a>&nbsp;&nbsp;&nbsp;&nbsp; <b>to reactivate now!</b></span>
+                                            </div>
+                                        }
+
+                                    }
+                                    @*else
+                                        {
+                                            if (user.INISubcriberExtraDetails.CurrentBonus != 0)
+                                            {
+                                                <div class="alert alert-success">
+                                                    <span class="" style="font-size:14pt">Congratulation <a class=" btn btn-danger" href="/ING/ClaimBenefits/?ids=@UserID">Click Here</a> to Claim benefit</span>
+                                                </div>
+                                            }
+
+                                        }*@
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                Your Referral URL
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <b>Referral Url :        <a href="@user.Refferal_Url">@user.Refferal_Url</a></b>
+                                        </div>
+                                    </div>
+                                </div><!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+                            <!-- Main row -->
+                            <div class="row">
+                                <!-- Left col -->
+                                <section class="col-lg-12 connectedSortable">
+
+                                    <!-- quick email widget -->
+                                    <div class="box box-info">
+                                        <div class="box-header">
+                                            <i class="glyphicon glyphicon-question-sign"></i>
+                                            <h2 class="box-title">Help Desk:<small> Send us mail</small> </h2>
+                                            <!-- tools box -->
+                                            <div class="pull-right box-tools">
+                                                <button class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+                                            </div><!-- /. tools -->
+                                        </div>
+                                        <form action="/support/HelpDesk/?hlpids=@UserName" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <div class="box-body">
+                                                @*<div class="form-group">
+                                                        <input type="email" class="form-control" name="emailFrom" placeholder="" />
+                                                    </div>*@
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" name="subject" placeholder="Subject:" required />
+                                                </div>
+                                                <div>
+                                                    <textarea id="Message" name="Message" placeholder="message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required></textarea>
+                                                </div>
+
+                                            </div>
+                                            <div class="box-footer clearfix">
+                                                <button class="pull-right btn btn-default" id="sendEmail">Send <i class="fa fa-arrow-circle-right"></i></button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </section><!-- /.Left col -->
+
+                            </div><!-- /.row (main row) -->
+                            @section scripts{
+                                <!-- CK Editor -->
+                                <script src="~/Scripts/Plugins/summernote.min.js"></script>
+                                <script src="~/Scripts/Plugins/wavytext.js"></script>
+                                <script>
+        $(function () {
+            $('#Message').summernote()
+        });
+        $('#wa').wavyText({
+            // vendor prefixes
+            prefixes: ['-ms-', '-webkit-', '-o-', '-moz-', ''],
+
+            // animation name
+            animation_name: 'funkyGrad',
+
+            // animation speed
+            transition_speed: '0.8s',
+
+            // an object, where each key represents a number from 1-100,
+            // for each step of the keyframe animation.
+            keyframes: {
+                '0': ['0', 'red'],
+                '20': ['10px', 'orange'],
+                '40': ['20px', 'yellow'],
+                '60': ['25px', 'green'],
+                '80': ['10px', 'blue'],
+                '100': ['0', 'purple']
+            },
+
+            // an array of strings representing custom classes for each wavyText character
+            char_classes: [],
+
+            // the tag id to use
+            style_id: 'wavy-text-custom'
+
+        });
+
+                                </script>
+                            }
+
+
+
+
+
+
+

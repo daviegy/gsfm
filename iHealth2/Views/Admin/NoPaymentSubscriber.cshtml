@@ -1,0 +1,136 @@
+﻿@model IEnumerable<iHealth2.Models.ApplicationUser>
+@using iHealth2.CustomClasses;
+@using iHealth2.Models
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "NewUsers";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    switch (user.UserType)
+    {
+
+        case "AD":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            break;
+        case "SA":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+          //  Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+            break;
+
+    }
+
+}
+
+
+
+
+<section class="content">
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+
+            @* role="form" method="post" action="/Admin/MarkAsPaid" *@
+            <div class="table-responsive mailbox-messages">
+                @*<form role="form" method="post">
+                    @Html.AntiForgeryToken()*@
+                    <table id="table" class="">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                        <i class="fa fa-square-o"></i>
+                                    </button>
+                                </th>
+                                <th>Subcriber ID</th>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Payment Channel
+                                </th>
+
+                                <th>
+                                    Payment Status
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Phone Number
+                                </th>
+                                <th>
+                                    Reg. Date
+                                </th>
+
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                            <tr>
+
+                                <td><input type="checkbox" name="ItemId" id="markAsPaidbyId" value="@item.Id"></td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MyRefferalCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+
+
+
+
+                                <td>
+                                    @item.INISubcriberExtraDetails.paymentMethod
+                                </td>
+                                <td>
+                                    @item.INISubcriberExtraDetails.PaymentStatus
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                </td>
+                                <td>
+                                    @{var rdate = Convert.ToDateTime(item.RegDate).Date.ToString("dd MMM,yyy");} @rdate
+                                </td>
+
+                            </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                @if (User.IsInRole("SuperAdmin"))
+                {
+                    <input type="submit" onclick="app_pmt_for_ING_user()" id="submitbtn" disabled class="btn btn-success" value="Approve Payment">
+                }
+
+
+              @*  </form>*@
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+@section scripts{
+<script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+<script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+<script src="~/Scripts/CustomScript/Ap_paymentscript.js"></script>
+<script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+   
+}
+
+
+
+
+

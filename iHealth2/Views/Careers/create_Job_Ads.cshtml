@@ -1,0 +1,62 @@
+﻿@model iHealth2.Models.createJobViewModel
+@using iHealth2.Models
+
+@{
+    ViewBag.Title = "create_Job_Ads";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        @using (Html.BeginForm())
+        {
+              @Html.AntiForgeryToken()
+           <div class="control-group">
+               <label class="control-label">Job Title</label>
+               <div class=" controls">
+                   @Html.TextBoxFor(m => m.JobTitle, new { @class="form-control"})
+                   @Html.ValidationMessageFor(m => m.JobTitle, "", new { @class="text-danger"})
+               </div>
+           </div>
+    <div class="control-group">
+        <label class="control-label">Specialization</label>
+        <div class=" controls">
+           @Html.DropDownListFor(m => m.specialization.Specialization, new SelectList(new iHealth2.Models.specializationsModel().getSpecializations(), "Id", "Specialization"), "Select", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.specialization, "", new { @class = "text-danger" })
+        </div>
+    </div>
+            <div class="control-group">
+                <label class="control-label">Min. Experience</label>
+                <div class="controls">
+                    <select class="form-control"name="Experience" required>
+                        <option value="">Select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                   </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Description</label>
+                <div class="controls">
+                    <textarea name="Descriptions" class="form-control"></textarea>
+                    @Html.ValidationMessageFor(m => m.Descriptions, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br />
+           <div class="control-group">
+               <div class="controls">
+                   <input type="submit" class="btn btn-info pull-right" />
+                   <a href="/careers/viewjoblist"class="btn btn-danger">View Job List</a>
+               </div>
+           </div>
+        }
+    </div>
+</div>

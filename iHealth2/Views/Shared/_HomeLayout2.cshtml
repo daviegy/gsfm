@@ -1,0 +1,846 @@
+﻿@using iHealth2.Models
+@using Microsoft.AspNet.Identity.Owin;
+@using Microsoft.AspNet.Identity
+@using iHealth2.CustomClasses;
+@{
+    ApplicationDbContext dbs = new ApplicationDbContext();
+    SEO_Friendly_URL seo = new SEO_Friendly_URL();
+    var news = dbs.News.OrderByDescending(n => n.EntryDate).ToList().Take(5);
+    var blogpost = dbs.blog_posts.OrderByDescending(n => n.publish_date).ToList().Take(5);
+}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Ihealth GSFM|@ViewBag.Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="description" content="iHealth Nigeria is an online health care product of Guarantee Structure and Facility Management (GSFM) Ltd. At iHealth Nigeria GSFM, we are challenged to ensure that every person and organization that we serve received the greatest possible value for their health investment." />
+    <meta name="keywords" content="Nigeria Health,iHealth,Health Nigeria, Health News, Nigeria Health News,ihealth gsfm,Idris Gbenga Oyesiku, health deal in Nigeria" />
+    <meta name="author" content="iHealthGsfm" />
+
+    <meta property="og:title" content="Ihealth GSFM|@ViewBag.Title" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="iHealth Nigeria is an online health care product of Guarantee Structure and Facility Management (GSFM) Ltd. At iHealth Nigeria GSFM, we are challenged to ensure that every person and organization that we serve received the greatest possible value for their health investment." />
+    <meta property="og:image" content="http://ihealthgsfm.com/content/images/Aboutus.png" />
+    <meta property="og:image:url" content="http://ihealthgsfm.com/content/images/Aboutus.png" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="761" />
+    <meta property="og:image:height" content="364" />
+    <meta property="og:url" content="http://ihealthgsfm.com/" />
+    <meta property="og:site_name" content="iHealth Nigeria Gsfm" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@("@")ihealthgsfm">
+    <meta name="twitter:creator" content="@("@")ihealthgsfm">
+    <meta name="twitter:title" content="Ihealth GSFM|@ViewBag.Title">
+    <meta name="twitter:description" content="iHealth Nigeria is an online health care product of Guarantee Structure and Facility Management (GSFM) Ltd. At iHealth Nigeria GSFM, we are challenged to ensure that every person and organization that we serve received the greatest possible value for their health investment..">
+    <meta name="twitter:image" content="http://ihealthgsfm.com/content/images/Aboutus.png">
+    <meta name="twitter:url" content="http://ihealthgsfm.com/" />
+    <meta name="google-site-verification" content="tFZGyv4o4Kq_29z9bAK7CMs3Zh0kUIH_fMBT_WUSqe0" />
+    <link rel="Shortcut Icon" href="/iHealthIcon.ico" />
+    <link href="~/Content/SiteCSS/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/SiteCSS/bootstrap-responsive.css" rel="stylesheet" />
+    <!-- Icons -->
+
+    <link href="~/Content/SiteCSS/icons/general/stylesheets/general_foundicons.css" rel="stylesheet" />
+    <link href="~/Content/SiteCSS/icons/social/stylesheets/social_foundicons.css" rel="stylesheet" />
+
+    <!--IF lt IE 8-->
+    <link href="~/Content/SiteCSS/icons/general/stylesheets/general_foundicons_ie7.css" rel="stylesheet" />
+    <link href="~/Content/SiteCSS/icons/social/stylesheets/social_foundicons_ie7.css" rel="stylesheet" />
+    <!--End IF-->
+    <!--font-awesome-->
+    <link href="~/Content/SiteCSS/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
+    <!--IF lt IE 8-->
+    <link href="~/Content/SiteCSS/fontawesome/css/font-awesome-ie7.min.css" rel="stylesheet" />
+    <!--End IF-->
+    <!--Carousel-->
+    <!--Carousel-->
+    <link href="~/Content/SiteCSS/style.css" rel="stylesheet" />
+    <link href="~/Content/SiteCSS/camera.css" rel="stylesheet" />
+    <link href="~/Content/SiteCSS/responsive-menu.css" rel="stylesheet" />
+    <link href="~/Content/SiteCSS/woodmarkstyle.css" rel="stylesheet" />
+    <link href="~/Content/SiteCSS/prettyPhoto.css" rel="stylesheet" />
+    <link href="~/Content/SiteCSS/custom.css" rel="stylesheet" />
+    <link href="~/Content/slider.css" rel="stylesheet" />
+    <!--google css-->
+    <link href="https://fonts.googleapis.com/css?family=Allura" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Aldrich" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Palatino+Linotype" rel="stylesheet" type="text/css">
+    @*    <link href="https://fonts.googleapis.com/css?family=Calligraffitti" rel="stylesheet" type="text/css">*@
+
+
+    <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="~/Content/fileinput.css" rel="stylesheet" />
+    @*<link href="~/Content/bootstrap-table.css" rel="stylesheet" />*@
+
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/prettyCheckable.css" rel="stylesheet" />
+    <link href="~/Content/sweetalert.css" rel="stylesheet" />
+
+
+    <link href="~/Content/dpLoading-2.x.css" rel="stylesheet" />
+    <link href="~/Content/dpLoading-2.x-skin-grey.css" rel="stylesheet" />
+
+    <link href="~/Content/jquery.auto-complete.css" rel="stylesheet" />
+    <link href="~/Content/jquery-te-1.4.0.css" rel="stylesheet" />
+    <link href="~/Content/editor.css" rel="stylesheet" />
+
+    <link href="~/Content/JqZoom/jquery-picZoomer.css" rel="stylesheet" />
+
+    <link href="~/Content/AdminContent/css/iCheck/blue.css" rel="stylesheet" />
+
+    <link href="~/Content/AdminContent/css/iCheck/green.css" rel="stylesheet" />
+
+    <link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+
+    <link href="~/Content/jquery.share.css" rel="stylesheet" />
+    <link href="~/Content/AjaxZoom/flexslider.css" rel="stylesheet" />
+</head>
+<body id="pageBody" onload="enter()">
+    <input type="hidden" id="success" value="@TempData["success"]" />
+    <input type="hidden" id="info" value="@TempData["info"]" />
+    <input type="hidden" id="warning" value="@TempData["warning"]" />
+    <input type="hidden" id="error" value="@TempData["error"]" />
+    @if (Session["Name"] != null)
+    {
+        ApplicationDbContext db = new ApplicationDbContext();
+        var user = db.Users.Find(User.Identity.GetUserId());
+        // Session["TIP"] = user.TrackingID;
+
+
+        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <div id="CustomMenu1">
+                <div class="rm-container">
+                    <a class="rm-toggle rm-button rm-nojs" href="#">Menu</a>
+                    <nav class="rm-nav rm-nojs rm-lighten" style="height:1px">
+
+                        <ul>
+                            @{
+            string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+            String EncryptId = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(User.Identity.Name, s);
+            EncryptId = EncryptId.Replace("/", "$25");
+            EncryptId = EncryptId.Replace("+", "$24");
+                            }
+
+
+                            <li>
+                                <a href="#">HMOs and NGOs</a>
+                                <ul>
+                                    <li>
+                                        <a href="/home/hmos" title="HMOs">
+                                            HMOs
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/home/ngos" title="NGOs">NGOs</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#">More Services</a>
+                                <ul>
+                                    <li>
+                                        <a href="#" title="Mobile Health Service">Mobile Health Service</a>
+
+                                    </li>
+                                    <li>
+                                        <a href="#" title="International Health Service">International Health Service</a>
+
+                                    </li>
+                                    <li>
+                                        <a href="#" title="Ambulance Service">Ambulance Service</a>
+
+                                    </li>
+                                    <li>
+                                        <a href="/home/bookappointmentPage" title="Book an Appointment">Book an Appointment</a>
+
+                                    </li>
+                                    <li>
+                                        <a href="#" title="Service, Quality and Audit">Service, Quality Audit</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" title="Help the Sick">Help the Sick</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" title="Newsletter">Newsletter</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/home/About">About us</a></li>
+                            <li><a href="/support/ContactUs">Contact us</a></li>
+                            <li><a href="/home/FAQ">FAQ</a></li>
+                            <li><a href="/careers/careers">Career and Networking</a></li>
+                            <li><a href="/Advert/How_to_Place_Ads">Advertise</a></li>
+                            @if (User.IsInRole("SuperAdmin"))
+                            {
+                                <li><a href="/superAdm/Index" title="Click to Manage Account" style="color: Orange; font-weight:700">ADMIN DASHBOARD</a></li>
+
+                            }
+                            else if (User.IsInRole("Admin"))
+                            {
+                                <li><a href="/Admin/Index" title="Click to Manage Account" style="color: Orange; font-weight:700">ADMIN DASHBOARD</a></li>
+
+                            }
+                            else if (User.IsInRole("Users"))
+                            {
+                                <li>
+                                    <a href="/users/Userpanel" style="color:#ff6a00">@user.FirstName.ToString().ToUpper()<i class="icon icon-arrow-down"></i></a>
+                                    <ul>
+                                        <li><a href="/users/Userpanel" title="Click to Manage Account" style="color: Orange; font-weight:700">Goto Dashboard</a></li>
+                                        <li><a href="/Business/Create_Biz">List Service</a></li>
+                                        <li><a href="/products/Register_Product">Register Product</a></li>
+                                        <li>
+
+                                            <a href="javascript:document.getElementById('logoutForm').submit()">Sign Out</a>
+
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="/ING/Userpanel/?bc=@user.INISubcriberExtraDetails.BenefitCategory" style="color:#ff6a00">@user.FirstName.ToString().ToUpper()<i class="icon icon-arrow-down"></i></a>
+                                    <ul>
+                                        <li><a href="/ING/Userpanel/?bc=@user.INISubcriberExtraDetails.BenefitCategory" title="Click to Manage Account" style="color: Orange; font-weight:700;">Goto Dashboard</a></li>
+                                        <li><a href="/Business/Create_Biz">List Service</a></li>
+                                        <li><a href="/products/Register_Product">Register Product</a></li>
+                                        <li>
+
+                                            <a href="javascript:document.getElementById('logoutForm').submit()">Sign Out</a>
+
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+                            <li style="">
+
+                                <a href="javascript:document.getElementById('logoutForm').submit()">Sign Out</a>
+
+                            </li>
+                        </ul>
+
+                    </nav>
+
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div id="CustomMenu">
+            <div class="rm-container">
+                <a class="rm-toggle rm-button rm-nojs" href="#">Menu</a>
+                <nav class="rm-nav rm-nojs rm-lighten">
+                    <ul>
+                        <li><a href="/Account/Login">Sign in</a></li>
+                        <li>
+                            <a href="#">HMOs and NGOs</a>
+                            <ul>
+                                <li>
+                                    <a href="/home/hmos" title="HMOs">
+                                        HMOs
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/home/ngos" title="NGOs">NGOs</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#">More Services</a>
+                            <ul>
+                                <li>
+                                    <a href="#" title="Mobile Health Service">Mobile Health Service</a>
+                                </li>
+                                <li>
+                                    <a href="#" title="International Health Service">International Health Service</a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Ambulance Service">Ambulance Service</a>
+                                </li>
+                                <li>
+                                    <a href="/home/bookappointmentPage" title="Book an Appointment">Book an Appointment</a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Service, Quality and Audit">Service, Quality Audit</a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Help the Sick">Help the Sick</a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Newsletter">Newsletter</a>
+                                    <br />
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a href="/home/About">About us</a></li>
+                        <li><a href="/support/ContactUs">Contact us</a></li>
+                        <li><a href="/Home/FAQ">FAQ</a></li>
+                        <li><a href="/careers/careers">Career and Networking</a></li>
+                        <li><a href="/Advert/How_to_Place_Ads" title="Advertise with us">Advertise</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    }
+    <div id="decorative2">
+        <div class="container">
+            <div class="divPanel topArea notop nobottom">
+                <div class="row-fluid">
+                    <div id="divLogo" class="pull-left">
+                        <a href="/home" id="divSiteTitle"><img src="~/Content/Logo/ihealthlogo.png" alt="iHealth Nigeria GSFM" /></a>
+                    </div>
+                    <div id="divMenuRight" class="">
+                        <div class="navbar">
+                            <button type="button" class="btn btn-navbar-highlight btn-sm btn-primary" data-toggle="collapse" data-target=".nav-collapse">
+                                <span class="icon-align-justify icon-white"></span>
+                            </button>
+                            <div class="nav-collapse collapse">
+                                <ul class="nav nav-pills ddmenu">
+                                    <li class="dropdown active"><a href="/home" style="font-size:13pt">Home<br /><br /></a></li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" style="font-size:13pt">Ihealth Networking<br /><span style="font-size:11pt; text-align:match-parent">Group</span><b class="caret"></b></a>                                        
+                                        <ul class="dropdown-menu">
+                                            <li><a href="/ING/Membership_benefits" style="font-size:13pt">Membership Benefits</a></li>
+                                            <li><a href="/ING/Hospital_list_for_ING" style="font-size:13pt">Hospital List for ING</a></li>
+                                            <li class="dropdown">
+                                             <a href="#" class="dropdown-toggle" style="font-size:13pt">Client Boosters</a>
+                                                <ul class="dropdown-menu sub-menu">
+                                                    <li><a style="font-size:13pt" href="/ING/clientbooster">About ClientBoosters</a></li>
+                                                    <li><a style="font-size:13pt" href="/ING/Client_Booster_List">List of ClientBoosters</a></li>
+                                                    <li><a style="font-size:13pt" href="/Home/Terms">SLA</a></li>
+                                                    <li><a style="font-size:13pt" href="/Account/iniRegformLandingPage">Register with us</a></li>                                         
+                                                </ul>
+                                            </li>
+                                            <li><a href="/ING/Training_guide" style="font-size:13pt">Training Guide</a></li>
+                                            <li><a target="_blank" href="~/PDF.JS/web/viewer.html?File=%2FHealthInsuranceBenefits4ING.pdf" style="font-size:13pt">Health Insurance Benefits</a></li>
+                                            <li><a href="/Account/iniRegformLandingPage" style="font-size:13pt">Sign up</a></li>                                                             
+                                        </ul>                                    
+                                    </li>
+                                    
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="font-size:13pt">Shop for Health <br /><span style="font-size:11pt">Products</span><b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#" style="font-size:13pt">Health Insurance</a></li>
+                                            @*<li><a href="#" style="font-size:13pt">Life Insurance</a></li>*@
+                                            @*<li><a href="/Pharmacy/Search_Drugs" style="font-size:13pt">Drugs</a></li>*@
+                                            @* <li><a href="/Pharmacy/UrgentNeedForDrugs" style="font-size:13pt">Urgent Drug Request</a></li>*@
+                                            <li><a href="/Med_Equipments/Find_Equipment" style="font-size:13pt">Medical Equipments</a></li>
+                                            @*<li><a href="#" style="font-size:13pt">Herbal Products</a></li>
+                                            <li><a href="#" style="font-size:13pt">Vet. Products</a></li>*@
+                                            <li><a href="/products/Register_Product" style="font-size:13pt">Register Products</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="font-size:13pt">Find Health <br /><span style="font-size:11pt">Professionals </span><b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="/search/professionals/?profession=Medical Doctor" style="font-size:13pt">Find a Medical Doctor</a></li>
+                                            <li><a href="/search/professionals/?profession=Herbal Doctor" style="font-size:13pt">Find a Herbal Doctor</a></li>
+                                            <li><a href="/search/professionals/?profession=Vet Doctor" style="font-size:13pt">Find a Vet. Doctor</a></li>
+                                            <li><a href="/search/professionals/?profession=Pharmacist" style="font-size:13pt">Find a Pharmacist</a></li>
+                                            <li><a href="/search/professionals/?profession=Nurse" style="font-size:13pt">Find a Nurse</a></li>
+                                            <li><a href="/search/professionals/?profession=Lab Scientist/Technician" style="font-size:13pt">Find a Laboratory Scientist</a></li>
+                                            <li><a href="/Account/Register" style="font-size:13pt">Register as a professional</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="font-size:13pt">Find Health<br /><span style="font-size:11pt">Centres</span><b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="/Hospital/Find_Hospital" style="font-size:13pt">Find a Hospital</a></li>
+                                            <li><a href="/pharmacy/Find_Pharmacy" style="font-size:13pt">Find a Pharmacy</a></li>
+                                            <li><a href="/lab/Find_Lab" style="font-size:13pt">Find a Laboratory</a></li>
+                                            <li><a href="/Herbal/Find_Herbs_Center" style="font-size:13pt">Find a Herbal Centre</a></li>
+                                            <li><a href="/Vet/Find_Vet_Center" style="font-size:13pt">Find a Veterinary Clinics</a></li>
+                                            <li><a href="/Med_Equipments/medEquipCompany" style="font-size:13pt">Find Medical Equipments Store</a></li>                                                                                   
+                                            <li><a style="font-size:13pt" href="/Business/Create_Biz">List Service</a></li>
+                                        </ul>
+                                    </li>                                    
+                                    <li class="dropdown"><a href="/blog/blog_list" style="font-size:13pt">Blog<br /><br /></a></li>
+                                  @*  <li class="dropdown"><a href="/home/About" style="font-size:13pt">About Us<br /><br /></a></li>*@
+                                    @if (Session["Name"] == null)
+                                    {
+                                        <li class="dropdown active"><a href="/Account/Login" style="font-size:13pt">SignIn / SignUp<br /><br /></a></li>
+                                    }
+                                    else
+                                    {
+                                        ApplicationDbContext db = new ApplicationDbContext();
+                                        var user = db.Users.Find(User.Identity.GetUserId());
+
+                                        if (User.IsInRole("SuperAdmin"))
+                                        {
+                                            <li class="dropdown active"><a href="/superAdm/Index" title="Click to Manage Account" style="color: #ff0000; font-weight:700;font-family:'Times New Roman', Times, serif;font-size:13pt">DASHBOARD<br /><br /></a></li>
+                                        }
+                                        else if (User.IsInRole("Admin"))
+                                        {
+                                            <li class="dropdown active"><a href="/Admin/Index" title="Click to Manage Account" style="color:#ff0000; font-weight:700;font-family:'Times New Roman', Times, serif;font-size:13pt">DASHBOARD<br /><br /></a></li>
+
+                                        }
+                                        else if (User.IsInRole("Users"))
+                                        {
+                                            <li class="dropdown active">
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="/users/Userpanel" style="color:#ff0000; font-family:'Times New Roman', Times, serif;font-size:13pt">@user.FirstName.ToString().ToUpper()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="caret"></i></a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="/users/Userpanel" title="Click to Manage Account" style="color: Orange; font-weight:700;font-family:'Times New Roman', Times, serif;font-size:13pt">Goto Dashboard</a></li>
+                                                    <li><a href="/Business/Create_Biz" style="font-family: 'Times New Roman', Times, serif;font-size:13pt">List Service</a></li>
+                                                    <li><a href="/products/Register_Product" style="font-family: 'Times New Roman', Times, serif;font-size:13pt">Register Product</a></li>
+                                                    <li>
+                                                        <a href="javascript:document.getElementById('logoutForm').submit()" style="font-family: 'Times New Roman', Times, serif;font-size:13pt">Sign Out</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="dropdown active">
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="/ING/Userpanel/?bc=@user.INISubcriberExtraDetails.BenefitCategory" style="color:#ff0000; font-family:'Times New Roman', Times, serif;font-size:13pt">@user.FirstName.ToString().ToUpper()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="caret"></i></a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="/ING/Userpanel/?bc=@user.INISubcriberExtraDetails.BenefitCategory" title="Click to Manage Account" style="color: Orange; font-weight:700;font-family:'Times New Roman', Times, serif;font-size:13pt">Goto Dashboard</a></li>
+                                                    <li><a href="/Business/Create_Biz" style="font-family: 'Times New Roman', Times, serif;font-size:13pt">List Service</a></li>
+                                                    <li><a href="/products/Register_Product" style="font-family: 'Times New Roman', Times, serif;font-size:13pt">Register Product</a></li>
+                                                    <li>
+                                                        <a href="javascript:document.getElementById('logoutForm').submit()" style="font-family: 'Times New Roman', Times, serif;font-size:13pt">Sign Out</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        }
+                                    }                             
+
+                                </ul>
+                            </div>
+                        </div>
+                        <input type="hidden" id="success" value="@TempData["success"]" />
+                        <input type="hidden" id="info" value="@TempData["info"]" />
+                        <input type="hidden" id="warning" value="@TempData["warning"]" />
+                        <input type="hidden" id="error" value="@TempData["error"]" />
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span12 offset1">
+                <div id="leaderboardAds">
+
+                    @{
+                        try
+                        {
+                            var leaderboardAds = dbs.AdvertManagerTb.SingleOrDefault(a => a.AdsLocOnPage == "LeaderBoard" && a.AdsStatus == "Active");
+                            var img = "data:image/png;base64," + Convert.ToBase64String(leaderboardAds.AdsImage);
+                            if (img != null)
+                            {
+                                @*<a href="@leaderboardAds.AdsURL"><img src="@img" /></a>*@
+                                <a href="/Home/index"><img src="~/Content/images/AdsBanner/animation.gif" /></a>
+                            }
+                            else
+                            {
+                                <a href="/Home/index"><img src="~/Content/images/AdsBanner/animation.gif" /></a>
+
+                            }
+                        }
+                        catch
+                        {
+                            <a href="/Home/index"><img src="~/Content/images/AdsBanner/animation.gif" /></a>
+
+                        }
+
+
+                    }
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="span9">
+                    @RenderBody()
+                </div>
+                <div class="span3" id="AdsectionSpan3">
+                    <div class="panel panel-success" style="height:300px">
+                        <div class="panel-body">
+                            <blockquote>
+                                <h3 class="text-success" style="font-family:Calligraffitti; font-weight:500">Latest updates</h3>
+                            </blockquote>                           
+                            <div class="Newlist">
+                                <ul>
+                                    @foreach (var newsItem in news)
+                                    {
+                                        <li>
+                                            @if (newsItem.Image != null)
+                                            {
+                                                var lg = "data:image/png;base64," + Convert.ToBase64String(newsItem.Image);
+                                                <img src="@lg" alt="Image" class="img-polaroid" />
+                                            }
+                                            else if (newsItem.ImageUrl != null)
+                                            {
+
+                                                <img src="@newsItem.ImageUrl" class="img-polaroid" alt="Image" />
+
+                                            }
+                                            else
+                                            {
+                                                <img src="~/Content/images/placeholder.gif" class="img-thumbnail" style="width:200px;height:100px" alt="" />
+
+                                            }
+                                          
+                                            <a href="/LatestNews/HealthNews/?News_View=@newsItem.ID">@newsItem.Title</a>
+                                        
+                                           
+                                        </li>
+                                    }
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    @{
+
+                        //Ads Block 1
+                        try
+                        {
+                            var Md1 = dbs.AdvertManagerTb.SingleOrDefault(a => a.AdsLocOnPage == "MediumRectangle1" && a.AdsStatus == "Active");
+                            var img = "data:image/png;base64," + Convert.ToBase64String(Md1.AdsImage);
+                            if (img != null)
+                            {
+                                <a href="@Md1.AdsURL"><img src="@img" /></a>
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/AdsBanner/iHealth Presentation2 (3).jpg" />
+
+
+                            }
+                        }
+                        catch
+                        {
+                            <img src="~/Content/images/AdsBanner/iHealth Presentation2 (3).jpg" />
+                        }
+                        <br /><br /><br />
+                        //Ads Block 2
+                        try
+                        {
+                            var Md2 = dbs.AdvertManagerTb.SingleOrDefault(a => a.AdsLocOnPage == "MediumRectangle2" && a.AdsStatus == "Active");
+                            var img = "data:image/png;base64," + Convert.ToBase64String(Md2.AdsImage);
+                            if (img != null)
+                            {
+                                <a href="@Md2.AdsURL"><img src="@img" /></a>
+                            }
+                            else
+                            {
+                                //TODO: REPLACE FLASH WITH A DEFAULT ADS
+                                <img src="~/Content/images/AdsBanner/Slide2.jpg" />
+
+                            }
+                        }
+                        catch
+                        {
+                            <img src="~/Content/images/AdsBanner/Slide2.jpg" />
+                            @*<script src="http://h2.flashvortex.com/display.php?id=2_1448289562_62490_777_0_300_250_10_2_23" type="text/javascript"></script>*@
+
+                        }
+                        <br /><br /><br />
+                        // Ads Block 3
+                        try
+                        {
+                            var Md3 = dbs.AdvertManagerTb.SingleOrDefault(a => a.AdsLocOnPage == "MediumRectangle3" && a.AdsStatus == "Active");
+                            var img = "data:image/png;base64," + Convert.ToBase64String(Md3.AdsImage);
+                            if (img != null)
+                            {
+                                <a href="@Md3.AdsURL"><img src="@img" /></a>
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/AdsBanner/Slide2.jpg" />
+
+                            }
+                        }
+                        catch
+                        {
+                            <img src="~/Content/images/AdsBanner/Slide2.jpg" />
+
+
+                        }
+
+                    }
+
+                    <br /><br /><br />
+                    <div class="panel panel-danger">
+                        <div class="panel-body">
+                            <blockquote>
+                                <h3 class="text-success" style="font-family:Calligraffitti; font-weight:700">Latest Blog Post</h3>
+                                <small>Our list of <cite title="Source Title">Trending blog posts</cite></small>
+                            </blockquote>
+                            <br />
+                           
+                            <div class="blogslist">
+                                <ul>
+                                    @foreach (var blog in blogpost)
+                                    {
+                                        <li>
+                                            @if (blog.Feature_Image != null)
+                                            {
+                                                var lg = "data:image/png;base64," + Convert.ToBase64String(blog.Feature_Image);
+                                                <img src="@lg" alt="Image" class="img-polaroid" />
+                                            }
+                                            else
+                                            {
+                                                <img src="~/Content/images/placeholder.gif" class="img-thumbnail" style="width:200px;height:100px" alt="" />
+
+                                            }
+                                            @{
+                                        var displayedContent = System.Text.RegularExpressions.Regex.Match(blog.short_description.ToString(), @"^(\w+\b.*?){10}").ToString();
+                                            }
+                                            <a href="/blog/post_details/@seo.GenerateSlug(blog.post_id.ToString(),blog.post_url)">@blog.post_Title</a>
+                                            <p>@displayedContent <a href="/blog/post_details/@seo.GenerateSlug(blog.post_id.ToString(),blog.post_url)"><i class="text-error">Read  More</i></a></p>
+                                            <br />
+                                        </li>
+                                    }
+
+                                </ul>
+                            </div>
+                            <em style="float:right"><a href="/blog/blog_list"> click here for more blog post</a></em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--SOCIAL MEDIA SHARE-->
+    <!--SOCIAL MEDIAL SHARE-->
+
+    <div id="footerOuterSeparator"></div>
+    <div id="divFooter" class="footerArea">
+        <div class="container">
+            <div class="divPanel">
+                <div class="row-fluid">
+                    <div class="span3" id="footerArea2">
+                        <h3>About Company</h3>
+                        <p>
+                            iHealth Nigeria is an online healthcare product
+                            of Guarantee Structure and Facility Management (GSFM) Ltd.
+                            <a href="/home/About" title="Click to read more">Read more...</a>
+                        </p>
+
+                        <p>
+                            <a href="/Home/Terms" title="Terms of Use">Terms and Conditions</a><br />
+                            <a href="/home/PrivacyPolicy" title="Privacy Policy">Privacy Policy</a><br />
+                            <a href="/Home/FAQ" title="FAQ">FAQ</a><br />
+                            <a href="/careers/careers">Career and Networking</a><br />
+                            <a href="/careers/careers">Coperate Governance</a>
+                        </p>
+
+                    </div>
+                    <div id="footerArea1" class="span3">
+                        <h3>Our Services</h3>
+                        <p>
+                            <a href="#" title="Mobile Health Service">Mobile Health Service</a><br />
+                            <a href="#" title="International Health Service">International Health Service</a><br />
+                            <a href="#" title="Ambulance Service">Ambulance Service</a><br />
+                            <a href="/home/bookappointmentPage" title="Book an Appointment">Book an Appointment</a><br />
+                            <a href="#" title="Service, Quality and Audit">Service, Quality Audit</a><br />
+                            <a href="#" title="Help the Sick">Help the Sick</a><br />
+                            <a href="#" title="Newsletter">Newsletter</a><br />
+                        </p>
+                    </div>
+                    <div class="span3" id="footerArea3">
+
+                        <h3>Our Social Media Handles</h3>
+                        <p class="social_bookmarks">
+                            <a href="https://www.facebook.com/iHealthGSFM/"><i class="social foundicon-facebook icon-3x"></i> Facebook: www.Facebook.com/ihealthgsfm</a><br />
+                            <a href=""><i class="social foundicon-twitter icon-3x"></i> Twitter: @@ihealthgsfm </a><br />
+                            <a href="#"><i class="social foundicon-google-plus icon-3x">Google Plus: @@ihealthgsfm</i></a>
+                        </p>
+
+                    </div>
+                    <div class="span3" id="footerArea4">
+
+                        <h3>Contact Us</h3>
+                        To fill our Contact Us Form <a href="/support/ContactUs">Click here </a>
+                        <ul id="contact-info">
+                            <li>
+                                <i class="general foundicon-phone icon"></i>
+                                <span class="field">Phone:</span>
+                                <br />
+                                (+234) 9080163224
+                            </li>
+                            <li>
+                                <i class="general foundicon-mail icon"></i>
+                                <span class="field">Email:</span>
+                                <br />
+                                <a href="mailto:support@ihealthgsfm.com" title="Email">support@ihealthgsfm.com</a>
+                            </li>
+                            <li>
+                                <i class="general foundicon-home icon" style="margin-bottom:50px"></i>
+                                <span class="field">Address:</span>
+                                <br />
+                                123 Street<br />
+                                12345 City, FCT ABUJA<br />
+                                NIGERIA
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div id="demo1">
+
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <p class="copyright">
+                            Copyright © @DateTime.UtcNow.Year iHealth Nigeria All Rights Reserved. Developed by Productive In Nature Nig. Ltd.
+                        </p>
+                    </div>
+                </div>
+                <br />
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <script src="~/Scripts/modernizr-2.6.2.js" type="text/javascript"></script>
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/siteScripts/responsive-menu.js" type="text/javascript"></script>
+    <script>
+        $('.rm-nav').rMenu({
+            minWidth: '980px',
+        });
+    </script>
+    <script src="~/Scripts/siteScripts/bootstrap.js" type="text/javascript"></script>
+    <script src="~/Scripts/siteScripts/default.js" type="text/javascript"></script>
+    <script src="~/Scripts/Plugins/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('#success').val()) {
+                displayMessage($('#success').val(), 'success');
+            }
+            if ($('#info').val()) {
+                displayMessage($('#info').val(), 'info');
+            }
+            if ($('#warning').val()) {
+                displayMessage($('#warning').val(), 'warning');
+            }
+            if ($('#error').val()) {
+                displayMessage($('#error').val(), 'error');
+            }
+        });
+        var displayMessage = function (message, msgType) {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "onClick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "8000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+
+            toastr[msgType](message);
+        };
+
+    </script>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWXJ0W9-xiSG7ZYkn3vFnUp0SihXJXdZA&v=3.exp&libraries=places&region=NG">
+    </script>
+    <script src="~/Scripts/CustomScript/gmapcust.js"></script>
+    <script src="~/Scripts/Plugins/jquery.easy-ticker.min.js"></script>
+    <script src="~/Scripts/siteScripts/jquery.easing.1.3.js"></script>
+    <script>
+        $(function () {
+            $('.Newlist').easyTicker({
+                direction: 'up', // up or down
+                easing: 'swing', // easing options
+                speed: 'slow', // animation speed
+                interval: 120000,
+                height: 'auto',
+                visible: 1, // change the number of default visible elements.
+                mousePause: 1, // pause on hover
+                controls: {
+                    up: '',
+                    down: '',
+                    toggle: '',
+                    playText: 'Play',
+                    stopText: 'Stop'
+                }
+            });
+            $('.blogslist').easyTicker({
+                direction: 'up', // up or down
+                easing: 'swing', // easing options
+                speed: 'slow', // animation speed
+                interval: 2000,
+                height: 'auto',
+                visible: 0, // change the number of default visible elements.
+                mousePause: 1, // pause on hover
+                controls: {
+                    up: '',
+                    down: '',
+                    toggle: '',
+                    playText: 'Play',
+                    stopText: 'Stop'
+                }
+            });
+
+        });
+    </script>
+    @RenderSection("Scripts", false)
+    <!--BEGINS Go to www.addthis.com/dashboard to customize social media share tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-585ab43cbe262664"></script>
+    <!-- Go to www.addthis.com/dashboard to customize recommed for you tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-585ab43cbe262664"></script>
+    <!--END Go to www.addthis.com/dashboard to customize recommed for you tools -->
+    <script src="~/Scripts/siteScripts/jquery.carouFredSel-6.2.0-packed.js"></script>
+    <script type="text/javascript">$('#list_photos').carouFredSel({ responsive: true, width: '100%', height: '40%', scroll: 2, items: { width: 320, visible: { min: 2, max: 6 } } });</script>
+    <script src="~/Scripts/Plugins/slider.js"></script>
+    <script>
+        $("#slider-container").sliderUi({
+            speed: 1000,
+            cssEasing: "cubic-bezier(0.285, 1.015, 0.165, 1.000)",
+            caption: true
+        });
+    </script>  
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/57f9387c8bab9a1c1136a22a/default';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
+
+
+</body>
+</html>

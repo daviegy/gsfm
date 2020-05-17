@@ -1,0 +1,27 @@
+﻿@*@model iHealth2.Models.claimBenefitViewModel*@
+
+@{
+    ViewBag.Title = "ClaimBenefit";
+    Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+}
+
+
+
+
+    <div class="panel panel-danger">
+        <div class="panel-body">
+            <div class="alert-success RegPageTextDecoration">@ViewBag.Msg</div>
+        </div>
+    </div>
+
+@section scripts{
+<script src="~/Scripts/Plugins/typewriter.js"></script>
+<script>
+        $(function () {
+            $(".typewriter").typewriter({
+                'speed': 100 // default: 300
+            });
+        });
+</script>
+
+}

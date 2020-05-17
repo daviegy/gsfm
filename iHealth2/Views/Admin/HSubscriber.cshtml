@@ -1,0 +1,145 @@
+﻿@model IEnumerable<iHealth2.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "NewUsers";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<section class="content">
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+
+
+            <div class="table-responsive mailbox-messages">
+
+                <table id="table" class="">
+                    <thead>
+                        <tr>
+                            <th>
+                                SN
+                            </th>
+                            <th>Subcriber ID</th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th>
+                                Phone Number
+                            </th>
+                            <th>
+                                Location
+                            </th>
+
+                           
+                            <th>
+                                Reg. Date
+                            </th>
+
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        @{int counter = 0;}
+                        @foreach (var item in Model)
+                        {
+                            counter = counter + 1;
+                            <tr>
+                                <td>@counter</td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MyRefferalCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                </td>
+
+                                <td>
+                                    @{var loc = item.City + " " + item.State + "," + item.Nationality;}@loc
+                                </td>
+                               
+                                <td>
+                                    @{var rdate = Convert.ToDateTime(item.RegDate).Date.ToString("dd MMM,yyy");} @rdate
+                                </td>
+
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script>
+    $('#table').bootstrapTable({
+
+        striped: true,
+        // cardView: true,
+        pagination: true,
+        pageSize: 15,
+        pageList: [15, 30, 50, 100, 200],
+        smartDisplay: false,
+        showToggle: false,
+        search: true,
+        showColumns: true,
+        showRefresh: true,
+        //    border : true
+        //align: 'center',
+        //valign: 'bottom'
+
+    });
+    </script>
+    <script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+    <script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+    <script>
+    $(document).ready(function () {
+        //Enable iCheck plugin for checkboxes
+        //iCheck for checkbox and radio inputs
+        $('.mailbox-messages input[type="checkbox"]').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+        });
+
+        //Enable check and uncheck all functionality
+        $(".checkbox-toggle").click(function () {
+            var clicks = $(this).data('clicks');
+            if (clicks) {
+                //Uncheck all checkboxes
+                $(".mailbox-messages input[type='checkbox']").iCheck("uncheck");
+                $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+            } else {
+                //Check all checkboxes
+                $(".mailbox-messages input[type='checkbox']").iCheck("check");
+                $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+            }
+            $(this).data("clicks", !clicks);
+        });
+
+
+    });
+    </script>
+}
+
+
+
+
+

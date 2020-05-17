@@ -1,0 +1,120 @@
+﻿@model IEnumerable<iHealth2.Models.referral_bonus_view_model>
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@using iHealth2.Models;
+
+@{
+    ViewBag.Title = "ref_bonus";
+    Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+    char x = (char)8358;
+
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+    String UserID = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(user.Id, s);
+    UserID = UserID.Replace("/", "$25");
+    UserID = UserID.Replace("+", "$24");
+}
+<div class="panel panel-success">
+    <div class="panel-body">
+        <div class="alert alert-info">
+            <b style="font-size:large">TOTAL CASH BENEFIT</b>: &nbsp;<span style="font-size:large">@x @String.Format("{0:n0}", @user.INISubcriberExtraDetails.CurrentBonus).00</span>
+            @if (user.INISubcriberExtraDetails.Promo_end_date <= DateTime.UtcNow.Date && user.INISubcriberExtraDetails.CurrentBonus != 0) 
+            {
+              <a href="/ING/ClaimBenefits/?ids=@UserID" class="btn btn-danger pull-right" style="text-decoration:none">Claim Benefits</a>
+            }
+        </div>
+        <div class="table-responsive">
+            <table id="tbData">
+                <thead>
+                    <tr>
+                        <th>
+                            SN
+                        </th>
+
+                        <th>
+                            Downline Name
+                        </th>
+                        <th>
+                            Subcription Fee
+                        </th>
+                        <th>
+                            My Bonus
+                        </th>
+                        <th>Bonus Type</th>
+                        <th>
+                            Created Date
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int counter = 0;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        counter = counter + 1;
+                        <tr>
+                            <td>
+                                @counter
+                            </td>
+                            <td>
+                                @{var FullName = item.downline_name;}@FullName
+                            </td>
+                            <td>
+                              @x @String.Format("{0:n0}", item.subcription_fee).00
+                            </td>
+                            <td>
+                                @if (item.my_bonus == 0)
+                                {
+                                    <strike class="text-danger"> @x @String.Format("{0:n0}",item.my_bonus).00 </strike><span class="text-danger">(used) </span>
+                                }
+                                else
+                                {
+                                   <span class="text-success">@x @String.Format("{0:n0}", item.my_bonus).00</span>
+                                }
+                               
+                            </td>
+                            <td>@item.bonus_type</td>
+                            <td>
+                                @{ var rdate = Convert.ToDateTime(item.created_date).Date.ToString("dd MMM, yyy");}@rdate
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="alert alert-info">
+            <b style="font-size:large">TOTAL CASH BENEFIT</b>: &nbsp;<span style="font-size:large">@x @String.Format("{0:n0}", user.INISubcriberExtraDetails.CurrentBonus).00</span>
+            @if (user.INISubcriberExtraDetails.Promo_end_date <= DateTime.UtcNow.Date && user.INISubcriberExtraDetails.CurrentBonus != 0)
+            {
+                <a href="/ING/ClaimBenefits/?ids=@UserID" class="btn btn-danger pull-right" style="text-decoration:none">Claim Benefits</a>
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script>
+        $('#tbData').bootstrapTable({
+
+            striped: true,
+            // cardView: true,
+            pagination: true,
+            pageSize: 15,
+            pageList: [15, 25, 50, 100, 200],
+            smartDisplay: false,
+            showToggle: true,
+            search: true,
+            showColumns: true,
+            showRefresh: true,
+            //    border : true
+            //align: 'center',
+            //valign: 'bottom'
+
+        });
+    </script>
+}
+
+

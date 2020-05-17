@@ -1,0 +1,89 @@
+﻿
+@*@{
+    ViewBag.Title = "hosplist";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}*@
+
+@model IEnumerable<iHealth2.Models.INISubcriberExtraDetail>
+@{
+    ViewBag.Title = "Direct_Members";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+
+
+<div class="panel panel-success">
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table id="tbData">
+                <thead>
+                    <tr>
+                        <th>
+                            SN
+                        </th>
+
+                        <th>
+                            Downline Name
+                        </th>
+                        <th>
+                            Registered Date
+                        </th>
+                        <th>
+                            INI Status
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int counter = 0;
+
+                    }
+                    @foreach (var item in Model)
+                    {
+                        counter = counter + 1;
+                        <tr>
+                            <td>
+                                @counter
+                            </td>
+                            <td>
+                                @{var FullName = item.User.FirstName + item.User.LastName;}@FullName
+                            </td>
+                            <td>
+                                @{ var rdate = Convert.ToDateTime(item.User.RegDate).Date.ToString("dd MMM, yyy");}@rdate
+                            </td>
+                            <td>
+                                @item.BEstatus
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script>
+    $('#tbData').bootstrapTable({
+
+        striped: true,
+        // cardView: true,
+        pagination: true,
+        pageSize: 15,
+        pageList: [15, 25, 50, 100, 200],
+        smartDisplay: false,
+        showToggle: true,
+        search: true,
+        showColumns: true,
+        showRefresh: true,
+        //    border : true
+        //align: 'center',
+        //valign: 'bottom'
+
+    });
+    </script>
+
+}
+
+

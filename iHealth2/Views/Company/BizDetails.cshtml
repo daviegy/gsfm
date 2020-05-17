@@ -1,0 +1,267 @@
+﻿@model iHealth2.Models.BusinessInfo
+@using iHealth2.CustomClasses;
+@using iHealth2.Models
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "BizDetails";
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    switch (user.UserType)
+    {
+
+        case "AD":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            break;
+        case "SA":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+           // Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+            break;
+
+    }
+}
+
+  
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h2 class="text-info">Business Information for <span class="text-warning">@Model.User.FullName.ToUpper()</span></h2>
+            <hr />
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <td>
+                        <dl class="dl-horizontal">
+                            <dt>
+                                OWNER'S NAME
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.User.FullName)
+                            </dd>
+                            <br />
+                            <dt>
+                                @Html.DisplayName("Business Name").ToString().ToUpper()
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.businessName)
+                            </dd>
+                            <br />
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Country).ToString().ToUpper()
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Country)
+                            </dd>
+                            <br />
+                            <dt>
+                                @Html.DisplayNameFor(model => model.State).ToString().ToUpper()
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.State)
+                            </dd>
+                            <br />
+                            <dt>
+                                @Html.DisplayNameFor(model => model.City).ToString().ToUpper()
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.City)
+                            </dd>
+                            <br />
+                            @*<dt>
+                                    @Html.DisplayNameFor(model => model.ZipCode)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.ZipCode)
+                                </dd>*@
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Email).ToString().ToUpper()
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Email)
+                            </dd>
+                            <br />
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Phone).ToString().ToUpper()
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Phone)
+                            </dd>
+                            <br />
+                            <dt>
+                                @Html.DisplayName("Business Category").ToString().ToUpper()
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Category)
+                            </dd>
+                            <br />
+                            @if (Model.subCategory1 != null)
+                            {
+                                <dt>
+                                    @Html.DisplayName("Sub-Category").ToString().ToUpper()
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.subCategory1)
+                                </dd>
+    <br />
+                            }
+
+                            @if (Model.subCategory2 != null)
+                            {
+                                <dt>
+                                    @Html.DisplayName("Sub-SubCategory").ToString().ToUpper()
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.subCategory2)
+                                </dd>
+    <br />
+                            }
+                            @if (Model.Website != null)
+                            {
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Website)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Website)
+                                </dd>
+    <br />
+                            }
+
+
+                            @*<dt>
+                                    @Html.DisplayNameFor(model => model.Description)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Description)
+                                </dd>*@
+
+                                @*<dt>
+                                        @Html.DisplayNameFor(model => model.keyword)
+                                    </dt>
+
+                                    <dd>
+                                        @Html.DisplayFor(model => model.keyword)
+                                    </dd>*@
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Address).ToString().ToUpper()
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Address)
+                                </dd>
+                            <br />
+                                @*<dt>
+                                        @Html.DisplayNameFor(model => model.logo)
+                                    </dt>
+
+                                    <dd>
+                                        @Html.DisplayFor(model => model.logo)
+                                    </dd>*@
+
+
+
+                                <dt>
+                                    REGISTERATION DATE
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.regDate)
+                                </dd>
+                            <br />
+                                @*<dt>
+                                        @Html.DisplayNameFor(model => model.mapLocation)
+                                    </dt>
+
+                                    <dd>
+                                        @Html.DisplayFor(model => model.mapLocation)
+                                    </dd>*@
+
+                                <dt>
+                                    APPROVED STATUS
+                                </dt>
+
+                                <dd>
+                                    @if (Model.ApprovedStatus == "P".ToUpper())
+                                    {<span>Pending</span>}
+                                    else
+                                    {<span>Approved</span>}
+                                </dd>
+                            <br />
+                                <dt>
+                                    VERIFIED STATUS
+                                </dt>
+
+                                <dd>
+                                    @if (Model.VerifiedStatus == "NV")
+                                    {<span>Not Verify</span>}
+                                    else
+                                    {<span>Verified</span>}
+
+                                </dd>
+
+                            </dl>
+
+                        </td>
+                    </tr>
+                </table>
+            <p>
+             @{
+                 string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+                            String EncryptId = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(Model.ID.ToString(), s);
+                            EncryptId = EncryptId.Replace("/", "$25");
+                            EncryptId = EncryptId.Replace("+", "$24");
+             }
+              
+               @if (User.IsInRole("SuperAdmin"))
+               {
+                <button class="btn btn-danger" id="btnApprove" onclick="approvebiz('@Model.ID')">Approve</button>
+               }
+
+
+                @*<a href="/" class="btn btn-warning">Send Mail</a>*@
+                <a href="@Request.UrlReferrer.ToString()" class="btn btn-success">Go Back</a>
+                 @*  @Html.ActionLink("Back to List", "NewlyRegBusiness", "Company", null, htmlAttributes: new { @class = "btn btn-success" })*@
+            </p>
+            </div>
+        </div>
+      
+@section scripts{
+<script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+<script src="~/Scripts/Plugins/dpLoading-2.x.js"></script>
+
+<script>
+    function approvebiz(id) {
+        dpUI.loading.start("Approving...");
+        var arr = [id];
+        var option = {};
+        option.url = "/Company/Approve";
+        option.type = "Post";
+        option.dataType = "json";
+        option.data = { Id: arr };
+        option.success = function () {
+            dpUI.loading.stop();
+            swal("", "Approved", "success");
+            //  $('#mytable').load('_NewlyRegBizParital')
+            $('#btnApprove').prop('disabled',true)
+         
+        }
+        option.error = function () {
+            dpUI.loading.stop();
+            swal("", "Error", "error")
+        }
+        $.ajax(option);
+    }
+    </script>}

@@ -1,0 +1,176 @@
+﻿@model IEnumerable<iHealth2.Models.BusinessInfo>
+
+@{
+    ViewBag.Title = "VerifiedComp";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+   // Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+}
+
+
+<h2 class="text-danger" style="margin-left:50px">Verified Company or Business</h2>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="table-responsive" id="">
+
+            <table data-toggle="table" data-url="" id="table" style="text-transform:capitalize">
+
+                <thead style="text-align:justify">
+                    <tr>
+                        <th>S/N</th>
+
+                        <th>
+                            @Html.DisplayName("Business Owner")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Business Name")
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Country)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.State)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.City)
+                        </th>
+                        @*<th>
+                                @Html.DisplayNameFor(model => model.ZipCode)
+                            </th>*@
+                        <th>
+                            @Html.DisplayName("Business Email")
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Phone)
+                        </th>
+                        <th>
+                            @Html.DisplayName("Category")
+                        </th>
+                        <th>
+                            @Html.DisplayName("SubCategory")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Sub-SubCategory")
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Website)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Address)
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("Registered Date")
+                        </th>
+
+                        <th>Verified Date</th>
+                        <th>Verified By</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+
+                    @{
+                        int counter = 0;
+
+                    }
+
+
+                    @foreach (var item in Model)
+                    {
+
+                      
+                        counter++;
+                        <tr>
+                         
+                            <td>
+                                @counter
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.businessName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Country)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.State)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.City)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.ZipCode)
+                                </td>*@
+                            <td>
+                                <a href="#SendMailModal" data-toggle="modal">@Html.DisplayFor(modelItem => item.Email)</a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Phone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.subCategory1)
+                            </td>
+
+                            <td>
+
+                                @Html.DisplayFor(modelItem => item.subCategory2)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Website)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.regDate)
+                            </td>
+
+                            <td>@Html.DisplayFor(modelItem => item.VerifyDate)</td>
+                            <td>@Html.DisplayFor(modelItem=> item.SignedBy)</td>
+                        </tr>
+                    }
+                </tbody>
+
+
+
+
+            </table>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script>
+
+     $('#table').bootstrapTable({
+
+         striped: true,
+         // cardView: true,
+         pagination: true,
+         pageSize: 10,
+         pageList: [10, 25, 50, 100, 200],
+         smartDisplay: false,
+         showToggle: true,
+         search: true,
+         showColumns: true,
+         showRefresh: true,
+             border : true,
+         align: 'center',
+         valign: 'bottom'
+
+     });
+    </script>
+    <script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+    <script src="~/Scripts/customscript/CompScript.js"></script>
+}

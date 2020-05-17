@@ -1,0 +1,398 @@
+﻿@using iHealth2.Models
+@model iHealth2.Models.view_biz_profile
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "biz_profile";
+    Layout = "~/Views/Shared/_BusinessProfileLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext();
+    string login_user = "";
+    if (User.Identity.IsAuthenticated)
+    {
+        login_user = db.Users.Find(User.Identity.GetUserId()).Id;
+    }
+    Session["product_or_company_id"] = Model.Id;
+}
+
+<div class="tp-banner-container">
+    <div class="tp-banner">
+        <div class="flexslider" style="margin-bottom:0px;border:none">
+            <div class="flat-slides">
+                <ul class="slides">
+                    
+                        @{
+                            var Fhosp = db.businessImage.Where(m => m.BizId == Model.Id && m.isSliderImage == "true").ToList();
+                            if (Fhosp.Count > 0)
+                            {
+                                foreach (var image in Fhosp)
+                                {
+                                    var img = "data:image/png;base64," + Convert.ToBase64String(image.galleryImage);
+                                    <li>
+                                        <img src="@img" />
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li>
+                                    <img src="~/Content/images/slides/Slider_ihealth3.jpg" />
+                                </li>
+                                <li>
+                                    <img src="~/Content/images/slides/Slider_ihealth4.jpg" />
+                                </li>
+                            }
+
+                        }
+                </ul>
+            </div> <!-- /.flat-slides -->
+        </div><!-- /.wrar-slides -->
+    </div>
+</div>
+<div class="page-title">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title-heading">
+                    <h1 class="h1-title">@Model.Business_name</h1>
+                </div><!-- /.page-title-heading -->
+                <ul class="breadcrumbs">
+                    <li><a href="/" title="">Home<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    <li><a href="/ing/Client_Booster_List" title="">Service Boosters<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    <li><a href="#" title="">@Model.Business_name</a></li>
+                </ul><!-- /.breadcrumbs -->
+              
+                <div class="clearfix"></div><!-- /.clearfix -->
+            </div>
+        </div>
+    </div>
+</div><!-- /.page-title -->
+<section class="flat-row pd-aboutv3">   
+    <div class="container">
+        <div class="row-fluid">
+            <div class="col-md-7">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="title-section left">
+                            <h2>Overview</h2>
+                        </div><!-- /.title-section -->
+                      
+                    </div>
+                </div><!-- /.row -->
+                <p style="text-align:justify">@Html.Raw(Server.HtmlDecode(Model.Overview))</p>
+            </div>
+            <div class="col-md-5">
+                <div class="sidebar right">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="title-section left">
+                                <h2>Our Contact</h2>
+                            </div><!-- /.title-section -->
+                        </div>
+                    </div><!-- /.row -->
+                    <aside class="widget widget-brochure">
+                       
+                        <div class="">
+                            <ul class="infomation-footer">
+                                <li><a href="mailto:@Model.email" title="" style="color:black"><i class="fa fa-envelope fa-2x"></i>&nbsp;&nbsp;@Model.email</a><br /></li>
+                                <li><a href="#" title="" style="color:black"><i class="fa fa-phone fa-2x"></i>&nbsp;&nbsp; @Model.phone</a><br /></li>
+                                <li><a href="#" title="" style="color:black"> <i class="fa fa-map-marker fa-2x"></i>&nbsp;&nbsp;@Model.addr</a></li>
+                                <li><hr /></li>
+                                <li>
+                                @if (!string.IsNullOrEmpty(Model.fb))
+                                {
+                                    <a target="_blank" href="@Model.fb" class="btn btn-info"><i class="fa fa-facebook-f"></i></a>
+                                }
+                                    @if (!string.IsNullOrEmpty(Model.tw))
+                                    {
+                                        <a target="_blank" href="@Model.tw" class="btn btn-primary"><i class="fa fa-twitter"></i></a>
+                                    }
+                                    @if (!string.IsNullOrEmpty(Model.gPlus))
+                                    {
+                                        <a target="_blank" href="@Model.gPlus" class="btn btn-danger"><i class="fa fa-google-plus"></i></a>
+                                    }
+                                    @if (!string.IsNullOrEmpty(Model.ln))
+                                    {
+                                        <a target="_blank" href="@Model.ln" class="btn btn-info"><i class="fa fa-linkedin"></i></a>
+                                    }
+                                </li>
+                                <li><hr /></li>
+                              <li>
+                                @*<div class='starrr pull-left' style="font-size:large">Rate Us! &nbsp;&nbsp;</div>*@
+                                <a  href="#reviewForm"  class="btn btn-warning"><i class="fa fa-edit"></i>&nbsp; Write a review</a>
+                              </li>
+                               
+                            </ul>
+                        </div>
+                    </aside><!-- /.widget-brochure -->
+
+                </div>
+            </div>       
+        </div>      
+    </div>
+
+    <!--review form modal-->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="title-section left">
+                    <h2>Our Gallery</h2>
+                </div><!-- /.title-section -->
+            </div>
+        </div><!-- /.row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="iconbox-slider">
+                    <ul class="slides" data-item="3" data-nav="false" data-dots="false" data-auto="true">
+                        @{
+                            var Bimg = db.businessImage.Where(m => m.BizId == Model.Id);
+
+                            foreach (var img in Bimg)
+                            {
+                                <li class="item">
+                                    <div class="featured-post">
+                                        <img src="data:image/png;base64,@Convert.ToBase64String(img.galleryImage)">
+                                        <a href="~/Content/Business_Img_Gallery/@img.imageUrl"><i class="fa fa-arrows-alt"></i></a>
+                                    </div>
+                                    <div class="title-post">
+                                        <a href="#" title="">@Model.Business_name</a>
+                                    </div>
+                                    <div class="category-post">
+                                        <a href="#" title="">images</a>
+                                    </div>
+                                </li><!-- /item -->
+                            }}
+                    </ul><!-- /.slides -->
+                </div>
+                <div class="clearfix">
+
+                </div><!-- /.clearfix -->
+            </div><!-- /.col-md-12 -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+
+</section>
+<section class="flat-row pd-aboutv3" id="reviewForm">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="title-section left">
+                    <h2>Reviews</h2>                   
+                </div><!-- /.title-section -->
+            </div>
+        </div><!-- /.row -->
+        <div class="row">
+            <div class="col-md-4">
+
+                <div class="progres">
+@{
+    int totalRating = 0;
+    int averageRating = 0;
+    var rvalues = db.reviewTb.Where(cid => cid.product_or_company_id == Model.Id);
+                    <div class="progress-title">
+                        <h2>company ratings</h2>
+                    </div><!-- /.progress-title -->
+                    <div class="progress-content">
+                        @if (rvalues.Count() > 0)
+                        {
+                            foreach(var rvalue in rvalues)
+                            {
+                                totalRating += rvalue.ratingValue;
+                            }
+                            averageRating = totalRating / rvalues.Count();
+                        }
+                     <p>
+                            Below is how we are rated by others.<br />
+                            <div class="rateYo3 pull-left" data-rateyo-rating="@averageRating" data-rateyo-read-only="true"></div>
+                        </p>                
+
+                   </div><!-- /.progress-content -->
+    int count5 = db.reviewTb.Where(cid => cid.product_or_company_id == Model.Id && cid.ratingValue == 5).Count();
+
+    int count4 = db.reviewTb.Where(cid => cid.product_or_company_id == Model.Id && cid.ratingValue == 4).Count();
+    int count3 = db.reviewTb.Where(cid => cid.product_or_company_id == Model.Id && cid.ratingValue == 3).Count();
+    int count2 = db.reviewTb.Where(cid => cid.product_or_company_id == Model.Id && cid.ratingValue == 2).Count();
+    int count1 = db.reviewTb.Where(cid => cid.product_or_company_id == Model.Id && cid.ratingValue == 1).Count();
+                    <div class="flat-progress ">
+                        <div class="name">5.0 <i class="fa fa-star"></i></div>
+                        <div class="perc">@count5</div>
+                        <div class="progress-bar" data-percent="@count5" data-waypoint-active="yes">
+                            <div class="progress-animate" data-duration="3000"></div>
+                        </div>
+                    </div> 
+                    <div class="flat-progress ">
+                        <div class="name">4.0 <i class="fa fa-star"></i></div>
+                        <div class="perc">@count4</div>
+                        <div class="progress-bar" data-percent="@count4" data-waypoint-active="yes">
+                            <div class="progress-animate" data-duration="3000"></div>
+                        </div>
+                    </div>
+                    <div class="flat-progress ">
+                        <div class="name">3.0 <i class="fa fa-star"></i></div>
+                        <div class="perc">@count3</div>
+                        <div class="progress-bar" data-percent="@count3" data-waypoint-active="yes">
+                            <div class="progress-animate" data-duration="3000"></div>
+                        </div>
+                    </div>
+                    <div class="flat-progress ">
+                        <div class="name">2.0 <i class="fa fa-star"></i></div>
+                        <div class="perc">@count2</div>
+                        <div class="progress-bar" data-percent="@count2" data-waypoint-active="yes">
+                            <div class="progress-animate" data-duration="3000"></div>
+                        </div>
+                    </div>
+                    <div class="flat-progress ">
+                        <div class="name">1.0 <i class="fa fa-star"></i></div>
+                        <div class="perc">@count1</div>
+                        <div class="progress-bar" data-percent="@count1" data-waypoint-active="yes">
+                            <div class="progress-animate" data-duration="3000"></div>
+                        </div>
+                    </div>
+                 }
+
+                </div><!-- /.progres -->
+            </div><!-- /.col-md-6 -->
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h2>write a review</h2>
+                        </div><!-- /.progress-title -->
+                    </div>
+                    <div>
+                        <div class="panel-body">
+                            <div class="panel panel-success" style="width:60%;">
+                                <div class="panel-body">
+                                   <h2 class="pull-left">Rate us!</h2> <div class="pull-right" id="rateYo" data-rateyo-full-star="true"></div>
+                                    <br /><br />
+                                    <form action="/Business/submitReview" method="post">
+                                     @*   <span id="choice" name="ratingValue" style="display:none"></span>*@
+                                       
+                                        @Html.Hidden("companyId", Model.Id)
+                                        @Html.Hidden("reviewerID", login_user)
+                                        <input type="hidden" name="ratingValue" id="choice" value=""/>
+                                        <div class="form-group">
+                                            @*<label for="firstname" class="control-label">Title:</label>*@
+                                            <input required type="text" class="form-control" name="Title" placeholder="Title of review" />
+                                        </div>
+                                        <div class="form-group ">
+                                            @* <label for="firstname" class="control-label">Title:</label>*@
+                                            <textarea required class="form-control" name="review_content" placeholder="Review us..."></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            @*<label for="firstname" class="control-label">Title:</label>*@
+                                            <input  type="text" class="form-control" name="reviewerName" placeholder="Display Name" />
+                                        </div>
+                                        <div class="">
+                                            <button type="submit" class="btn btn-success btn-sm btn-group-justified">Submit</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                            <div class="panel panel-danger">
+                                <div class="panel-body">
+                                    <h3>All Reviews</h3><br />
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            @{
+                                                var reviews = db.reviewTb.Where(cid=>cid.product_or_company_id == Model.Id).ToList().OrderByDescending(dt => dt.reviewedDate).Take(10);
+                                                if (reviews.Count() > 0)
+                                                {
+                                                    foreach (var rv in reviews)
+                                                    {
+                                                        string date = Convert.ToDateTime(rv.reviewedDate).ToString("dd MMM, yyy");
+                                                        <tr>
+                                                            <td>
+                                                                <img src="~/Content/images/avatar.jpg" class="img-circle" />
+                                                                &nbsp;&nbsp; @rv.reviewerName <br />
+                                                                &nbsp;&nbsp; @date
+                                                            </td>
+                                                            <td style="text-align:justify">
+                                                                <div class="rateYo2" data-rateyo-rating="@rv.ratingValue" data-rateyo-read-only="true"></div><br />
+                                                                <b>@rv.reviewTitle</b> <br />
+                                                                @rv.review_content
+                                                            </td>
+                                                        </tr>
+
+                                                    }
+
+                                                }
+
+                                            }                                            
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.progress-content -->
+
+                </div><!-- /.progres -->
+            </div><!-- /.col-md-6 -->
+
+
+        </div>
+
+    </div>
+</section>
+<section class="flat-row flat-client bg-theme">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="flat-carousel" data-item="5" data-nav="false" data-dots="false" data-auto="true">
+                    <li class="item">
+                        <img src="~/content/images/iHealth_logo.png" alt="img">
+                    </li>
+                    <li class="item">
+                        <img src="~/content/images/iHealth_logo.png" alt="img">
+                    </li>
+                    <li class="item">
+                        <img src="~/content/images/iHealth_logo.png" alt="img">
+                    </li>
+                    <li class="item">
+                        <img src="~/content/images/iHealth_logo.png" alt="img">
+                    </li>
+                    <li class="item">
+                        <img src="~/content/images/iHealth_logo.png" alt="img">
+                    </li>
+                </ul>
+            </div> <!-- /.col-md-12 -->
+        </div> <!-- /.row -->
+    </div> <!-- /.container -->
+</section> <!-- /.flat-row -->
+
+@section Scripts{   
+<script src="~/Scripts/Plugins/starrr.js" type="text/javascript"></script>
+<script type="text/javascript" src="~/Scripts/Plugins/jquery.textcomplete.min.js"></script>
+<script src="~/Scripts/Plugins/jquery.rateyo.min.js"></script>
+<script type="text/javascript"> 
+    $(function () {
+
+        $("#rateYo").rateYo({
+            starWidth: "32px",
+            precision: 1,
+            onSet: function (rating, rateYoInstance) {
+                //$('#choice').show();
+                $('#choice').val(rating);
+            }
+        });
+        $(".rateYo2").rateYo({
+            starWidth: "15px",            
+        });
+        $(".rateYo3").rateYo({
+            starWidth: "15px",
+        });
+    });
+    //$('.starrr').starrr({
+    //    change: function (e, value) {
+    //        if (value) {
+    //            $('#choice').show();
+    //            $('#choice').text(value);
+    //        } else {
+    //            $('#choice').hide();
+    //        }
+    //    }
+    //})
+
+</script>
+    
+    }

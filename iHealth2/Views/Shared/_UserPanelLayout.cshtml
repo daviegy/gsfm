@@ -1,0 +1,425 @@
+﻿@if (Session["Name"] == null)
+{
+    Response.Redirect("/Account/login");
+}
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@using iHealth2.Models;
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    //Session["TIP"] = user.TrackingID;
+    //  string ids = Session["Ids"].ToString();
+    // var usr = db.Users.Find(ids);
+    string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+    String EncryptId = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(user.UserName, s);
+    EncryptId = EncryptId.Replace("/", "$25");
+    EncryptId = EncryptId.Replace("+", "$24");
+    String UserID = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(user.Id, s);
+    UserID = UserID.Replace("/", "$25");
+    UserID = UserID.Replace("+", "$24");
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>UserPanel|@ViewBag.Title</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <!-- bootstrap 3.0.2 -->
+    <link rel="Shortcut Icon" href="/iHealthIcon.ico" type="Image/x-icon" />
+    <link href="~/Content/AdminContent/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+
+    <link href="~/Content/dataTables.bootstrap.css" rel="stylesheet" />
+    <!-- font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link href="~/Content/AdminContent/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminContent/css/_all-skins.min.css" rel="stylesheet" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    @* <link href="~/Content/AdminContent/css/datatables/dataTables.bootstrap.css" rel="stylesheet" />*@
+
+    <link href="~/Content/fileinput.css" rel="stylesheet" />
+    <link href="~/Content/dpLoading-2.x.css" rel="stylesheet" />
+    <link href="~/Content/dpLoading-2.x-skin-grey.css" rel="stylesheet" />
+    <link href="~/Content/AdminContent/css/iCheck/blue.css" rel="stylesheet" />
+    <link href="~/Content/jquery.auto-complete.css" rel="stylesheet" />
+    <link href="~/Content/jquery-te-1.4.0.css" rel="stylesheet" />
+    <link href="~/Content/editor.css" rel="stylesheet" />
+    <link href="~/Content/JqZoom/jquery-picZoomer.css" rel="stylesheet" />
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/sweetalert.css" rel="stylesheet" />
+    <link href="~/Content/AdminContent/css/iCheck/blue.css" rel="stylesheet" />
+    <link href="~/Content/AdminContent/css/iCheck/green.css" rel="stylesheet" />
+    <link href="~/Content/summernote.css" rel="stylesheet" />   
+    <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+   
+    <link href="~/Content/plugins/gallery/darkbox.css" rel="stylesheet" />
+   
+</head>
+<body class="hold-transition sidebar-mini  skin-green-light">
+    <input type="hidden" id="success" value="@TempData["success"]" />
+    <input type="hidden" id="info" value="@TempData["info"]" />
+    <input type="hidden" id="warning" value="@TempData["warning"]" />
+    <input type="hidden" id="error" value="@TempData["error"]" />
+    <div class="wrapper">
+        <!-- header logo: style can be found in header.less -->
+        <header class="main-header">
+            <a href="/home/index" class="logo">
+                <!-- Add the class icon to your logo image or logo icon to add the margining -->
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>HO</b>ME</span>
+                <!-- Add the class icon to your logo image or logo icon to add the margining -->
+                <!-- logo for regular state and mobile devices -->
+                <i class="glyphicon glyphicon-home"></i>
+                <span class="logo-lg"><b>Home</b></span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                @if (user.Photo == null)
+                            {
+                                    <img src="~/Content/AdminContent/img/avatar3.png" class="user-image" alt="User Image" />
+                            }
+                            else
+                            {
+                                    <img src="data:image/png;base64,@Convert.ToBase64String(user.Photo)" class="user-image" alt="User Image" />
+                            }
+                                <span class="hidden-xs">@Session["Name"]</span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                @{
+
+
+                                DateTime regdate = user.RegDate.Value;
+
+                                }
+                                <li class="user-header bg-light-blue">
+                                    @if (user.Photo == null)
+                                {
+                                        <img src="~/Content/AdminContent/img/avatar3.png" class=" img-circle" alt="User Image" />
+                                }
+                                else
+                                {
+                                        <img src="data:image/png;base64,@Convert.ToBase64String(user.Photo)" class=" img-circle" alt="User Image" />
+                                }   <p>
+                                        @if (Session["Name"] == null)
+                                    {
+                                            <span>Jon Doe</span>
+                                    }
+                                    else
+                                    {  @Session["Name"] <span> -Ihealth Subscriber</span>
+                                            <small>Member since @regdate.ToString("dd-MMM-yyy")</small> }
+
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                @*<li class="user-body">
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Followers</a>
+                                        </div>
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Sales</a>
+                                        </div>
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Friends</a>
+                                        </div>
+                                    </li>*@
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="/profile/Profiles/?ids=@EncryptId" class="btn btn-default btn-flat">Profile</a>
+                                    </div>
+                                    <form action="/Account/Logoff" method="post" id="formLogoff">
+                                        @Html.AntiForgeryToken()
+                                        <div class="pull-right">
+                                            <a href="javascript:document.getElementById('formLogoff').submit()" class="btn btn-default btn-flat">Sign out</a>
+                                        </div>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        @if (user.Photo == null)
+                    {
+                            <img src="~/Content/AdminContent/img/avatar3.png" class=" img-circle" alt="User Image" />
+                    }
+                    else
+                    {
+                            <img src="data:image/png;base64,@Convert.ToBase64String(user.Photo)" class=" img-circle" alt="User Image" />
+                    }
+                    </div>
+                    <div class="pull-left info">
+                        <p>@Session["Name"]</p>
+
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                </div>
+                
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <ul class="sidebar-menu">
+                    <li class="active">
+                        <a href="/users/Userpanel">
+                            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        @*<a href="/admin/newusers/id?id=1">click</a>*@
+                        <a href="/Business/Create_Biz">
+                            <i class="glyphicon glyphicon-registration-mark"></i> <span>List a Service</span>
+                        </a>
+                    </li>
+                    @*<li class="">
+                        <a href="/Products/Register_product">
+                            <i class="glyphicon glyphicon-apple"></i>
+                            <span>Register A Product</span>
+                        </a>
+
+                    </li>*@
+                    <li>
+                        <a href="/Business/MyBusiness/?Id=@UserID">
+                            <i class="glyphicon glyphicon-briefcase"></i>
+                            <span>My Service(s)</span>
+                        </a>
+                    </li>
+                    @*<li>
+                        <a href="/Products/myProducts/?Id=@UserID">
+                            <i class="glyphicon glyphicon-gift"></i>
+                            <span>My Product(s)</span>
+                        </a>
+                    </li>*@
+                    <li>
+                        <a  href="/Users/UgradeForm/?ids=@EncryptId">
+                            <i class="glyphicon glyphicon-transfer"></i>
+                            <span>Upgrade to ING</span>
+                        </a>
+                    </li>
+                    @*<li class="">
+
+                        <a href="/users/Direct_Members/?dm=@EncryptId">
+                            <i class="fa fa-users"></i>
+                            <span>Downlines Tracker</span>
+                        </a>
+
+                    </li>
+                    <li class="">
+
+                        <a href="#">
+                            <i class="fa fa-building-o"></i>
+                            <span>Claim Bonus</span>
+                        </a>
+
+                    </li>*@
+                    @if (user.Health_Service_Provider == "Yes")
+                    {
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-book"></i><i class="fa fa-angle-left pull-right"></i>
+                                <span>Blog Management</span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li>
+                                    <a href="/blog/create">
+                                        <i class="fa fa-user"></i>
+                                        <span>Add New Post</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/blog/my_blog_posts/?post_by_id=@UserID">
+                                        <i class="fa fa-user"></i>
+                                        <span>Blog Post</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/blog/my_blog_post_comments">
+                                        <i class="glyphicon glyphicon-lock"></i>
+                                        <span>Blog Comments</span>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </li>
+                    }                    
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-user"></i><i class="fa fa-angle-left pull-right"></i>
+                            <span>My Account</span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="/profile/Profiles/?ids=@EncryptId">
+                                    <i class="fa fa-user"></i>
+                                    <span>View Profile</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Account/Changepassword/?ids=@EncryptId">
+                                    <i class="glyphicon glyphicon-lock"></i>
+                                    <span>Change Password</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </li>
+
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-envelope"></i><i class="fa fa-angle-left pull-right"></i>
+                            Newsletter
+                        </a>
+                        <ul class="treeview-menu">
+                            @if (user.newsletterStatus == 0)
+                            {
+                                <li>
+                                    <a href="/home/subnewsletter/?sbn=@UserID">
+                                        <i class="glyphicon glyphicon-new-window"></i>
+                                        <span>Subscribe to Newsletter</span>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="/home/unsubnewsletter/?sbn=@UserID">
+                                        <i class="glyphicon glyphicon-new-window"></i>
+                                        <span>Unsubscribe to Newsletter</span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="/support/helpdesk">
+                            <i class="glyphicon glyphicon-question-sign"></i>
+                            <span>Help Desk</span>
+                        </a>
+                    </li>
+                    <li>
+                        <form action="/Account/Logoff" method="post" id="formLogoff">
+                            @Html.AntiForgeryToken()
+
+                            <a href="javascript:document.getElementById('formLogoff').submit()" class="">
+                                &nbsp;&nbsp;&nbsp;&nbsp; <i class="glyphicon glyphicon-lock"></i>
+                                &nbsp;&nbsp;<b>Sign out</b>
+                            </a>
+                        </form>
+                    </li>
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <div class="content-wrapper">           
+            <section class="content">
+                @RenderBody()
+            </section>
+        </div>
+    </div>
+
+    <script src="~/Scripts/AdminScripts/js/jQuery-2.2.0.min.js"></script>
+    <script src="~/Scripts/AdminScripts/js/jquery-ui.min.js"></script>
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+    </script>
+    <script src="~/Scripts/AdminScripts/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/Plugins/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('#success').val()) {
+                displayMessage($('#success').val(), 'success');
+            }
+            if ($('#info').val()) {
+                displayMessage($('#info').val(), 'info');
+            }
+            if ($('#warning').val()) {
+                displayMessage($('#warning').val(), 'warning');
+            }
+            if ($('#error').val()) {
+                displayMessage($('#error').val(), 'error');
+            }
+        });
+        var displayMessage = function (message, msgType) {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "onClick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "8000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+
+            toastr[msgType](message);
+        };
+
+    </script>
+    @RenderSection("scripts", false)
+   
+
+
+    <script src="~/Scripts/AdminScripts/js/AdminLTE/app.min.js" type="text/javascript"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="~/Scripts/AdminScripts/js/AdminLTE/dashboard.js" type="text/javascript"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/Scripts/AdminScripts/js/AdminLTE/demo.js" type="text/javascript"></script>
+    <script src="~/Scripts/plugins/toastr.min.js"></script>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWXJ0W9-xiSG7ZYkn3vFnUp0SihXJXdZA&v=3.exp&libraries=places&region=NG">
+    </script>
+
+   @* <script src="~/Scripts/CustomScript/gmapcust.js"></script>*@
+    <script src="~/Scripts/AdminScripts/adminNotScripts.js" type="text/javascript"></script>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/57f9387c8bab9a1c1136a22a/default';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
+</body>
+
+</html>

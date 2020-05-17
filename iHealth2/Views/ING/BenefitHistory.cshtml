@@ -1,0 +1,104 @@
+﻿@model IEnumerable<iHealth2.Models.BenefitClaimersTb>
+
+@{
+    ViewBag.Title = "BenefitHistory";
+    Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+    char x = (char)8358;
+}
+
+
+<div class="panel panel-default">
+    <div class="panel-body">
+<table id="table">
+    <thead>
+        <tr>
+            <th>
+                SN
+            </th>
+            <th>
+                BENEFIT ID
+            </th>
+            
+        <th>
+            BENEFIT(S)
+        </th>
+            <th>
+                STATUS
+            </th>
+            <th>
+                REQUESTED DATE
+            </th>
+             <th>
+                PROCESSED DATE
+            </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int counter = 0;
+       foreach(var item in Model){
+           counter++;
+              <tr>
+                  <td>
+                      <span>@counter</span>
+                  </td>
+                  <td>
+                      @item.ProcessingId
+                  </td>
+                  <td>
+                                   <div style="width:auto">
+                                                @if (item.BenefitCategory == "Cash")
+                                                {
+                                                   <span>@x @string.Format("{0:n0}", item.totalCashBenefits)</span>
+
+                                                }
+                                                   else
+                                                   {
+                                                       @item.HealthBenefits
+                                                                                   }
+
+                                            </div>
+
+                  </td>
+                  <td>
+                      @item.BenefitProcessStatus
+                  </td>
+                  <td>
+                      @{var bAdt = Convert.ToDateTime(item.B_applicationDate).Date.ToString("dd MMM, yyy");}
+                      @bAdt
+                  </td>
+                  <td>
+                      @{var sdt = Convert.ToDateTime(item.ProcessedDate).Date.ToString("dd MMM, yyy");}
+                      @sdt
+                  </td>
+              </tr>
+       }
+     }
+    </tbody>
+</table>
+    </div>
+</div>
+@section scripts{
+<script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+<script>
+    $('#table').bootstrapTable({
+
+        striped: true,
+        // cardView: true,
+        pagination: true,
+        pageSize: 15,
+        pageList: [15, 30, 50, 100, 200],
+        smartDisplay: false,
+        showToggle: false,
+        search: true,
+        showColumns: true,
+        showRefresh: true,
+        //    border : true
+        //align: 'center',
+        //valign: 'bottom'
+
+    });
+</script>
+
+}

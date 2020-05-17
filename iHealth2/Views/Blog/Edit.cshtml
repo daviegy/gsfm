@@ -1,0 +1,228 @@
+﻿@model iHealth2.Models.Edit_blog_post_viewModel
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@using iHealth2.Models;
+@{
+    ViewBag.Title = "Edit";
+  
+    ApplicationDbContext db = new ApplicationDbContext();
+    string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+    var user = db.Users.Find(User.Identity.GetUserId());
+    String UserID = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(user.Id, s);
+    UserID = UserID.Replace("/", "$25");
+    UserID = UserID.Replace("+", "$24");
+    switch (user.UserType)
+    {
+        case "BusinessUser":
+            Layout = "~/Views/Shared/_UserPanelLayout.cshtml";
+            break;
+        case "INISubcriber":
+            Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+            break;
+        case "AD":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            break;
+        case "SA":
+            Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+            break;
+
+    }
+}
+
+<section class="content-header">
+    <h1>
+        Dashboard
+        <small>Add New Post</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active"><a href="/user/Userpanel">Dashboard</a></li>
+    </ol>
+</section>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="span12">
+            <form enctype="multipart/form-data" action="/blog/edit" method="post">
+                @Html.AntiForgeryToken() @Html.HiddenFor(m => m.Id)
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>Edit Post
+                            <a href="/blog/my_blog_posts/?post_by_id= @UserID" class="btn btn-danger pull-right">View Post List</a>
+                        </h4>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Blog Post
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <b> <span class="text-danger">*</span></b> @Html.LabelFor(model => model.post_Title, htmlAttributes: new { @class = "control-label" })
+                                    &nbsp; <img src="~/Content/images/helpicon.png" title="This is the title of the post" />
+                                    <div class="controls">
+                                        @Html.EditorFor(model => model.post_Title, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.post_Title, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <b><span class="text-danger">*</span></b>  @Html.LabelFor(model => model.short_description, htmlAttributes: new { @class = "control-label" })
+                                    &nbsp; <img src="~/Content/images/helpicon.png" title="Brief overview of the blog post. If specify, then it will be used instead of the full body on the main blog page. Html is supported." />
+                                    <div class="controls">
+                                        <textarea required class="form-control" name="short_description" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px;text-align:left">
+                                            @Model.short_description
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <b><span class="text-danger">*</span></b> @Html.LabelFor(model => model.post_content, htmlAttributes: new { @class = "control-label " })
+                                    &nbsp; <img src="~/Content/images/helpicon.png" title="This is the body of the post" />
+                                    <div class="controls">
+                                        <textarea id="Message" name="post_content" placeholder="" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required>
+                                            @Model.post_content
+                                        </textarea>
+                                    </div>
+                                </div>
+                                @*<div class="form-group">
+                                    @Html.LabelFor(model => model.post_tags, htmlAttributes: new { @class = "control-label " })
+                                    &nbsp; <img src="~/Content/images/helpicon.png" title="Tags are keyword that this blog post can also be identified by. Enter a comma separated list of tags to be associated with this blog post. " />
+                                    <div class="controls">
+                                        @Html.EditorFor(model => model.post_tags, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.post_tags, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+
+                                <div class="form-group">
+                                    <div class="controls">
+                                        <b>Featured Image</b> <span class="text-danger">Maximum Image Size is 2000kb(i.e 2MB)</span>
+                                        &nbsp; <img src="~/Content/images/helpicon.png" title="This is the Main image that is displayed when this blog post is published." />
+                                        <input id="logo" name="Feature_img" type="file" class="file-loading" accept="image/*">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.video_url, htmlAttributes: new { @class = "control-label" })
+                                    &nbsp; <img src="~/Content/images/helpicon.png" title="If any, add url to video for this blog post. You can also make this video the cover image for the blog post by checking the box below." />
+                                    <br /><b class="text-success">Note: Only YouTube embeded url is supported <em>( Example: https://www.youtube.com/embed/JI4GF-jQO5w )</em></b>
+                                    <div class="controls">
+                                        @Html.EditorFor(model => model.video_url, new { htmlAttributes = new { @class = "form-control" } })
+                                        <span class="text-danger"> @ViewBag.videoerror</span>
+                                        <br />
+                                        <div class="checkbox">                                          
+                                                <label class="text-danger"><input type="checkbox" name="chkVideoUrlAsFeatureImg" id="chkVideoUrlAsFeatureImg" checked="@Model.use_video_as_cover_img">&nbsp;<b style="font-size:larger"> Use video has cover image?</b></label>                                        
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.post_url, htmlAttributes: new { @class = "control-label" })
+                                    &nbsp; <img src="~/Content/images/helpicon.png" title="create a search engine friendly page name e.g.'drinking-water-is-good' to make the page URL 'http://ihealthgsfm.com/blog/drinking-water-is-good'. Leave empty to generate automatically based on the title of the post." />
+                                    <br /><b class="text-danger"><em>http://ihealthgsfm/blog/post_details/@Model.post_url</em></b>
+                                    <div class="controls">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <span class="btn btn-default"> http://ihealthgsfm.com/blog/ </span>
+                                            </div>
+                                            @Html.EditorFor(model => model.post_url, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.post_url, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Publish Date</label>  &nbsp; <img src="~/Content/images/helpicon.png" title="Set Publishing Date. But you can leave it empty while the system generate it automatically" />
+                                    <div class="controls">
+                                        @{var pdt = string.Concat(ViewBag.LastPublishedDate, Convert.ToDateTime(Model.publish_date).ToString("dd-MMM-yyy"));}
+                                        <b class="text-danger">@pdt</b><br />
+                                        <input type="text" name="publish_date" id="publish_date" class="form-control" value="@Model.publish_date" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    SEO (Search Engine Optimization)
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.meta_description, htmlAttributes: new { @class = "control-label" })
+                                    &nbsp; <img src="~/Content/images/helpicon.png" title="Meta description to be added to the blog post header." />
+                                    <div class="controls">
+                                        <textarea class="form-control" name="meta_description" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px;">
+                                            @Model.meta_description
+                                        </textarea>
+                                        @Html.ValidationMessageFor(model => model.meta_description, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.meta_keyword, htmlAttributes: new { @class = "control-label" })
+                                    &nbsp; <img src="~/Content/images/helpicon.png" title="Meta keyword to be added to the blog post header." />
+                                    <div class="controls">
+                                        @Html.EditorFor(model => model.meta_keyword, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.meta_keyword, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.meta_title, htmlAttributes: new { @class = "control-label" })
+                                    &nbsp; <img src="~/Content/images/helpicon.png" title="Override the page title. The default is the title of the blog post." />
+                                    <div class="controls">
+                                        @Html.EditorFor(model => model.meta_title, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.meta_title, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="chkAccept" id="chkAccept" checked="@Model.allow_comment">&nbsp; <b>Uncheck to disallow comments on your post</b></label>
+                        </div>
+                        <p>
+                            <input type="submit" value="Publish" class="btn btn-warning col-md-1" />
+                            &nbsp;&nbsp;  <a href="/blog/my_blog_posts/?post_by_id= @UserID" class="btn btn-danger pull-right">View Post List</a>
+                        </p>
+                    </div>
+                </div>
+            </form>
+
+
+
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+    <script src="~/Scripts/Plugins/fileinput.js"></script>
+@*    <script src="~/Scripts/Plugins/froala_editor.pkgd.min.js"></script>*@
+    <script src="~/Scripts/Plugins/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/Plugins/summernote.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#Message').summernote();
+    });
+</script>
+    <script>
+        $(document).ready(function () {
+            //Enable iCheck plugin for checkboxes
+            //iCheck for checkbox and radio inputs
+            $('#chkAccept, #chkVideoUrlAsFeatureImg').iCheck({
+                checkboxClass: 'icheckbox_flat-blue',
+                radioClass: 'iradio_flat-blue'
+            });
+            $('#publish_date').datepicker({
+            });
+        });
+        $("#logo").fileinput({
+            uploadUrl: "/",
+            autoReplace: true,
+            maxFileCount: 1,
+            allowedFileExtensions: ["jpg", "png", "gif"],
+            removeIcon: '<i class="icon icon icon-trash text-danger"></i>',
+            removeClass: 'btn  btn-danger',
+            removeTitle: 'Remove file',
+            showCaption: false,
+            showUpload: false,
+        });
+    </script>
+}

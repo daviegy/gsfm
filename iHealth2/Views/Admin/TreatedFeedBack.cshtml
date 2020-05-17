@@ -1,0 +1,97 @@
+﻿@model IEnumerable<iHealth2.Models.FeedBack>
+@{
+    ViewBag.Title = "Treated FeedBack";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+    <h2>Treated FeedBack</h2>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>
+                            @Html.DisplayName("Sender Name")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Sender Email")
+                        </th>
+                        <th>
+                            <span> Phone Number</span>
+                        </th>
+                        <th>
+                            @Html.DisplayName("Message")
+                        </th>
+                       <th>
+                           Replied Message
+                       </th>
+                        <th>
+                            @Html.DisplayName("Reply Date")
+                        </th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @{int count = 1;
+                   
+                   foreach (var item in Model)
+                    {
+                       int i = count++;
+                        <tr>
+                           <td>
+                            @i  
+                           </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FRName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FREmail)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FRPhone)
+                            </td>
+                            <td>
+                                <p style="text-wrap:normal; ">@Html.Raw(Server.HtmlDecode(item.FBMessage))</p>
+
+                            </td>
+                            <td>
+                                @Html.Raw(Server.HtmlDecode(item.RepliedMsg))
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ReplyDate)
+                            </td>
+                        </tr>
+
+
+                    }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script>
+    $('#table').bootstrapTable({
+
+        striped: true,
+        // cardView: true,
+        pagination: true,
+        pageSize: 10,
+        pageList: [10, 25, 50, 100, 200],
+        smartDisplay: false,
+        showToggle: true,
+        search: true,
+        showColumns: true,
+        showRefresh: true,
+        //    border : true
+        //align: 'center',
+        //valign: 'bottom'
+
+    });
+    </script>
+    }

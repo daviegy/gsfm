@@ -1,0 +1,146 @@
+﻿@model IEnumerable<iHealth2.Models.BenefitClaimersTb>
+@using iHealth2.CustomClasses;
+@using iHealth2.Models
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+
+
+@{
+    ViewBag.Title = "SettledClaims";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    char x = (char)8358;
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    var pro = db.Profession.ToList();
+    switch (user.UserType)
+    {
+
+        case "AD":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            break;
+        case "SA":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+           // Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+            break;
+
+    }
+
+}
+
+
+<div class="panel panel-default">
+    <div class="panel-body">           
+            <table id="tb">
+                <thead>
+                    <tr>
+                        <th>
+                          
+                        </th>
+                        <th>Processing ID</th>
+                        <th>Subscriber's ID</th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Downline size
+                        </th>
+                        <th>
+                            Benefit Category
+                        </th>
+                        <th>
+                            Benefit
+                        </th>
+                       
+                        <th>
+                            Benefit Application Date
+                        </th>
+                        <th>Settled Date</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                  
+                    @foreach (var item in Model)
+                    {
+                      
+                        <tr>
+                            @{
+                        string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+                        String EncryptId = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(item.ID.ToString(), s);
+                        EncryptId = EncryptId.Replace("/", "$25");
+                        EncryptId = EncryptId.Replace("+", "$24");
+                            }
+                            <td>
+                                <a href="/Admin/generateSettledRPT/?bpd=@EncryptId" class="btn btn-primary">Settled Report</a>
+                              </td>
+                            <td class="text-danger"><b>@item.ProcessingId</b></td>
+                            <td>@item.SubRefCode</td>
+                            <td>@item.Name</td>
+                            <td>@item.DownlineSize</td>
+                            <td>@item.BenefitCategory</td>
+                           
+                            <td>
+                                <div style="width:auto">
+                                    @if (item.BenefitCategory == "Cash")
+                                    {
+                                        @*if (item.Meet_promo_target == true)
+                                        {
+                                            double bonus = item.CashBenefits + (item.CashBenefits * 0.1);
+                                            <span>@x@bonus</span>
+                                        }
+                                        else
+                                        {*@
+                                            <span>@x @string.Format("{0:n0}", item.totalCashBenefits)</span>
+                                        //}
+
+                                    }
+                                            else
+                                            {
+                                                @item.HealthBenefits
+                                            }
+
+                                </div>
+
+
+
+
+                            </td>
+                          
+                            <td>
+                                @{var bAdt = Convert.ToDateTime(item.B_applicationDate).Date.ToString("dd MMM, yyy");}
+                                @bAdt
+                            </td>
+                            <td>
+                                @{var sdt = Convert.ToDateTime(item.ProcessedDate).Date.ToString("dd MMM, yyy");}
+                                @sdt
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+     
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script>
+    $('#tb').bootstrapTable({
+
+        striped: true,
+        // cardView: true,
+        pagination: true,
+        pageSize: 15,
+        pageList: [15, 30, 50, 100, 200],
+        smartDisplay: false,
+        showToggle: false,
+        search: true,
+        showColumns: true,
+        showRefresh: true,
+        //    border : true
+        //align: 'center',
+        //valign: 'bottom'
+
+    });
+    </script>
+}

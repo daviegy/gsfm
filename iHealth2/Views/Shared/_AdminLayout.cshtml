@@ -1,0 +1,1087 @@
+﻿@if (Session["Name"] == null)
+{
+    Response.Redirect("/Account/login");
+}
+
+
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@using iHealth2.Models;
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+    String EncryptId = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(user.UserName, s);
+    EncryptId = EncryptId.Replace("/", "$25");
+    EncryptId = EncryptId.Replace("+", "$24");
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <title>Admin|@ViewBag.Title</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <!-- bootstrap 3.0.2 -->
+    <link rel="Shortcut Icon" href="/iHealthIcon.ico" type="Image/x-icon" />
+    <link href="~/Content/AdminContent/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/datepicker3.css" rel="stylesheet" />
+    <!-- font Awesome -->
+    <link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+    @*<link href="~/Content/AdminContent/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+             Ionicons
+        <link href="~/Content/AdminContent/css/ionicons.min.css" rel="stylesheet" type="text/css" />*@
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link href="~/Content/AdminContent/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/AdminContent/css/_all-skins.min.css" rel="stylesheet" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="~/Content/dpLoading-2.x.css" rel="stylesheet" />
+    <link href="~/Content/dpLoading-2.x-skin-grey.css" rel="stylesheet" />
+    @* <link href="~/Content/AdminContent/css/datatables/dataTables.bootstrap.css" rel="stylesheet" />*@
+
+
+
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/sweetalert.min.css" rel="stylesheet" />
+    <link href="~/Content/AdminContent/css/iCheck/blue.css" rel="stylesheet" />
+
+    <link href="~/Content/JqueryPrintCss/core.css" rel="stylesheet" media="screen" type="text/css" />
+    <link href="~/Content/JqueryPrintCss/core.css" rel="stylesheet" media="print" type="text/css" />
+    <link href="~/Content/summernote.css" rel="stylesheet" />
+    @*<base href="/" />*@
+
+</head>
+<body class=" hold-transition skin-green sidebar-mini">
+    <input type="hidden" id="success" value="@TempData["success"]" />
+    <input type="hidden" id="info" value="@TempData["info"]" />
+    <input type="hidden" id="warning" value="@TempData["warning"]" />
+    <input type="hidden" id="error" value="@TempData["error"]" />
+    <div class="wrapper">
+        <!-- header logo: style can be found in header.less -->
+        <header class="main-header">
+            <a href="/Admin" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>A</b>DM</span>
+                <!-- Add the class icon to your logo image or logo icon to add the margining -->
+                <!-- logo for regular state and mobile devices -->
+                @if (User.IsInRole("SuperAdmin"))
+                {
+                    <span class="logo-lg"><b>Super Admin</b></span>
+                }
+                else
+                {
+                    <span class="logo-lg"><b>Admin</b></span>
+                }
+               
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- Notifications: Newly Register User -->
+                        <li class="dropdown notifications-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-users"></i>
+                                <div id="userSize" class="label label-warning">
+                                    @*Total of Number of New users/subsciber is displayed here using ajx*@
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">
+                                    <div id="userSizeHeader"></div>
+                                </li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        <li id="NewBuserNotif">
+
+                                        </li>
+                                        <li id="NewINGuserNotif">
+
+                                        </li>
+                                        <li id="NewPremuserNotif">
+
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <!-- Notifications: Newly Register Products/Companies  -->
+                        <li class="dropdown notifications-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-building-o"></i>
+                                <span class="label label-warning" id="getNewCompanyProductSize">@*Total Number of Products/Company*@</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header" id="getNewCompanyProductSizeHeader">/li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        <li id="getNewProducts">
+
+                                        </li>
+                                        <li id="getNewCompany">
+
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <!-- Notifications: Fresh benefits Claims -->
+                        <li class="dropdown notifications-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="glyphicon glyphicon-gift"></i>
+                                <span class="label label-warning" id="getFreshClaimSize"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header" id="getFreshClaimSizeHeader"></li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        <li id="getFreshClaims">
+
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <!-- Messages: style can be found in dropdown.less-->
+                        <li class="dropdown messages-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-envelope"></i>
+                                <span class="label label-success" id="getFeedbackSize"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header" id="getFeedbackSizeHeader"></li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        <li id="getContactus">
+                                            <!-- start message -->
+                                        </li><!-- end message -->
+                                        <li id="getReportFraud">
+
+                                        </li>
+                                        <li id="getSuprtReqst"></li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                @if (user.Photo == null)
+                                {
+                                    <img src="~/Content/AdminContent/img/avatar3.png" class="user-image" alt="User Image" />
+                                }
+                                else
+                                {
+                                    <img src="data:image/png;base64,@Convert.ToBase64String(user.Photo)" class="user-image" alt="User Image" />
+                                }
+                                <span class="hidden-xs">@Session["Name"]</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                @{
+                                    DateTime regdate = user.RegDate.Value;
+                                }
+                                <li class="user-header bg-light-blue">
+                                    @if (user.Photo == null)
+                                    {
+                                        <img src="~/Content/AdminContent/img/avatar3.png" class=" img-circle" alt="User Image" />
+                                    }
+                                    else
+                                    {
+                                        <img src="data:image/png;base64,@Convert.ToBase64String(user.Photo)" class=" img-circle" alt="User Image" />
+                                    }<p>
+                                        @if (Session["Name"] == null)
+                                        {
+                                            <span>Jon Doe</span>
+                                        }
+                                        else
+                                        {  @Session["Name"] <span> - Adminstrator</span>
+                                            <small>Member since @regdate.ToString("dd-MMM-yyy")</small> }
+
+                                    </p>
+                                </li>
+
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="/profile/Profiles/?ids=@EncryptId" class="btn btn-default btn-flat">Profile</a>
+                                    </div>
+                                    <form action="/Account/Logoff" method="post" id="formLogoff">
+                                        @Html.AntiForgeryToken()
+                                        <div class="pull-right">
+                                            <a href="javascript:document.getElementById('formLogoff').submit()" class="btn btn-default btn-flat">Sign out</a>
+                                        </div>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- Control Sidebar Toggle Button -->
+                        <li>
+                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        @if (user.Photo == null)
+                        {
+                            <img src="~/Content/AdminContent/img/avatar3.png" class=" img-circle" alt="User Image" />
+                        }
+                        else
+                        {
+                            <img src="data:image/png;base64,@Convert.ToBase64String(user.Photo)" class=" img-circle" alt="User Image" />
+                        }
+                    </div>
+                    <div class="pull-left info">
+                        <p>@Session["Name"]</p>
+
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                </div>
+
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <ul class="sidebar-menu">
+                    <li class="header">MAIN NAVIGATION</li>
+                    <li class="active">
+                        <a href="/admin">
+                            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-users"></i>
+                            <i class="fa fa-angle-left pull-right"></i>
+                            <span>New Registered Users</span>
+                            <small class="badge pull-right bg-green" id="userSize1">
+
+                            </small>
+
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="/admin/NewBUsers">
+                                    <i class="fa fa-user-md"></i> <span>New Business Users</span>
+                                    <small id="NewBuserNotif1" class="badge pull-right bg-green">
+
+                                    </small>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Admin/NewINIsubsciber">
+                                    <i class="fa fa-user-md"></i> <span>New ING Subscriber </span>
+                                    <small id="NewINGuserNotif1" class="badge pull-right bg-green">
+
+                                    </small>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Premium/NewPremiumUser">
+                                    <i class="fa fa-user-md"></i> <span>New Premium User </span>
+                                    <small id="NewPremuserNotif1" class="badge pull-right bg-green">
+
+                                    </small>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--ING manager-->
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-tasks"></i>
+                            <i class="fa fa-angle-left pull-right"></i>
+                            <span>ING Management </span>
+                            <small id="getFreshClaims1" class="badge pull-right bg-aqua-gradient">
+
+                            </small>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="/Admin/PaidSubscriber">
+                                    <i class="fa fa-user-md"></i> <span>Active ING Subcribers </span>
+                                    @{
+
+                                        var paidSub = db.Users.Where(u => u.INISubcriberExtraDetails.PaymentStatus == "Paid" && u.UserType == "INISubcriber").Count();
+                                        if (paidSub > 0)
+                                        {
+                                            <small class="badge pull-right bg-red">
+                                                @paidSub
+                                            </small>
+                                        }
+                                    }
+
+
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Admin/NoPaymentSubscriber">
+                                    <i class="fa fa-user"></i> <span>Passive ING Subcribers </span>
+                                    @{
+
+                                        var nonPaymentsub = db.Users.Where(u => u.INISubcriberExtraDetails.PaymentStatus == "Pending" && u.UserType == "INISubcriber").Count();
+                                        if (nonPaymentsub > 0)
+                                        {
+                                            <small class="badge pull-right bg-red">
+                                                @nonPaymentsub
+                                            </small>
+                                        }
+                                    }
+
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/ing/Service_Booster_List">
+                                    <i class="glyphicon glyphicon-bold"></i>
+                                     Service Boosters
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Admin/FreshBenefitClaims">
+                                    <i class="glyphicon glyphicon-magnet"></i>
+                                    <span>Fresh Benefit Claims</span>
+                                    <small id="getFreshClaims2" class="badge pull-right bg-aqua-active">
+
+                                    </small>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Admin/BProcesedClaims">
+                                    <i class="glyphicon glyphicon-certificate"></i>
+                                    <span>Being Processed Claims</span>
+                                    @{
+                                        var BProcessed = db.BenefitClaimersTb.Where(b => b.BenefitProcessStatus == "Being Processed").Count();
+                                        if (BProcessed > 0)
+                                        {
+                                            <small class="badge pull-right bg-olive-active">
+
+                                                @BProcessed
+                                            </small>
+                                        }
+                                    }
+
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="/Admin/SettledClaims">
+                                    <i class="glyphicon glyphicon-gift"></i>
+                                    <span>Settled Claims</span>
+                                    @{
+                                        var sClaims = db.BenefitClaimersTb.Where(b => b.BenefitProcessStatus == "Settled").Count();
+                                        if (sClaims > 0)
+                                        {
+                                            <small class="badge pull-right bg-maroon-active">
+
+                                                @sClaims
+                                            </small>
+                                        }
+                                    }
+
+                                </a>
+
+                            </li>
+
+
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-child"></i>
+                            <i class="fa fa-angle-left pull-right"></i>
+                            <span>Premium User Panel </span>
+
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="/premium/pendingPaymentPremiumUser">
+                                    <i class="fa fa-user-md"></i> <span>Pending payment list </span>
+                                    @{
+
+                                        var passivePuser = db.premium_user.Where(u => u.PaymentStatus == "Pending").Count();
+                                        if (passivePuser > 0)
+                                        {
+                                            <small class="badge pull-right bg-red">
+                                                @passivePuser
+                                            </small>
+                                        }
+                                    }
+
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="/premium/confirmedPaymentPremiumUsers">
+                                    <i class="fa fa-user-md"></i> <span>Confirmed payment list </span>
+                                    @{
+
+                                        var activePuser = db.premium_user.Where(u => u.PaymentStatus == "Paid").Count();
+                                        if (activePuser > 0)
+                                        {
+                                            <small class="badge pull-right bg-red">
+                                                @activePuser
+                                            </small>
+                                        }
+                                    }
+
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    @*<li class="treeview">
+                        <a href="#">
+                        <i class="glyphicon glyphicon-bold"></i>
+                            <i class="fa fa-angle-left pull-right"></i>
+                            <span>Service Booster</span></a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="/ing/Service_Booster_List">
+                                    List of Service Boosters
+                                </a>
+                            </li>
+                   
+                        </ul>
+                    </li>*@
+
+                    <!--
+                        TODO: COMPANY MANAGEMENT MODULE
+
+                        4. TRASH COMPANY UPON CERTAIN CONDITION.
+                                       -->
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-building-o"></i>
+                            <span>Manage Business</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                            <small id="getNewCompany1" class="badge pull-right bg-red-active"></small>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="/Company/NewlyRegBusiness"><i class="fa fa-angle-double-right"></i> New Businesses <small id="getNewCompany2" class="badge pull-right bg-red"></small>  </a></li>
+                            <li>
+                                <a href="/Company/ApprovedComp">
+                                    <i class="fa fa-angle-double-right"></i> Approved Businesses@{var appcomcount = db.BusinessInfoes.Where(b => b.ApprovedStatus == "A" && b.NotifyStatus == 1 && b.VerifiedStatus == "NV").Count(); if (appcomcount > 0)
+                                    {<small class="badge pull-right bg-green">@appcomcount</small>}}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Company/VerifiedComp">
+                                    <i class="fa fa-angle-double-right"></i> Verified Businesses @{var vCompCount = db.BusinessInfoes.Where(b => b.ApprovedStatus == "A" && b.NotifyStatus == 1 && b.VerifiedStatus == "V").Count(); if (vCompCount > 0)
+                                    {<small class="badge pull-right bg-blue">@vCompCount</small>}}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Company/Recommended_Comp">
+                                    <i class="fa fa-angle-double-right"></i> Recommended Businesses @{var rCompCount = db.BusinessInfoes.Where(b => b.ApprovedStatus == "A" && b.NotifyStatus == 1 && b.VerifiedStatus == "V" && b.Recommended_Status == "R").Count(); if (vCompCount > 0)
+                                    {<small class="badge pull-right bg-blue">@rCompCount</small>}}
+                                </a>
+                            </li>
+                            @* <li><a href="#"><i class="fa fa-angle-double-right"></i> Trash Company</a></li>*@
+                            @*<li><a href="#"><i class="fa fa-angle-double-right"></i> Company Reviews</a></li>*@
+                        </ul>
+                    </li>
+
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-circle"></i>
+                            <span>Manage products</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                            <small id="getNewProducts1" class="badge pull-right bg-red-gradient">
+
+                            </small>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="/Products/Register_product"><i class="fa fa-angle-double-right"></i>Register Product</a></li>
+                            <li><a href="/Products/NewlyRegisteredProducts"><i class="fa fa-angle-double-right"></i> Newly Registered Product <small id="getNewProducts2" class="badge pull-right bg-red"> </small>  </a></li>
+                            <li>
+                                <a href="/Products/ApprovedProducts">
+                                    <i class="fa fa-angle-double-right"></i> Approved Products @{var appProductcomcount = db.ProductTb.Where(b => b.ApprovedStatus == "A" && b.NotifyStatus == 1 && b.VerifiedStatus == "NV").Count(); if (appProductcomcount > 0)
+                                    { <small class="badge pull-right bg-green">@appProductcomcount</small>}}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/products/VerifiedProduct">
+                                    <i class="fa fa-angle-double-right"></i> Verified Products @{var vProductCount = db.ProductTb.Where(b => b.ApprovedStatus == "A" && b.NotifyStatus == 1 && b.VerifiedStatus == "V").Count(); if (vProductCount > 0)
+                                    { <small class="badge pull-right bg-blue">@vProductCount</small>}}
+                                </a>
+                            </li>
+                            @* <li><a href="#"><i class="fa fa-angle-double-right"></i> Trash Products</a></li>*@
+                            @* <li><a href="#"><i class="fa fa-angle-double-right"></i> Products Reviews</a></li>*@
+                        </ul>
+                    </li>
+                    @*<li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-shopping-cart"></i> <span>Manage Store</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                                <small class="badge pull-right bg-gray"></small>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="treeview">
+                                    <a href="#">
+                                        <i class="fa fa-angle-double-right"></i>Product Category
+                                    </a>
+                                    <ul class="treeview-menu">
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-angle-double-right"></i>Create Category
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-angle-double-right"></i>View Category
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="/Support/View_Support_Request/?type=P">
+                                        <i class="fa fa-angle-double-right"></i>Processed Support Request
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>*@
+                    @*TODO: ENABLE NEWS SECTION*@
+                    @*<li class="treeview">
+                                <a href="#">
+                                    <i class="fa fa-edit"></i> <span>Manage News</span>
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="/LatestNews/Create_News"><i class="fa fa-angle-double-right"></i> Create News</a></li>
+                                    <li><a href="/LatestNews/ViewNewsbyAdmin"><i class="fa fa-angle-double-right"></i> View News</a></li>
+
+                                </ul>
+                        </li>*@
+
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-hospital-o"></i> <span>Manage Appointments</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="/Appointments/newapp">
+                                    <i class="fa fa-angle-double-right"></i>New Appointment
+                                    @{var newapp = db.AppBookingTb.Where(b => b.notifyStatus == 0).Count(); if (newapp > 0)
+                                    { <small class="badge pull-right bg-blue">@newapp</small>}}
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="/Appointments/pendingapp">
+                                    <i class="fa fa-angle-double-right"></i> Pending Appointments
+                                    @{var pendapp = db.AppBookingTb.Where(b => b.notifyStatus == 1 && b.ApprovedStatus == "pending").Count(); if (pendapp > 0)
+                                    {
+                                        <small class="badge pull-right bg-blue">@pendapp</small>
+
+                                    }}
+                                </a>
+                            </li>
+                            <li><a href="/Appointments/approvedapp"><i class="fa fa-angle-double-right"></i> Approved Appointments</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-envelope"></i> <span>Support Request</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                            <small class="badge pull-right bg-gray" id="getSuprtReqstSize1"></small>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="/Support/View_Support_Request/?type=F">
+                                    <i class="fa fa-angle-double-right"></i>Fresh Support Request
+                                    <small class="badge pull-right bg-yellow" id="getSuprtReqstSize2"></small>
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="/Support/View_Support_Request/?type=P">
+                                    <i class="fa fa-angle-double-right"></i>Processed Support Request
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-inbox"></i> <span>FeedBack</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                            <small class="badge pull-right bg-orange" id="getFeedbackSizeBadge"></small>
+                        </a>
+
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="/Admin/GetContactUs">
+                                    <i class="fa fa-angle-double-right"></i>Contact Us
+                                    <small class="badge pull-right bg-yellow" id="getContactus1"></small>
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="/Admin/GetFraudReport">
+                                    <i class="fa fa-angle-double-right"></i> Report Fraud
+                                    <small class="badge pull-right bg-red" id="getReportFraud1"></small>
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="/admin/TreatedFeedBack">
+                                    <i class="fa fa-angle-double-right"></i>
+                                    Treated Feedback @{ var tfb = db.Feedback.Where(f => f.FBStatus == "Treated");}
+                                    <small class="badge pull-right bg-blue">@tfb.Count()</small>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="glyphicon glyphicon-yen"></i> <span>Manage Drug Request</span>
+                            @{
+                                var UrgentDrug = db.urgentNeedforDrugsTb.Where(u => u.notifyStatus == 0).Count();
+                                if (UrgentDrug > 0)
+                                {
+                                    <small class="badge badge-important pull-right">
+
+                                        @UrgentDrug
+                                    </small>
+                                }
+                            }
+
+                        </a>
+
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="/Admin/urgentDrugRequest">
+                                    <i class="glyphicon glyphicon-yen"></i> <span>Urgent Drug Request</span>
+
+                                    <small class="badge badge-important pull-right">
+
+                                        @UrgentDrug
+                                    </small>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="/Admin/TreatedDrugRequest">
+                                    <i class="glyphicon glyphicon-xbt"></i> <span>Treated Drug Request</span>
+                                </a>
+
+                            </li>
+                        </ul>
+
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="glyphicon glyphicon-bookmark"></i> <span>Career Manager</span>
+                            @{var app = db.career.Where(r => r.notificationStatus == 0).Count();
+                            if (app > 0)
+                            {
+                                <small class="badge pull-right bg-light-blue">@app</small>
+                            }
+                            }
+
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="/careers/create_Job_Ads">
+                                    <i class="fa fa-angle-double-right"></i><span>Create Job Advert</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/careers/viewJobList">
+                                    <i class="fa fa-angle-double-right"></i><span>View Job List</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/careers/new_applicant">
+                                    <i class="fa fa-angle-double-right"></i><span>Fresh Applications</span>
+
+                                    @if (app > 0)
+                                    {
+                                        <small class="badge pull-right bg-light-blue">@app</small>
+                                    }
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/careers/ViewApplicant">
+                                    <i class="fa fa-angle-double-right"></i><span>View Applicant</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="">
+                        <a href="/transaction/all_transaction">
+                            <i class="glyphicon glyphicon-equalizer"></i> <span>Interswitch Transaction Log</span>
+                        </a>
+                    </li>
+                    @if (User.IsInRole("SuperAdmin"))
+                    {
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="glyphicon glyphicon-calendar"></i> <span>Manage Advert</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+
+                            <ul class="treeview-menu">
+                                <li>
+                                    <a href="/superadm/createAds">
+                                        <i class="fa fa-angle-double-right"></i>Create Ads
+                                    </a>
+
+                                </li>
+                                <li>
+                                    <a href="/superadm/activeads">
+                                        <i class="fa fa-angle-double-right"></i>Active Ads
+                                    </a>
+
+                                </li>
+                                <li>
+                                    <a href="/superadm/inactiveads">
+                                        <i class="fa fa-angle-double-right"></i>Inactive Ads
+                                    </a>
+
+                                </li>
+                                <li>
+                                    <a href="/superadm/viewadslist">
+                                        <i class="fa fa-angle-double-right"></i> Advert List
+                                    </a>
+
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-users"></i>
+                                <i class="fa fa-angle-left pull-right"></i>
+                                Manage Admins
+                            </a>
+                            <ul class="treeview-menu">
+                                <li>
+                                    <a href="/superadm/create">
+                                        <i class="fa fa-user"></i>
+                                        <span>Register New Admin</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/superAdm/viewAdmins">
+                                        <i class="fa fa-circle"></i>
+                                        <span>View Admins</span>
+
+
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </li>
+                    }
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-user"></i><i class="fa fa-angle-left pull-right"></i>
+                            <span>Profile Manager</span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a href="/profile/Profiles/?ids=@EncryptId">
+                                    <i class="fa fa-user"></i>
+                                    <span>View Profile</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Account/Changepassword/?ids=@EncryptId">
+                                    <i class="glyphicon glyphicon-lock"></i>
+                                    <span>Change Password</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </li>
+                    <li>
+                        <form action="/Account/Logoff" method="post" id="formLogoff">
+                            @Html.AntiForgeryToken()
+
+                            <a href="javascript:document.getElementById('formLogoff').submit()" class="">
+                                &nbsp;&nbsp;&nbsp;&nbsp; <i class="glyphicon glyphicon-lock"></i>
+                                &nbsp;&nbsp;<span>Sign out</span>
+                            </a>
+                        </form>
+                    </li>
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <div class="content-wrapper">
+            <section class="content-header">
+                <h1>
+                    Dashboard
+                    <small>Control panel</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="/home"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li class="active">Dashboard</li>
+                </ol>
+            </section>
+            <section class="content">
+                @RenderBody()
+            </section>
+        </div>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>@DateTime.UtcNow.Date.ToString("dd MMM, yyy")</b>
+            </div>
+            <strong>Copyright &copy; 2016 - @DateTime.UtcNow.Year <a href="#">iHealth Nigeria GSFM</a>.</strong> All rights
+            reserved.
+        </footer>
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Create the tabs -->
+            <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+                <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <!-- Home tab content -->
+                <div class="tab-pane" id="control-sidebar-home-tab">
+                    <h3 class="control-sidebar-heading">Recent Activity</h3>
+                    <ul class="control-sidebar-menu">
+                        <li>
+                            <a href="javascript::;">
+                                <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+                                    <p>Will be 23 on April 24th</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript::;">
+                                <i class="menu-icon fa fa-user bg-yellow"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
+                                    <p>New phone +1(800)555-1234</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript::;">
+                                <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
+                                    <p>nora@example.com</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript::;">
+                                <i class="menu-icon fa fa-file-code-o bg-green"></i>
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
+                                    <p>Execution time 5 seconds</p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.control-sidebar-menu -->
+                    <h3 class="control-sidebar-heading">Tasks Progress</h3>
+                    <ul class="control-sidebar-menu">
+                        <li>
+                            <a href="javascript::;">
+                                <h4 class="control-sidebar-subheading">
+                                    Custom Template Design
+                                    <span class="label label-danger pull-right">70%</span>
+                                </h4>
+                                <div class="progress progress-xxs">
+                                    <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript::;">
+                                <h4 class="control-sidebar-subheading">
+                                    Update Resume
+                                    <span class="label label-success pull-right">95%</span>
+                                </h4>
+                                <div class="progress progress-xxs">
+                                    <div class="progress-bar progress-bar-success" style="width: 95%"></div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript::;">
+                                <h4 class="control-sidebar-subheading">
+                                    Laravel Integration
+                                    <span class="label label-warning pull-right">50%</span>
+                                </h4>
+                                <div class="progress progress-xxs">
+                                    <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript::;">
+                                <h4 class="control-sidebar-subheading">
+                                    Back End Framework
+                                    <span class="label label-primary pull-right">68%</span>
+                                </h4>
+                                <div class="progress progress-xxs">
+                                    <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.control-sidebar-menu -->
+                </div>
+                <!-- /.tab-pane -->
+                <!-- Stats tab content -->
+                <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+                <!-- /.tab-pane -->
+                <!-- Settings tab content -->
+                <div class="tab-pane" id="control-sidebar-settings-tab">
+                    <form method="post">
+                        <h3 class="control-sidebar-heading">General Settings</h3>
+                        <div class="form-group">
+                            <label class="control-sidebar-subheading">
+                                Report panel usage
+                                <input type="checkbox" class="pull-right" checked>
+                            </label>
+                            <p>
+                                Some information about this general settings option
+                            </p>
+                        </div>
+                        <!-- /.form-group -->
+                        <div class="form-group">
+                            <label class="control-sidebar-subheading">
+                                Allow mail redirect
+                                <input type="checkbox" class="pull-right" checked>
+                            </label>
+                            <p>
+                                Other sets of options are available
+                            </p>
+                        </div>
+                        <!-- /.form-group -->
+                        <div class="form-group">
+                            <label class="control-sidebar-subheading">
+                                Expose author name in posts
+                                <input type="checkbox" class="pull-right" checked>
+                            </label>
+                            <p>
+                                Allow the user to show his name in blog posts
+                            </p>
+                        </div>
+                        <!-- /.form-group -->
+                        <h3 class="control-sidebar-heading">Chat Settings</h3>
+                        <div class="form-group">
+                            <label class="control-sidebar-subheading">
+                                Show me as online
+                                <input type="checkbox" class="pull-right" checked>
+                            </label>
+                        </div>
+                        <!-- /.form-group -->
+                        <div class="form-group">
+                            <label class="control-sidebar-subheading">
+                                Turn off notifications
+                                <input type="checkbox" class="pull-right">
+                            </label>
+                        </div>
+                        <!-- /.form-group -->
+                        <div class="form-group">
+                            <label class="control-sidebar-subheading">
+                                Delete chat history
+                                <a href="javascript::;" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+                            </label>
+                        </div>
+                        <!-- /.form-group -->
+                    </form>
+                </div>
+                <!-- /.tab-pane -->
+            </div>
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Add the sidebar's background. This div must be placed
+             immediately after the control sidebar -->
+        <div class="control-sidebar-bg"></div>
+
+
+
+        <script src="~/Scripts/AdminScripts/js/jQuery-2.2.0.min.js"></script>
+        <script src="~/Scripts/AdminScripts/js/jquery-ui.min.js"></script>
+        @* @RenderSection("scripts", false)*@
+        <script>
+            $.widget.bridge('uibutton', $.ui.button);
+        </script>
+        <script src="~/Scripts/AdminScripts/js/bootstrap.min.js"></script>
+
+        @RenderSection("scripts", false)
+        <script>
+            $(document).ready(function () {
+                if ($('#success').val()) {
+                    displayMessage($('#success').val(), 'success');
+                }
+                if ($('#info').val()) {
+                    displayMessage($('#info').val(), 'info');
+                }
+                if ($('#warning').val()) {
+                    displayMessage($('#warning').val(), 'warning');
+                }
+                if ($('#error').val()) {
+                    displayMessage($('#error').val(), 'error');
+                }
+            });
+            var displayMessage = function (message, msgType) {
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "onClick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "8000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+
+                toastr[msgType](message);
+            };
+
+        </script>
+        <script src="~/Scripts/AdminScripts/adminNotScripts.js" type="text/javascript"></script>
+        <!-- AdminLTE App -->
+        <script src="~/Scripts/AdminScripts/js/AdminLTE/app.min.js" type="text/javascript"></script>
+        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+        <script src="~/Scripts/AdminScripts/js/AdminLTE/dashboard.js" type="text/javascript"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src="~/Scripts/AdminScripts/js/AdminLTE/demo.js" type="text/javascript"></script>
+        <script src="~/Scripts/plugins/toastr.min.js"></script>
+    </div>
+</body>
+</html>

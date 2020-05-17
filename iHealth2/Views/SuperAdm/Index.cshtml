@@ -1,0 +1,179 @@
+﻿@using iHealth2.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    //Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext();
+}
+
+        <!-- Small boxes (Stat box) -->
+<div class="row">
+
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-yellow ">
+            <div class="inner">
+                <h3>
+                    @{
+                        var totalUsers = db.Users.Where(u => u.NotifyStatus == 1 && u.UserType == "BusinessUser").Count();
+                    }
+                    @totalUsers
+                </h3>
+                <p>
+                    All Registered Normal User
+                </p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-users"></i>
+            </div>
+            <a href="/superAdm/All_users" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div><!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-gray-active ">
+            <div class="inner">
+                <h3>
+                    @{
+                        var totalINGUsers = db.Users.Where(u => u.NotifyStatus == 1 && u.UserType == "INISubcriber").Count();
+                    }
+                    @totalINGUsers
+                </h3>
+                <p>
+                    All Registered ING User
+                </p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-users"></i>
+            </div>
+            <a href="/superAdm/All_users" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div><!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-green">
+            <div class="inner">
+                <h3>
+
+                    @{var appcomcount = db.BusinessInfoes.Where(b => b.ApprovedStatus == "A" && b.VerifiedStatus == "NV").Count();}
+                    @appcomcount
+                </h3>
+                <p>
+                  All Approved Company/Business
+                </p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="/SuperAdm/ViewApprovedComORBiz" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div><!-- ./col -->
+    <!--TODO-->
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-fuchsia">
+            <div class="inner">
+                <h3>
+                    @{
+                        var Vcompcount = db.BusinessInfoes.Where(b => b.ApprovedStatus == "A" && b.NotifyStatus == 1 && b.VerifiedStatus == "V").Count();
+                    }
+                    @Vcompcount
+                </h3>
+                <p>
+                    All Verified Company/Business
+                </p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-cloud"></i>
+            </div>
+            <a href="/SuperAdm/VerifiedComp" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div><!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-light-blue">
+            <div class="inner">
+                <h3>
+                    @{
+                        var approvedProduct = db.ProductTb.Where(u => u.ApprovedStatus == "A" && u.VerifiedStatus == "NV").Count();
+                    }
+                    @approvedProduct
+                </h3>
+                <p>
+                  All Approved Products
+                </p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-android-data"></i>
+            </div>
+            <a href="/SuperAdm/Approvedproducts" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+
+            </a>
+
+        </div>
+    </div><!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-purple">
+            <div class="inner">
+                <h3>
+                    @{
+                        var VerifiedProduct = db.ProductTb.Where(u => u.ApprovedStatus == "A" && u.VerifiedStatus == "V").Count();
+                    }
+                    @VerifiedProduct
+                </h3>
+                <p>
+                  All Verified Products
+                </p>
+            </div>
+            <div class="icon">
+                <i class="glyphicon glyphicon-apple"></i>
+            </div>
+            <a href="/SuperAdm/verifiedProduct" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div><!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-black">
+            <div class="inner">
+                <h3>
+                    @{
+                        var AdminSize = db.Users.Where(u => u.NotifyStatus == 1 && u.UserType == "AD").Count();
+                    }
+                    @AdminSize
+                </h3>
+                <p>
+                    Admins
+                </p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-users"></i>
+            </div>
+            <a href="#" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div><!-- ./col -->
+
+
+</div><!-- /.row -->
+<!-- top row -->
+<div class="row">
+    <div class="col-xs-12 connectedSortable">
+
+    </div><!-- /.col -->
+</div>
+<!-- /.row -->
+<!-- Main row -->
+

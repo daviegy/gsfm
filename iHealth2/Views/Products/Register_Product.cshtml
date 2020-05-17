@@ -1,0 +1,252 @@
+﻿@if (Session["Name"] == null)
+{
+    Response.Redirect("/Account/login");
+
+}
+
+@model iHealth2.Models.RegisterProductViewModel
+@using iHealth2.Models;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+
+
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+    ViewBag.Title = "Register_Product";
+    var user = db.Users.Find(User.Identity.GetUserId());
+    if (user.UserType == "BusinessUser")
+    {
+        Layout = "~/Views/Shared/_UserPanelLayout.cshtml";
+    }
+    else if (user.UserType == "AD" || user.UserType == "SA")
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+    }
+    var country = db.country.ToList();
+
+}
+
+@*<section class="content-header">
+    <h1>
+        Dashboard
+        <small>Register Product</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active"><a href="/user/Userpanel">Dashboard</a></li>
+    </ol>
+</section>*@
+<div class="panel panel-default">
+
+    <div class="panel-body">
+        <div class="span12">
+
+            @using (Html.BeginForm("Register_Product", "Products", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return submitEntry()" }))
+            {
+                @Html.AntiForgeryToken()
+                <span class="text-danger"> @Html.ValidationSummary()</span>
+                <div class="panel panel-primary">
+                    <span class="text-danger">@ViewBag.Alert </span>
+                    <div class="panel-body">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Basic Info About Product
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <b>Product Name <span class="text-danger">*</span></b>
+                                    <div class="">
+                                        @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <b>Product Manufacturer</b><span class="text-danger">*</span>
+                                    <div class="">
+                                        @Html.EditorFor(model => model.Manufacturer, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Manufacturer, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <b>Product Catergory <span class="text-danger">*</span></b>
+                                    <div class="">
+                                        <select name="ProductCategory" class="form-control" id="ProductCategory" style="" required>
+                                            <option value="">Please Choose</option>
+                                            @*        @{var pr = db.productCategory.Where(d => exclude.Any());}*@
+                                            @if (User.IsInRole("Admin") || User.IsInRole("Sub-Admin") || User.IsInRole("SuperAdmin"))
+                                            {
+                                                foreach (var p in db.productCategory.ToList())
+                                                {
+                                                    <option value="@p.ID">@p.PCatName</option>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <option value="1">Herbal medicine</option>
+                                                <option value="3">Veterinary drugs </option>
+                                                <option value="4">Pharmaceutical drug</option>
+                                                <option value="5">Medical Equipment</option>                                               
+                                            }
+                                        </select>
+                                        @Html.ValidationMessageFor(model => model.ProductCategory, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group" id="drugCat">
+                                    <b>Pharmaceutic Drugs Category</b>
+                                    <div>
+                                        @Html.DropDownListFor(model => model.drugs_categories.Drug_Category_Id, new SelectList(new iHealth2.Models.drugsCategoriesModel().get_Drug_Categories(), "Drug_Category_Id", "Drug_Category_Name"), "Select", new { @class = "form-control", id = "drugct" })
+                                    </div>
+                                </div>
+                                <div class="form-group" id="pcondd">
+                                    <b>Product Condtion</b> <span class="text-danger">*</span>
+                                    <div class="">
+                                        @Html.DropDownListFor(model => model.productCond.id, new SelectList(new iHealth2.Models.ProductConditionModel().GetProductionConditon(), "id", "value"), "select", new { @class = "form-control", id = "pcond" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <b>Product Summary<span class="text-danger">*</span></b>
+                                    <div class="">
+                                        @Html.ValidationMessageFor(model => model.Product_Summary, "", new { @class = "text-danger" })
+                                        <textarea required class="form-control" name="Product_Summary" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <b>Product's Description <span class="text-danger">*</span></b>
+                                    <div class="">
+                                        @Html.ValidationMessageFor(model => model.ProductDescription, "", new { @class = "text-danger" })
+                                        <textarea required class="form-control" name="ProductDescription" id="PDesc" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <b>Price<span class="text-danger">*</span></b>
+                                    <div class="">
+                                        <div class="input-group">
+                                            <span class="input-group-addon info"><i>&#8358;</i></span>
+                                            @Html.TextBoxFor(model => model.price, new { @class = "form-control" })
+                                            @*<input type="number" name="price" class="form-control" />*@
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Product Location
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <table>
+                                    <tr>
+                                        <td style="width:60%">
+                                            Address<span class="text-danger" style="font-weight:700">*</span>
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <textarea class="textarea" name="Address" placeholder="Address" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+
+                                                </div>
+                                            </div>
+                                            Country<span class="text-danger" style="font-weight:700">*</span>
+                                            <div class="">
+
+                                                <select required id="Country" class="form-control" name="Country">
+                                                    <option value="">Select Country</option>
+                                                    @foreach (var c in country)
+                                                    {
+                                                        <option id="Country" value="@c.ID">@c.CountryName</option>
+                                                    }
+                                                </select>
+
+                                                @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                                            </div>
+                                            State<span class="text-danger" style="font-weight:700">*</span>
+                                            <div class="form-group">
+                                                <div class="">
+                                                    @Html.DropDownList("State", new List<SelectListItem> { new SelectListItem { Value = "", Text = "" } }, "Select State", new { id = "state", required = true, @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            City<span class="text-danger" style="font-weight:700">*</span>
+                                            <div class="form-group">
+                                                <div class="">
+                                                    @* CitySearch *@
+                                                    <input type="text" name="city" id="" class="form-control" value="" required />
+                                                    @Html.ValidationMessageFor(model => model.city, "", new { @class = "text-error" })
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                        <td style="width:20%"></td>
+                                        <td>
+                                            <div id="map_canvas" style="width:400px;height:400px"></div>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                        </div>
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span class="text-danger"> Upload product's image<br /> <span class="text-error">NOTE: Maximum Uploadable Image is Four (4),Maximum size 1000(i.e 1MB)</span></span>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <input name="ProductImage" id="ProductImage" multiple type="file" class="file-loading" accept="image/*">
+
+                            </div>
+
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="chkAccept" id="chkAccept" class="myClass" required value=""> I have read and accept <a href="#">terms and condition</a>  of using this service</label>
+                            <span class="text-error" id="chkText"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <div class="">
+                                <input type="submit" value="Add Product(s)" class="btn btn-success" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+    <script src="~/Scripts/Plugins/jquery-te-1.4.0.js"></script>
+    <script src="~/Scripts/Plugins/fileinput.js"></script>
+    <script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+    <script src="~/Scripts/Plugins/summernote.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            //Enable iCheck plugin for checkboxes
+            //iCheck for checkbox and radio inputs
+            $('#chkAccept').iCheck({
+                checkboxClass: 'icheckbox_flat-blue',
+                radioClass: 'iradio_flat-blue'
+            });
+        });
+        $(function () {
+            $('#PDesc').summernote()
+        });
+    </script>
+    <script src="~/Scripts/customscript/Product_RegJS.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

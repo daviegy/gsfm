@@ -1,0 +1,95 @@
+﻿@model iHealth2.Models.profileViewModel
+@using iHealth2.CustomClasses;
+@using iHealth2.Models
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Profiles";
+
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+
+    switch (user.UserType)
+    {
+        case "BusinessUser":
+            Layout = "~/Views/Shared/_UserPanelLayout.cshtml";
+            break;
+        case "INISubcriber":
+            Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+            break;
+        case "AD":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            break;
+        case "SA":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            //Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+            break;
+
+    }
+
+}
+
+
+                <div class="panel panel-default">
+                   
+                    <div class="panel-body">
+                        <div class="alert alert-danger">
+                            <h5>Image Size must not exceed 1000kb(i.e 1MB)</h5>
+                        </div> 
+                        <div class="form-horizontal">
+                            @using (Html.BeginForm("Photoupload", "Home", new { ReturnUrl = Session["ReturnUrl"] }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="file" accept="image/*" class=" file-caption" id="ProfileImg" name="ProfileImg" />
+                            }
+                        </div>
+                      
+                    </div>
+                </div>
+
+         
+
+@section Scripts{
+    <script src="~/Scripts/plugins/fileinput.js"></script>
+    <script>
+        $("#ProfileImg").fileinput({
+            initialPreview: [
+        "<img src='/Content/images/placeholder3.jpg' class='file-preview-image' alt='Image' title='image'>",
+      
+            ],
+            previewFileType: "image",
+            // allowedFileExtensions: "['jpg','jpeg', 'gif', 'png']",
+            mainClass: "",
+            browseClass: "btn btn-info",
+            browseLabel: "Browse",
+            browseIcon: '<i class="icon icon-folder-open"></i>',
+            removeClass: "btn btn-danger",
+            removeLabel: "Remove",
+            removeIcon: '<i class="icon icon-trash"></i>',
+            showUpload: true,
+            maxFileSize: 1000,
+            showCaption:false,
+            overwriteInitial:true,
+            //msgSizeTooLarge:"",
+            uploadIcon: '<i class="icon icon-upload"></i>',
+            uploadClass: "btn btn-success",
+            //maxImageWidth: 111,
+            //maxImageHeight: 119,
+            allowedFileTypes: ['image'],
+            allowedFileExtensions: ['jpg', 'gif', 'png'],
+            layoutTemplates: {
+                main1: "{preview}\n" +
+                "<div class=\'input-group {class}\'>\n" +
+                "   <div class=\'input-group-btn\'>\n" +
+                "       {browse}\n" +
+                "       {upload}\n" +
+                "       {remove}\n" +
+                "   </div>\n" +
+                "   {caption}\n" +
+                "</div>"
+
+            }
+
+        });
+    </script>
+}

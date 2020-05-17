@@ -1,0 +1,121 @@
+﻿@model IEnumerable<iHealth2.Models.InterswitchTransactionsTB>
+@using iHealth2.CustomClasses;
+@using iHealth2.Models
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Interswitch Transaction log";
+
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    switch (user.UserType)
+    {
+        case "AD":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            break;
+        case "SA":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+           // Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+            break;
+
+    }
+}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <h3>Interswitch Transaction Log</h3>
+        <div class="control-group">
+            <div class="controls">
+                <a href="/transaction/all_transaction" class="btn btn-default">All</a>
+                <a href="/transaction/success_trs" class="btn btn-success">Successful</a>
+                <a href="/transaction/fail_trs" class="btn btn-danger">Unsuccessful</a>
+                <a href="/transaction/pending_trs" class="btn btn-info">Pending</a>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="tables" style="text-transform:capitalize">
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>
+                            Transaction Reference
+                        </th>
+                        <th>
+                            Client Name
+                        </th>
+                        <th>
+                            Client Email
+                        </th>
+                        <th>
+                            Amount (-N-)
+                        </th>
+                        <th>
+                            Transaction Response
+                        </th>
+                        <th>
+                            Transaction Date
+                        </th>
+                        <th>
+                            Transaction Purpose
+                        </th>
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int counter = 0;
+
+                    }
+                    @foreach (var item in Model)
+                    {
+                        counter = counter + 1;
+                        <tr>
+                            <td>
+
+                                @counter
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Transaction_Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Client_Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Client_Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Transaction_Amount)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Transaction_Response)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Transaction_date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Transaction_purpose)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <a href="/transaction/all_transaction" class="btn btn-default">All</a>
+                <a href="/transaction/success_trs" class="btn btn-success">Successful</a>
+                <a href="/transaction/fail_trs" class="btn btn-danger">Unsuccessful</a>
+                <a href="/transaction/pending_trs" class="btn btn-info">Pending</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script src="~/Scripts/CustomScript/interswitchTRSLogQuery.js"></script>
+}
+
+

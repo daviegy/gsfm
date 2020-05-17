@@ -1,0 +1,112 @@
+﻿@model IEnumerable<iHealth2.Models.UrgentNeedForDrugsTb>
+@{
+    ViewBag.Title = "urgentDrugRequest";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="table-responsive mailbox-messages">
+            <form action="/Admin/MarkAsTreatedForDrugRequest" method="post">
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                    <i class="fa fa-square-o"></i>
+                                </button>
+                            </th>
+                            <th>SN</th>
+                            <th>Drug Name</th>
+                            <th>Manufacturer</th>
+                            <th>Requestor Name</th>
+                            <th>Phone Number</th>
+                            <th>Email Address</th>
+                            <th>Country</th>
+                            <th>State</th>
+                            <th>City</th>
+                            <th>Address</th>
+                            <th>Requested Date</th>
+                            <th>Request Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                        int c = 0;
+                        foreach (var item in Model)
+                        {
+                            c++;
+                    <tr>
+                        <td><input type="checkbox" name="markAsSeenbyId" id="markAsSeenbyId" value="@item.id"></td>
+                        <td>@c</td>
+                        <td>@item.DrugName</td>
+                        <td>@item.Manufacturer</td>
+                        <td>@item.Name</td>
+                        <td>@item.Phone</td>
+                        <td>@item.Email</td>
+                        <td>@item.Country</td>
+                        <td>@item.State</td>
+                        <td>@item.City</td>
+                        <td>@item.Address</td>
+                        <td>@item.RequestedDate</td>
+                        <td>@item.RequestStatus</td>
+                    </tr>
+                        }
+                        }
+                    </tbody>
+                </table>
+                <input type="submit" class="btn btn-danger" value="Mark As Treated" />
+            </form>
+            </div>
+        </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script>
+    $('#table').bootstrapTable({
+
+        striped: true,
+        // cardView: true,
+        pagination: true,
+        pageSize: 15,
+        pageList: [15, 30, 50, 100, 200],
+        smartDisplay: false,
+        showToggle: false,
+        search: true,
+        showColumns: true,
+        showRefresh: true,
+        //    border : true
+        //align: 'center',
+        //valign: 'bottom'
+
+    });
+    </script>
+<script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+<script>
+    $(document).ready(function () {
+        //Enable iCheck plugin for checkboxes
+        //iCheck for checkbox and radio inputs
+        $('.mailbox-messages input[type="checkbox"]').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+        });
+
+        //Enable check and uncheck all functionality
+        $(".checkbox-toggle").click(function () {
+            var clicks = $(this).data('clicks');
+            if (clicks) {
+                //Uncheck all checkboxes
+                //  alert("i just got clicked")
+                $(".mailbox-messages input[type='checkbox']").iCheck("uncheck");
+                $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+            } else {
+                //Check all checkboxes
+                $(".mailbox-messages input[type='checkbox']").iCheck("check");
+                $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+            }
+            $(this).data("clicks", !clicks);
+        });
+    });
+</script>
+
+}

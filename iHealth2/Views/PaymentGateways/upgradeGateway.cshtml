@@ -1,0 +1,171 @@
+﻿@using iHealth2.CustomClasses
+
+@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ViewBag.Title = "Payment Gateway";
+    var url = Url.Action("upg_pmt_status", "PaymentGateways", null, protocol: Request.Url.Scheme);
+    int amount = Convert.ToInt32(TempData["amount"]);
+    amount *= 100;
+    //var input = string.Concat(TempData["trans_id"], "1076", "101", TempData["Amount"], "www.ihealthgsfm.com/payment_success", "D3D1D05AFE42AD50818167EAC73C109168A0F108F32645C8B59E897FA930DA44F9230910DAC9E20641823799A107A02068F7BC0F4CC41D2952E249552255710F");
+    var input = string.Concat(TempData["trans_id"], "8308", "101", amount, url, "pk68bGDQ14RZT64i5yuX3lR8xuFs2gtkZRxGIF9KSlrcRr4nAeO82k86NDQDzyH9CFbkoyTM522iKpv8GN54AzUvNULAfPKIAzY27y0jx89b6ekDTVPKayVFAqNNMK6k");
+    var hash = Cryptoclass.GenerateSHA512String(input);
+}
+<div class="page-title">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title-heading">
+                    <h1 class="h1-title">Payment Details</h1>
+                </div><!-- /.page-title-heading -->
+                <ul class="breadcrumbs">
+                    <li><a href="/" title="">Home<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    <li><a href="#" title="">Payment Details</a></li>
+                </ul><!-- /.breadcrumbs -->
+                <div class="clearfix"></div><!-- /.clearfix -->
+            </div>
+        </div>
+    </div>
+</div><!-- /.page-title -->
+<section class="flat-row pd-aboutv3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-offset-2 " style="width:500px; box-shadow:0 0 3px #aaa; height:auto;color:#666;">
+                    <div style="width:100%; padding:10px; background:#5cb85c; float:left; color:#fff; font-size:30px; text-align:center;">
+                        Payment Details
+                    </div>
+                    <div style="width:100%; padding:0px 0px;border-bottom:1px solid rgba(0,0,0,0.2);float:left;">
+                        <div style="width:30%; float:left;padding:10px;">
+
+                            <span style="font-size:14px;float:left; width:100%;">
+                                @TempData["cust_name"]
+                            </span>
+
+                            <span style="font-size:14px;float:left;width:100%;">
+                                @TempData["Email"]
+                            </span>
+                        </div>
+
+                        <div style="width:40%; float:right;padding:">
+                            <span style="font-size:14px;float:right;  padding:10px; text-align:right;">
+                                <b>Date : </b>@DateTime.UtcNow.Date.ToString("dd MMM, yyy")
+                            </span>
+                            <span style="font-size:14px;float:right;  padding:10px; text-align:right;">
+                                <b>Ref# : </b>@TempData["trans_id"]
+                            </span>
+                        </div>
+                    </div>
+                    <div style="width:100%; padding:0px; float:left;">
+
+                        <div style="width:100%;float:left;background:#efefef;">
+                            <span style="float:left; text-align:left;padding:10px;width:50%;color:#888;font-weight:600;">
+                                Decription
+                            </span>
+                            <span style="font-weight:600;float:left;padding:10px ;width:40%;color:#888;text-align:right;">
+                                Amount
+                            </span>
+                        </div>
+
+                        <div style="width:100%;float:left;">
+                            <span style="float:left; text-align:left;padding:10px;width:50%;color:#888;">
+                                iHealth Networking Group
+
+
+                                <span style="font-size:15px; float:left; width:100%;">
+                                    (Sign up fee)
+                                </span>
+                            </span>
+                            <span style="font-weight:normal;float:left;padding:10px ;width:40%;color:#888;text-align:right;">
+                                &#8358 @TempData["amount"].00
+                            </span>
+                        </div>
+
+                        <div style="width:100%;float:left; background:#fff;">
+
+                            <span style="font-weight:600;float:right;padding:10px 0px;width:40%;color:#666;text-align:center;">
+                                Total : &#8358 @TempData["amount"].00
+                            </span>
+                        </div>
+                    </div>
+                    <form method="post" action="https://webpay.interswitchng.com/collections/w/pay">
+                        @*REQUIRED HIDDEN FIELDS*@
+                        <input name="product_id" type="hidden" value="8308" />
+                        <input name="pay_item_id" type="hidden" value="101" />
+                        <input name="amount" type="hidden" value="@amount" />
+                        <input name="currency" type="hidden" value="566" />
+                        <input name="site_redirect_url" type="hidden" value="@Url.Action("upg_pmt_status", "PaymentGateways", null, protocol: Request.Url.Scheme)" />
+                        <input name="txn_ref" type="hidden" value="@TempData["trans_id"]" />
+                        <input name="cust_id" type="hidden" value="@TempData["cust_id"]" />
+                        <input name="site_name" type="hidden" value="www.ihealthgsfm.com" />
+                        <input name="cust_name" type="hidden" value="@TempData["cust_name"]" />
+                        <input name="hash" type="hidden" value="@hash" />
+                        <input class="" style="background:#5cb85c; color:#fff; width:100%; font-family:Helvetica Neue, Helvetica, Arial, sans-serif" type="submit" value="Confirm Payment" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@*<div class="container">
+    <div class="divPanel page-content">
+        <div class="row-fluid">
+            <div class="span6 offset3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            Please verify your payment details
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <th>Customer Name</th>
+                                    <td>
+                                        @TempData["cust_name"]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Reference Number
+                                    </th>
+                                    <td>@TempData["trans_id"]</td>
+                                </tr>
+                                <tr>
+                                    <th>Amount</th>
+                                    <td>
+                                        &#8358 @TempData["amount"].00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        Payment For
+                                    </th>
+                                    <td>Ihealth Networking Group Subscription</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <form method="post" action="https://webpay.interswitchng.com/collections/w/pay">
+                            @*REQUIRED HIDDEN FIELDS@
+                            <input name="product_id" type="hidden" value="8308" />
+                            <input name="pay_item_id" type="hidden" value="101" />
+                            <input name="amount" type="hidden" value="@amount" />
+                            <input name="currency" type="hidden" value="566" />
+                            <input name="site_redirect_url" type="hidden" value="@Url.Action("upg_pmt_status", "PaymentGateways", null, protocol: Request.Url.Scheme)" />
+                            <input name="txn_ref" type="hidden" value="@TempData["trans_id"]" />
+                            <input name="cust_id" type="hidden" value="@TempData["cust_id"]" />
+                            <input name="site_name" type="hidden" value="www.ihealthgsfm.com" />
+                            <input name="cust_name" type="hidden" value="@TempData["cust_name"]" />
+                            <input name="hash" type="hidden" value="@hash" />
+                            <input class="btn btn-success btn-large btn-block" type="submit" value="Confirm Payment" />
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+

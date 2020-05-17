@@ -1,0 +1,180 @@
+﻿@model IEnumerable<iHealth2.Models.ProductsInfo>
+@using iHealth2.CustomClasses;
+@using iHealth2.Models
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Approved Products";
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    switch (user.UserType)
+    {
+
+        case "AD":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            break;
+        case "SA":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+           // Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+            break;
+
+    }
+}
+ 
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h2 class="text-danger" style="margin-left:50px">Approved Product(s)</h2>
+            <div class="table-responsive mailbox-messages" >
+
+                <table id="table">                   
+                    <thead >
+                        <tr>
+                            <th>
+                                <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                    <i class="fa fa-square-o"></i>
+                                </button>
+                            </th>
+                            
+                            <th>
+                                @Html.DisplayName("Product Owner")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Product Name")
+                            </th>
+                            @*<th>
+                    @Html.DisplayName("Product Category")
+                </th>*@
+
+                            <th>
+                                @Html.DisplayName("Product Description")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Price")
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Address)
+                            </th>
+                            <th>
+                                @Html.DisplayName("Approved Date")
+                            </th>
+
+
+                            @*<th></th>*@
+                        </tr>
+
+                    </thead>
+
+                  
+                    <tbody>
+
+
+                        @foreach (var item in Model)
+                        {
+                        
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="processId" id="processId" value="@item.Id">
+                                   
+                                </td>
+                                @*<td>@Html.ActionLink("More Info", "BizDetails", "Company", new { id = EncryptId }, new { @class = "btn btn-success", disabled =true})</td>
+                                    <td><button class="btn btn-warning " disabled id="btnDelete" onclick="deletebiz('@EncryptId')">Delete</button></td>*@
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OwnerInfo.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProductName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProductCategory)
+                                </td>
+                                <td>
+                                    &#8358; @Html.DisplayFor(modelItem => item.price)
+                                </td>
+                                <td>
+                                    @item.Address, @item.State, @item.Country.
+                                </td>
+
+                                <td>@Html.DisplayFor(modelItem => item.ApprovedDate)</td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+               @if (User.IsInRole("SuperAdmin"))
+               {
+                <button class="btn btn-danger" id="btnVerify" disabled onclick="VerifyBiz()">Verify Product &nbsp;<i class="glyphicon glyphicon-ok-circle"></i></button>
+               }
+            </div>
+        </div>
+    </div>
+
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+<script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+    <script>
+        $(document).ready(function (e) {
+
+            //Enable iCheck plugin for checkboxes
+            //iCheck for checkbox and radio inputs
+            var $b = $('input[type = "checkbox"]');
+            $('.mailbox-messages input[type="checkbox"]').iCheck({
+                checkboxClass: 'icheckbox_flat-blue',
+                radioClass: 'iradio_flat-blue'
+            });
+            //Enable check and uncheck all functionality
+            $(".checkbox-toggle").click(function () {
+                var clicks = $(this).data('clicks');
+                if (clicks) {
+                    //Uncheck all checkboxes
+                    //  alert("i just got clicked")
+                    $(".mailbox-messages input[type='checkbox']").iCheck("uncheck");
+                    $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+
+                } else {
+                    //Check all checkboxes
+                    $(".mailbox-messages input[type='checkbox']").iCheck("check", function () {
+                        $("#btnVerify").prop('disabled', false)
+                    });
+                    $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+                }
+                $(this).data("clicks", !clicks);
+            });
+
+            $('.mailbox-messages input[type="checkbox"]').on('ifToggled', function (e) {
+                if ($('#processId:checked').length > 0) {
+                    $("#btnVerify").prop('disabled', false)
+                  
+                }
+                else {
+                    $("#btnVerify").prop('disabled', true)
+                    
+                }
+
+            })
+
+
+
+        });
+
+     $('#table').bootstrapTable({
+
+         striped: true,
+         // cardView: true,
+         pagination: true,
+         pageSize: 10,
+         pageList: [10, 25, 50, 100, 200],
+         smartDisplay: false,
+         showToggle: true,
+         search: true,
+         showColumns: true,
+         showRefresh: true,
+             border : true,
+         align: 'center',
+         valign: 'bottom'
+
+     });
+    </script>
+    <script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+<script src="~/Scripts/Plugins/dpLoading-2.x.js"></script>
+    <script src="~/Scripts/customscript/ProdScripts.js"></script>
+}

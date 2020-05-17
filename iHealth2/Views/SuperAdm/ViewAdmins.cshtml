@@ -1,0 +1,155 @@
+﻿@model IEnumerable<iHealth2.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "ViewAdmins";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+  //  Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+    string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+
+}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+        <table id="table">
+            <thead>
+                <tr>
+                    <th>SN</th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LastName)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserName)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PhoneNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.RegDate)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int c = 0;}
+                @foreach (var item in Model)
+                {
+                    c++;
+
+                    <tr>
+                        <td>@c</td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PhoneNumber)
+                        </td>
+
+
+                        <td>
+                            @if (item.UserType == "SA")
+                {
+                <span>Super Admin</span>
+                }
+                else
+                {
+                <span>Admin</span>
+                }
+                        </td>
+                        <td>
+                            @{var date = Convert.ToDateTime(item.RegDate).Date.ToString("dd MMM, yyy");}
+                            @date
+                        </td>
+                        <td>
+                            @{
+                                 String EncryptId = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(item.Id, s);
+    EncryptId = EncryptId.Replace("/", "$25");
+    EncryptId = EncryptId.Replace("+", "$24");
+                            }
+                            @Html.ActionLink("Modify Role", "ModifyRole", new { id = EncryptId }) |
+                           @* @Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
+                            <a href="#" onclick="deleteuser('@EncryptId');">Delete</a>
+                           
+                        </td>
+                    </tr>
+
+                }
+            </tbody>     
+        </table>
+
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script>
+    $('#table').bootstrapTable({
+
+        striped: true,
+        // cardView: true,
+        pagination: true,
+        pageSize: 15,
+        pageList: [15, 30, 50, 100, 200],
+        smartDisplay: false,
+        showToggle: false,
+        search: true,
+        showColumns: true,
+        showRefresh: true,
+        //    border : true
+        //align: 'center',
+        //valign: 'bottom'
+
+    });
+    </script>
+    <script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+    <script>
+        function deleteuser(EncryptId) {
+            swal({
+                title: "Are you sure?",
+                text: "You will have to register this user again before he/she can become active again",
+                type: "warning", showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: false
+            },
+            function () { 
+                var option = {};
+                option.url = "/superAdm/delete";
+                option.type = "Post";
+                option.dataType = "json";
+                option.data = { id: EncryptId };
+                option.success = function (){    
+                    swal("Deleted!", "User has been deleted.", "success");
+                    location.reload("#table")
+                }
+                option.error = function(){
+                    swal("", "Error", "error")
+                }
+                $.ajax(option);
+            });
+        }
+    </script>
+}

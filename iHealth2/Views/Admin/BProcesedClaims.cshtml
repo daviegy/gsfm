@@ -1,0 +1,181 @@
+﻿@model IEnumerable<iHealth2.Models.BenefitClaimersTb>
+@using iHealth2.CustomClasses;
+@using iHealth2.Models
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+
+
+@{
+    ViewBag.Title = "BProcesedClaims";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    char x = (char)8358;
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    var pro = db.Profession.ToList();
+    switch (user.UserType)
+    {
+
+        case "AD":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            break;
+        case "SA":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+           // Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+            break;
+
+    }
+}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="table-responsive mailbox-messages">
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th>
+
+                        </th>
+                        <th></th>
+                        <th>Processing ID</th>
+                        <th>Category</th>
+                        <th>
+                            Benefit(s)
+                        </th>
+                        <th>
+                            Application Date
+                        </th>
+                        <th>First Processing Date</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @{
+                                    string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+                                    String EncryptId = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(item.ID.ToString(), s);
+                                    EncryptId = EncryptId.Replace("/", "$25");
+                                    EncryptId = EncryptId.Replace("+", "$24");
+                                }
+@if (User.IsInRole("SuperAdmin"))
+{
+                                <a href="/Admin/BSReport/?bpd=@EncryptId" class="btn btn-primary">Marks As Settled</a>
+}
+                            </td>
+                            <td>
+                                <a href="/Admin/generateProcessingRPT/?bpd=@EncryptId" class="btn btn-warning">Processing Report</a>
+                            </td>
+                            <td class="text-danger"><b>@item.ProcessingId</b></td>
+                            <td>@item.BenefitCategory</td>
+                            <td>
+                                <div style="width:auto">
+                                    @if (item.BenefitCategory == "Cash")
+                                    {
+                                        @*if (item.Meet_promo_target == true)
+                                            {
+                                                double bonus = item.CashBenefits + (item.CashBenefits * 0.1);
+                                                <span>@x@String.Format("{0:n0}", bonus)</span>
+                                            }
+                                            else
+                                            {*@
+                                        @x @String.Format("{0:n0}", item.totalCashBenefits)
+                                        //}
+
+                                    }
+                                    else
+                                    {
+                                        @item.HealthBenefits
+                                    }
+
+                                </div>
+
+
+                            </td>
+
+                            <td>
+                                @{var bAdt = Convert.ToDateTime(item.B_applicationDate).Date.ToString("dd MMM, yyy");}
+                                @bAdt
+                            </td>
+                            <td>
+                                @{var sdt = Convert.ToDateTime(item.ProcessedDate).Date.ToString("dd MMM, yyy");}
+                                @sdt
+                            </td>
+                        </tr>
+                                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+    <script>
+        $(document).ready(function () {
+            //Enable iCheck plugin for checkboxes
+            //iCheck for checkbox and radio inputs
+            $('.mailbox-messages input[type="checkbox"]').iCheck({
+                checkboxClass: 'icheckbox_flat-blue',
+                radioClass: 'iradio_flat-blue'
+            });
+
+            //Enable check and uncheck all functionality
+            $(".checkbox-toggle").click(function () {
+                var clicks = $(this).data('clicks');
+                if (clicks) {
+                    //Uncheck all checkboxes
+                    $(".mailbox-messages input[type='checkbox']").iCheck("uncheck");
+                    $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+                } else {
+                    //Check all checkboxes
+                    $(".mailbox-messages input[type='checkbox']").iCheck("check");
+                    $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+                }
+                $(this).data("clicks", !clicks);
+            });
+
+            //Handle starring for glyphicon and font awesome
+            //$(".mailbox-star").click(function (e) {
+            //    e.preventDefault();
+            //    //detect type
+            //    var $this = $(this).find("a > i");
+            //    var glyph = $this.hasClass("glyphicon");
+            //    var fa = $this.hasClass("fa");
+
+            //    //Switch states
+            //    if (glyph) {
+            //        $this.toggleClass("glyphicon-star");
+            //        $this.toggleClass("glyphicon-star-empty");
+            //    }
+
+            //    if (fa) {
+            //        $this.toggleClass("fa-star");
+            //        $this.toggleClass("fa-star-o");
+            //    }
+            //});
+        });
+    </script>
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script>
+        $('#table').bootstrapTable({
+
+            striped: true,
+            // cardView: true,
+            pagination: true,
+            pageSize: 15,
+            pageList: [15, 30, 50, 100, 200],
+            smartDisplay: false,
+            showToggle: false,
+            search: true,
+            showColumns: true,
+            showRefresh: true,
+            //    border : true
+            //align: 'center',
+            //valign: 'bottom'
+
+        });
+    </script>
+}

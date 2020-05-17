@@ -1,0 +1,160 @@
+﻿@model IEnumerable<iHealth2.Models.BusinessInfo>
+@using iHealth2.Models
+@using Microsoft.AspNet.Identity.Owin;
+@using Microsoft.AspNet.Identity
+
+@{
+    ViewBag.Title = "Find_Pharmacy";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext();
+}
+
+<div id="decorative1" style="position:relative">
+    <div class="container">
+        <div class="divPanel headerArea">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="span3">                        
+                        <div class="panel panel-default" style="width:280px;height:300px">
+                            @{
+                                try
+                                {
+                                    var SB = db.AdvertManagerTb.SingleOrDefault(a => a.AdsLocOnPage == "SquareBoard" && a.AdsStatus == "Active" && a.Adspage == "SearchPharmacyPage");
+                                    var img = "data:image/png;base64," + Convert.ToBase64String(SB.AdsImage);
+                                    if (img != null)
+                                    {
+                                        <a href="@SB.AdsURL"><img src="@img" /></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/advert/How_to_Place_Ads" target="_blank" title="Click here to place Ads"> <img src="~/Content/images/AdsBanner/ad280.fw.png" style="width:inherit;height:inherit" alt="ihealth  advertisement Banner" /></a>
+                                    }
+                                }
+                                catch
+                                {
+                                    <a href="/advert/How_to_Place_Ads" target="_blank" title="Click here to place Ads"> <img src="~/Content/images/AdsBanner/ad280.fw.png" style="width:inherit;height:inherit" alt="ihealth  advertisement Banner" /></a>
+
+                                }
+
+
+                            }
+                        </div>
+                      </div>
+
+                    <div class="span6">                      
+                        <!--Edit Camera Slider here-->
+                        <div id="slider-container" class="slider-container">
+                            <div class="slider">
+                                @{
+                                    var FPharm = db.AdvertManagerTb.Where(adv => adv.AdsStatus == "Active" && adv.Adspage == "SearchPharmacyPage" && adv.AdsLocOnPage == "Slider").ToList();
+                                    if (FPharm.Count > 0)
+                                    {
+                                        foreach (var image in FPharm)
+                                        {
+                                            var img = "data:image/png;base64," + Convert.ToBase64String(image.AdsImage);
+                                            <div class="slide">
+                                                <a href="@image.AdsURL">  <img src="@img" alt=""></a>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="slide">
+                                            <img src="/Content/images/PharmacyImg/Pimg6.jpg" />
+                                        </div>
+                                        <div class="slide">
+                                            <img src="/Content/images/PharmacyImg/Pimg4.jpg" />
+                                        </div>
+                                        <div class="slide">
+                                            <img src="/Content/images/PharmacyImg/Pimg5.jpg" />
+                                        </div>
+
+                                    }
+
+                                }
+                            </div>
+                            <div class="switch" id="prev"><span></span></div>
+                            <div class="switch" id="next"><span></span></div>
+                        </div>
+                        <!--End Camera Slider here-->
+                   
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<br/>
+<div class="page-content">
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span3 bs-docs-sidebar">
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    Category <i class="icon icon-double-angle-down pull-right"></i>
+                                </a>
+                            </span>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <ul class="nav nav-list bs-docs-sidenav">
+                                    <li><a href="/pharmacy/Find_Pharmacy"><i class="icon icon-chevron-right"></i>All Categories</a></li>
+                                    @foreach (var item in db.BusinessInfoes.Where(b => b.Category == "Pharmaceuticals").GroupBy(b => b.subCategory1).Select(b => new { subcat = b.Key, values = b.Distinct().Count() }))
+                                    {
+                                        <li><a href="javascript:void(0);" onclick="Search_Pharm_subcatQuery('@item.subcat');"><i class="icon-chevron-right"></i>@item.subcat </a></li>
+                                    }
+
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <span class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">State/City<i class="icon icon-double-angle-down pull-right"></i></a>
+                            </span>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <ul class="nav nav-list bs-docs-sidenav">
+                                    @foreach (var item in db.BusinessInfoes.Where(b => b.Category == "Pharmaceuticals").GroupBy(p => p.State).Select(p => new { State = p.Key, Values = p.Distinct().Count() }))
+                                    {
+                                        <li><a href="javascript:void(0);" onclick="Search_Pharm_by_State('@item.State')"><i class="icon-chevron-right"></i> @item.State <span class="badge badge-important pull-right">@item.Values</span></a></li>
+                                    }
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="span6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div id="partialView">
+                            @{
+                                Html.RenderPartial("_listPharmacy", Model);
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/Plugins/jquery.simplePagination.js"></script>
+    <script src="~/Scripts/Plugins/dpLoading-2.x.js"></script>
+    <script src="~/Scripts/customscript/FIndMenuLink.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

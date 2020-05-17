@@ -1,0 +1,137 @@
+﻿@model IEnumerable<iHealth2.Models.BenefitClaimersTb>
+
+@{
+    ViewBag.Title = "SettledClaims";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    //Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+}
+
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="text-black">
+            <span class="text-danger">Note:</span> <br /> 1. GLA - means - Group Life Assurance <br />
+            2. CS1 - means - Compensation Stage 1 <br />
+            3. CS2 - means - Compensation Stage 2
+            <br /><br />
+        </div>
+
+        <table id="tb">
+            <thead>
+                <tr>
+                    <th>
+                        Sn
+                    </th>
+                    <th>Processing ID</th>
+                    <th>Subscriber's ID</th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Downline size
+                    </th>
+                    <th>
+                        Benefit Category
+                    </th>
+                    <th>
+                        Benefit Stage
+                    </th>
+
+                    <th>
+                        Current Benefit
+                    </th>
+                    @*<th class="text-danger">Account Information, if any?</th>*@
+
+                    <th>
+                        Benefit Application Date
+                    </th>
+                  
+                    <th>Processed Date</th>
+                    <th>Benefit Status</th>
+                    <th> Signed By </th>
+                </tr>
+
+            </thead>
+            <tbody>
+                @{
+                    int counter = 0;
+                }
+                @foreach (var item in Model)
+                {
+                    counter++;
+                    <tr>
+                        <td>
+                            @counter
+                        </td>
+                        <td class="text-danger"><b>@item.ProcessingId</b></td>
+                        <td>@item.SubRefCode</td>
+                        <td>@item.Name</td>
+                        <td>@item.DownlineSize</td>
+                        <td>@item.BenefitCategory</td>
+                        <td>
+
+                            @item.BenefitStage
+
+                        </td>
+                        <td>
+                            <div style="width:200px">
+                                @item.CurrentBenefit
+                            </div>
+
+                        </td>
+                        @*<td>
+                            <b class="text-success">
+                                @if (string.IsNullOrEmpty(item.AccountName) && string.IsNullOrEmpty(item.BankName) && string.IsNullOrEmpty(item.AccountNumber))
+                                {
+                                    <b class="text-danger">Not Available</b>
+                                }
+                                else
+                                {
+                                    <b class="text-success">
+                                        @item.AccountName  &nbsp; || &nbsp; @item.BankName  &nbsp; || &nbsp; @item.AccountNumber
+                                    </b>
+                                }                            </b>
+
+                        </td>*@
+                        <td>
+                            @{var bAdt = Convert.ToDateTime(item.B_applicationDate).Date.ToString("dd MMM, yyy");}
+                            @bAdt
+                        </td>
+                        <td>
+                            @{var sdt = Convert.ToDateTime(item.ProcessedDate).Date.ToString("dd MMM, yyy");}
+                            @sdt
+                        </td>
+                        <td>@item.BenefitProcessStatus</td>
+                        <td>@item.SignedBy</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script>
+    $('#tb').bootstrapTable({
+
+        striped: true,
+        // cardView: true,
+        pagination: true,
+        pageSize: 15,
+        pageList: [15, 30, 50, 100, 200],
+        smartDisplay: false,
+        showToggle: false,
+        search: true,
+        showColumns: true,
+        showRefresh: true,
+        //    border : true
+        //align: 'center',
+        //valign: 'bottom'
+
+    });
+    </script>
+}
+
+

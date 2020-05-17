@@ -1,0 +1,45 @@
+﻿@model iHealth2.Models.LatestNews
+
+@{
+    ViewBag.Title = "HealthNews";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+<div class="breadcrumbs">
+    <a href="/">Home</a> &nbsp;/&nbsp;<a href="@Request.UrlReferrer.ToString()" style="color:red">Back </a> &nbsp;/&nbsp;<span>News Stream</span>
+</div>
+
+<h2>Health News</h2>
+
+<div class="panel panel-default">
+    <div class="panel-body" style="">
+       
+            <h3>  <span class="text-error"> @Convert.ToDateTime(Model.EntryDate).ToString("MMMM d,yyyy") :</span>   <a href="#">@Model.Title</a></h3>
+       <br />
+        <div style="float:left; margin-right:10px; margin-bottom:20px">
+
+
+            @if (Model.Image != null)
+            {
+                var lg = "data:image/png;base64," + Convert.ToBase64String(Model.Image);
+
+                <img src="@lg" class="img-polaroid" style="width:400px;height:200px " alt="" />
+
+            }
+            else if (Model.ImageUrl != null)
+            {
+
+                <img src="@Model.ImageUrl" class="img-polaroid" style="width:400px;height:200px" alt="" />
+
+            }
+            else
+            {
+                <img src="~/Content/images/placeholder.gif" class="img-polaroid" style="width:400px;height:200px" alt="" />
+            }
+           
+        </div>
+        <p style="text-align:justify; font-family:'Times New Roman', Times, serif;font-size:14pt; line-height:40px">
+                      @Html.Raw(Server.HtmlDecode(Model.Content))
+        </p>
+    </div>
+
+</div>

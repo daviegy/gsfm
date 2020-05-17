@@ -1,0 +1,72 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Coming Soon</title>
+    <link href="~/Content/comingsoon/tools/style.css" rel="stylesheet" type="text/css" media="screen" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="~/Content/comingsoon/tools/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:700|Roboto+Slab:700' rel='stylesheet' type='text/css'>
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0, user-scalable = no">
+    <link href="/iHealthIcon.ico" rel="apple-touch-icon-precomposed">
+    <link href="/iHealthIcon.ico" rel="apple-touch-icon-precomposed">
+    <link href="/iHealthIcon.ico" rel="shortcut icon">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="left-section"><img src="~/Content/comingsoon/images/watch.png" /></div>
+        <div class="right-section">
+            <h4 id="logo"><a href="http://ihealthgsfm.com"><img style="width:300px;height:120px" src="~/Content/images/iHealth_logo.png" /></a></h4>
+            <div class="seprator"></div>
+            <div class="main-content">
+                <h2 class="center">Sorry, this Section of our website is under construction</h2>
+                @if (ViewBag.type == "shop")
+                {
+                    <h3>
+                        But, if you want to sell your products and services through our e-commerce platform, please send an e-mail to
+                        <a href="mailto:shop@ihealthgsfm.com">shop@ihealthgsfm.com</a>. You can also reach us using
+                        any of the channels below.
+                    </h3>
+                }
+                else
+                {
+                    <h3>
+                        But, if you want to list your products and services through our directory platform, please send an e-mail to
+                        <a href="mailto:support@ihealthgsfm.com">support@ihealthgsfm.com</a>. You can also reach us using
+                        any of the channels below.
+                    </h3>
+                }
+                
+            </div>
+            <ul class="social">
+                <li id="facebook"><a target="_blank" href="https://web.facebook.com/iHealthGSFM/"><i class="fa fa-facebook"></i></a></li>
+                <li id="twitter"><a target="_blank" href="#"><i class="fa fa-twitter"></i></a></li>
+                <li id="linkedin"><a target="_blank" href="#"><i class="fa fa-linkedin"></i></a></li>
+            </ul>
+            <ul class="info">
+                <li><i class="fa fa-phone-square"></i>+234 908 016 3224⁠</li>
+                <li><i class="fa fa-map-marker"></i>Plot 1966 Maputo street Wuse Zone 3 Abuja</li>
+                <li><i class="fa fa-envelope"></i><a href="#">support@ihealthgsfm.com</a></li>
+                <li><i class="fa fa-home"></i><a href="/">Go Back Home</a></li>
+            </ul>
+            <div class="social-links">
+                <ul class="social2">
+                    <li id="facebook"><a target="_blank" href="https://web.facebook.com/iHealthGSFM/"><i class="fa fa-facebook"></i></a></li>
+                    <li id="twitter"><a target="_blank" href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li id="linkedin"><a target="_blank" href="#"><i class="fa fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+
+
+        </div>
+        <div class="watch-section"><img src="~/Content/comingsoon/images/watch.png" /></div>
+    </div>
+
+</body>
+</html>

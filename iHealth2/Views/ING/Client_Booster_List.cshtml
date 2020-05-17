@@ -1,0 +1,132 @@
+﻿@model  IhealthPaging.IPagedList<iHealth2.Models.BusinessInfo>
+@using iHealth2.Models
+@using iHealth2.CustomClasses;
+
+@{
+    ViewBag.Title = "Client_Booster_List";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext(); 
+    SEO_Friendly_URL seo = new SEO_Friendly_URL();
+}
+<div class="tp-banner-container">
+    <div class="tp-banner">
+        <div class="flexslider" style="margin-bottom:0px;border:none">
+            <div class="flat-slides">
+                <ul class="slides">
+                    <li>
+                        <img src="~/Content/images/slides/Slider_ihealth3.jpg" />
+                    </li>
+
+                    <li>
+                        <img src="~/Content/images/slides/Slider_ihealth4.jpg" />
+                    </li>
+                </ul>
+            </div> <!-- /.flat-slides -->
+        </div><!-- /.wrar-slides -->
+    </div>
+</div>
+<div class="page-title">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title-heading">
+                    <h1 class="h1-title">Service Boosters</h1>
+                </div><!-- /.page-title-heading -->
+                <ul class="breadcrumbs">
+                    <li><a href="/" title="">Home<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    <li><a href="#" title="">Service Boosters</a></li>
+                </ul><!-- /.breadcrumbs -->
+                <div class="clearfix"></div><!-- /.clearfix -->
+            </div>
+        </div>
+    </div>
+</div><!-- /.page-title -->
+<section class="flat-row pd-aboutv3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="wrap-main-post about-v3">                   
+                    <div class="col-md-4">
+                        <div class="flat-accordion style">
+                            <div class="flat-toggle">
+                                <h6 class="toggle-title active">Category</h6>
+                                <div class="toggle-content">
+                                    <ul class="nav nav-list bs-docs-sidenav">
+                                        <li><a href="/ing/client_booster_list"><i class="fa fa-caret-right"></i> All Categories</a></li>
+                                        @{
+                                            var biz = db.BusinessInfoes.Where(b => b.isServiceBooster == "Yes" && b.ApprovedStatus == "A" && b.NotifyStatus == 1).GroupBy(b => b.Category).Select(b => new { category = b.Key, values = b.Distinct().Count() });
+                                            foreach (var item in biz)
+                                            {
+                                                <li> <a href="javascript:void(0);" onclick="search_client_boosters_category('@item.category');"><i class="fa fa-caret-right"></i> @item.category <span class="badge badge-info pull-right">@item.values</span></a></li>
+                                            }
+                                        }
+
+                                    </ul>
+
+                                </div>
+                            </div><!-- /toggle -->
+
+                            <div class="flat-toggle">
+                                <h6 class="toggle-title">States/City</h6>
+                                <div class="toggle-content">
+                                    <ul class="nav nav-list bs-docs-sidenav">
+                                        @foreach (var item in db.BusinessInfoes.Where(b => b.isServiceBooster == "Yes" && b.ApprovedStatus == "A" && b.NotifyStatus == 1).GroupBy(p => p.State).Select(p => new { State = p.Key, Values = p.Distinct().Count() }))
+                                        {
+                                            <li>
+                                                <a href="javascript:void(0);" onclick="Search_client_boosters_by_State('@item.State')">
+                                                    <i class="fa fa-caret-right"></i>
+                                                    @item.State <span class="badge badge-important pull-right">@item.Values</span>
+                                                </a>
+                                            </li>
+                                        }
+
+                                    </ul>
+
+                                </div>
+                            </div><!-- /toggle -->
+
+                            <div class="flat-toggle">
+                                <h6 class="toggle-title">Recommended</h6>
+                                <div class="toggle-content">
+                                    <ul class="nav nav-list bs-docs-sidenav">
+                                        @foreach (var item in db.BusinessInfoes.Where(b => b.isServiceBooster == "Yes" && b.ApprovedStatus == "A" && b.NotifyStatus == 1 && (b.Recommended_Status == "R" || b.VerifiedStatus == "V")).OrderByDescending(b => b.Recommended_Status))
+                                        {
+                                            <li>
+                                                <a href="/@seo.generate_title(item.businessName)/business/biz_profile/@seo.GenerateSlug(item.ID.ToString(),item.businessName)">
+                                                    <i class="fa fa-caret-right"></i>
+                                                    @item.businessName 
+                                                </a>
+                                            </li>
+                                        }
+
+                                    </ul>
+
+
+                                </div>
+                            </div><!-- /toggle -->
+                        </div> <!-- /.flat-accordion -->
+
+                    </div>
+                    <div class="col-md-8">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div id="partialView">
+                                    @{
+                                        Html.RenderPartial("_ClientBoosterList", Model);
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script src="~/Scripts/Plugins/jquery.simplePagination.js"></script>
+    <script src="~/Scripts/Plugins/dpLoading-2.x.js"></script>
+    <script src="~/Scripts/customscript/FIndMenuLink.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

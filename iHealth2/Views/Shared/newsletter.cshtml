@@ -1,0 +1,37 @@
+﻿@using iHealth2.CustomClasses;
+@using iHealth2.Models
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Newsletter";
+
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+
+    switch (user.UserType)
+    {
+        case "BusinessUser":
+            Layout = "~/Views/Shared/_UserPanelLayout.cshtml";
+            break;
+        case "INISubcriber":
+            Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+            break;
+    }
+
+}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        @if (user.newsletterStatus == 0) { 
+        <div class="alert alert-block alert-error alert-dismissable">
+            <h2>  @TempData["msg"]</h2>
+        </div>
+        }
+        else
+        {
+            <div class="alert alert-block alert-info alert-dismissible">
+                <h2> @TempData["msg"]</h2>
+            </div>
+        }
+    </div>
+</div>

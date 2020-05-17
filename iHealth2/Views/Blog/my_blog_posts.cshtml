@@ -1,0 +1,102 @@
+﻿@model IEnumerable<iHealth2.Models.blog_Post>
+
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@using iHealth2.Models;
+@{
+    ViewBag.Title = "my_blog_posts";
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    switch (user.UserType)
+    {
+        case "BusinessUser":
+            Layout = "~/Views/Shared/_UserPanelLayout.cshtml";
+            break;
+        case "INISubcriber":
+            Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+            break;
+        case "AD":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            break;
+        case "SA":
+            Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+            break;
+
+    }
+}
+
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="table-responsive mailbox-messages">
+            <p>
+                <a href="/blog/create" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add New</a>
+                <button onclick="delete_blog_post()" id="btndel1" disabled title="Delete" class="btn btn-danger">Delete &nbsp;<i class="glyphicon glyphicon-trash "></i></button>
+            </p>
+            <table id="table" style="text-transform:capitalize">
+                <thead>
+                    <tr>
+                        <th>
+                            <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                <i class="fa fa-square-o"></i>
+                            </button>
+                        </th>
+                        <th>
+                            Title
+                        </th>
+                        <th>Post Url</th>
+                        <th>
+                            Number of Comments
+                        </th>
+                        <th>
+                            Published Date
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                    @foreach (var item in Model)
+                    {
+                       
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="delid" id="delid" value="@item.post_id">
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.post_Title)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.post_url)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.number_of_comment)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.publish_date)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.post_id })                                                             
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <p>
+                <a href="/blog/create" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>&nbsp;Add New</a>
+                <button onclick="delete_blog_post()" id="btndel2" disabled title="Delete" class="btn btn-danger">Delete &nbsp;<i class="glyphicon glyphicon-trash "></i></button>
+            </p>
+        </div>
+
+    </div>
+</div>
+
+@section scripts{
+<script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+<script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script> 
+<script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+<script src="~/Scripts/Plugins/dpLoading-2.x.js"></script>
+<script src="~/Scripts/CustomScript/blogpost.js"></script>
+}
+

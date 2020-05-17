@@ -1,0 +1,275 @@
+﻿@model iHealth2.Models.profileViewModel
+@using iHealth2.CustomClasses;
+@using iHealth2.Models
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Profiles";
+
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    var pro = db.Profession.ToList();
+    switch (user.UserType)
+    {
+        case "BusinessUser":
+            Layout = "~/Views/Shared/_UserPanelLayout.cshtml";
+            break;
+        case "INISubcriber":
+            Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+            break;
+        case "AD":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            break;
+        case "SA":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+           // Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+            break;
+
+    }
+
+}
+
+
+<section class="content">
+
+    <div class="row">
+        <div class="col-md-3">
+
+            <!-- Profile Image -->
+            <div class="box box-success">
+                <div class="box-body box-profile">
+                    @if (Model.photo == null)
+                    {
+                        <img class="profile-user-img img-responsive img-circle" src="~/content/images/UserImagePlaceholder.png" alt="User profile picture">
+                        @*<br /><a href="/home/Photoupload" class="btn btn-danger">Add New Profile Photo <i class="icon icon-camera"></i></a>*@
+                    }
+                    else
+                    {
+                        <img class="profile-user-img img-responsive img-circle" src="@Model.photo" alt="User profile picture">
+                        @*<br /><a href="/home/Photoupload" class="btn btn-danger"> Update Profile Photo<i class="icon icon-camera"></i></a>*@
+                    }
+
+                    <h3 class="profile-username text-center">@Model.Name</h3>
+
+                    <p class="text-muted text-center">
+                        @if (Model.profession == "Information_Seeker")
+                        {
+
+                        }
+                        else
+                        {<span>@Model.profession</span>}
+                    </p>
+
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <b>ID</b> <a class="pull-right">@Model.tID</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Emails</b> <a class="pull-right">@Model.Email</a>
+                            <br /><br />
+                        </li>
+                        <li class="list-group-item">
+                            <b>Phone</b> <a class="pull-right">@Model.phone</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Facebook</b> <a href="@Model.fbUrl" class="pull-right">View</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Twitter</b> <a class="pull-right" href="@Model.twUrl">View</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>LinkedIn</b> <a class="pull-right" href="@Model.lnUrl">View</a>
+                        </li>
+                    </ul>
+                    <a href="/home/Photoupload" class="btn btn-success btn-block"><b>Change Profile Photo</b></a>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+            <!-- About Me Box -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">About Me</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <strong><i class="fa fa-book margin-r-5"></i> Summary</strong>
+
+                    <p class="text-muted">
+                        @Model.backgroundinfo
+                    </p>
+
+                    <hr>
+
+                    <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+
+                    <p class="text-muted">@Model.state, @Model.Nationality</p>
+
+                    <hr>
+                    <strong><i class="fa fa-file-text-o margin-r-5"></i>Address</strong>
+
+                    <p>@Model.Address</p>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#settings" data-toggle="tab">Update Profile</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="active tab-pane" id="settings">
+                        @{
+                            string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+                            String EncryptId = Cryptoclass.EncryptStringAES(Model.Id, s);
+                            EncryptId = EncryptId.Replace("/", "$25");
+                            EncryptId = EncryptId.Replace("+", "$24");
+                        }
+                        <form id="edprofile" class="form-horizontal" action="/profile/edprofile/?ids=@EncryptId" method="post">
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Phone</label>
+
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(m => m.phone, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            @if (Model.User_type == "INISubcriber" && string.IsNullOrEmpty(Model.profession))
+                            {
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-danger" for="Profession">&nbsp;&nbsp;Are you a service provider in the health sector?<span class="text-error">*</span></label>
+                                    &nbsp;&nbsp; &nbsp;&nbsp;   <input type="radio" id="rd_yes" required name="HSP" value="Yes" /> &nbsp;<b class="text-success" style="font-size:14pt">Yes</b>
+                                    &nbsp;&nbsp; &nbsp;&nbsp;
+                                    <input type="radio" id="rd_no" name="HSP" value="No" checked /> &nbsp; <b class="text-error" style="font-size:14pt">No</b>
+                                </div>
+                                <div class="form-group" id="prof">
+                                    <label class="control-label col-sm-2">Profession<span class="text-error">*</span></label>
+                                    <div class=" col-sm-10">
+                                        <select name="Profession" class="form-control" id="Profession" style="" required>
+                                            <option value="">Select Profession</option>
+                                            @foreach (var p in pro)
+                                            {
+                                            <option value="@p.ID">@p.Nomenclature</option>
+                                            }
+                                        </select>
+                                        @*@Html.ValidationMessage("Select your profession", new { @class = "text-error" })*@
+                                    </div>
+                                </div>
+                                <div class="form-group" id="subTr1">
+                                    <label class="control-label col-sm-2 text-success" for="Subcategory">Subcategory</label>
+                                    <div class="col-sm-10">
+                                        <!--Med. doctor ddl-->
+                                        @Html.DropDownList("subCat1", new List<SelectListItem> { new SelectListItem { Value = "", Text = "" } }, "Select item", new { @class = "form-control", id = "subCat1", @style = "width:92%; height:40px" })
+                                    </div>
+                                </div>
+                                <div id="subTr2" class="form-group">
+                                    <label class="control-label col-sm-2 text-danger" for="Subcategory">Sub-Subcategory</label>
+                                    <div class="col-sm-10">
+                                        @Html.DropDownList("subCat2", new List<SelectListItem> { new SelectListItem { Value = "", Text = "" } }, "Select item", new { @class = "form-control", id = "subCat2", @style = "width:92%;height:40px" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2 text-danger" for="others"></label>
+                                    <div class="col-sm-10">
+                                        <!--other profession-->
+                                        <input type="text" name="other_Profession" id="other_Profession" style="height:30px" placeholder="Please Specify...?" class="form-control" />
+                                        @*<p class="help-block">Please provide your E-mail</p>*@
+                                    </div>
+                                </div>
+                            }
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Background Information</label>
+                                <div class="col-sm-10">
+                                    <textarea name="summary" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail" class="col-sm-2 control-label">Nationality</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="Country" id="Country">
+                                        <option value="">Select Country</option>
+                                        @{
+                                            var contry = db.country.ToList();
+                                            foreach (var con3 in contry)
+                                            {
+
+                                                <option value="@con3.ID">@con3.CountryName</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">State</label>
+                                <div class="col-sm-10">
+                                    @Html.DropDownList("state", new List<SelectListItem> { new SelectListItem { Value = "", Text = "" } }, "Select State", new { id = "state", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputExperience" class="col-sm-2 control-label">City</label>
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(m => m.city, new { @class = "form-control", placeholder = "Type City" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputSkills" class="col-sm-2 control-label">Address</label>
+
+                                <div class="col-sm-10">
+                                    @Html.TextAreaFor(m => m.Address, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Facebook address&nbsp; <i class="fa fa-facebook-square"></i></label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="fbUrl" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Twitter address&nbsp;<i class="fa fa-twitter-square"></i></label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="twUrl" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">LinkedIn address &nbsp;<i class="fa fa-linkedin-square"></i></label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="lnUrl" />
+                                </div>
+                            </div>
+                            @*<div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>*@
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <input type="submit" class="btn btn-success" value="Save changes">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+            </div>
+            <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+</section>
+@section scripts{
+<script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+
+<script src="~/Scripts/CustomScript/RegisterForm.js"></script>
+    <script src="~/Scripts/CustomScript/myHomeCust.js"></script>
+}

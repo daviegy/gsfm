@@ -1,0 +1,29 @@
+﻿#CustomMenu{
+    -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.03);
+    -moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.03);
+}
+#CustomMenu{height:auto; background-color:black;}
+#CustomMenu1{height:auto; background-color:black;}
+
+ #CustomMenu{position:fixed;top:0;left:0;right:0;z-index:1032}
+   #CustomMenu1{position:fixed;top:0;left:0;right:0;z-index:1032}
+
+/*#CustomMenu{overflow:hidden}*/
+#CustomMenu{z-index:132 !important;}
+#CustomMenu1{z-index:132 !important;}
+
+@media (min-width:769px) and (max-width: 1200px) {
+        #CustomMenu{position:static;  height:auto;}
+         #CustomMenu1{position:static;  height:auto;}
+}
+
+@media (max-width: 980px) {
+      #CustomMenu {position:absolute }
+      #CustomMenu1 {position:absolute }
+}
+@media (max-width: 769px) {
+ #CustomMenu,#CustomMenu1 {margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px;}
+  #CustomMenu{position:fixed}
+       #CustomMenu1{position:fixed}
+}

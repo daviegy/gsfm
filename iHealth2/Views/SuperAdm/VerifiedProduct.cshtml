@@ -1,0 +1,134 @@
+﻿@model IEnumerable<iHealth2.Models.ProductsInfo>
+
+@{
+    ViewBag.Title = "Verified Product";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+ //   Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+
+}
+
+
+<h2 class="text-danger" style="margin-left:50px">Verified Company or Business</h2>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="table-responsive" id="">
+
+
+            <table data-toggle="table" data-url="" id="table">
+
+
+                <thead style="text-align:justify">
+                    <tr>
+                        <th>SN</th>
+
+                        <th>
+                            @Html.DisplayName("Product Owner")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Product Name")
+                        </th>
+                      
+                        <th>
+                            @Html.DisplayName("Product Description")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Price")
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Address)
+                        </th>
+                        <th>
+                            @Html.DisplayName("Approved Date")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Verified Date")
+                        </th>
+
+                        <th>Verified By</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+                    @{
+                        int counter = 0;
+
+                    }
+
+                    @foreach (var item in Model)
+                    {
+
+                        string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+                        String EncryptId = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(item.Id.ToString(), s);
+                        EncryptId = EncryptId.Replace("/", "$25");
+                        EncryptId = EncryptId.Replace("+", "$24");
+                        counter++;
+
+                        <tr>
+                            @*<td>
+                                    <button class="btn btn-danger" id="btnVerify" onclick="VerifyBiz('@EncryptId')">Verify Product</button>
+                                </td>*@
+                            <td>@counter</td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OwnerInfo.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductCategory)
+                            </td>
+                            <td>
+                                &#8358; @Html.DisplayFor(modelItem => item.price)
+                            </td>
+                            <td>
+                                @item.Address, @item.State, @item.Country.
+                            </td>
+
+                            <td>@Html.DisplayFor(modelItem => item.ApprovedDate)</td>
+                            <td>@Html.DisplayFor(modelItem => item.VerifyDate)</td>
+                            <td>@Html.DisplayFor(m=>item.Signedby)</td>
+                        </tr>
+                    }
+                </tbody>
+
+
+
+
+            </table>
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script>
+
+        $('#table').bootstrapTable({
+
+            striped: true,
+            // cardView: true,
+            pagination: true,
+            pageSize: 10,
+            pageList: [10, 25, 50, 100, 200],
+            smartDisplay: false,
+            showToggle: true,
+            search: true,
+            showColumns: true,
+            showRefresh: true,
+            border: true,
+            align: 'center',
+            valign: 'bottom'
+
+        });
+    </script>
+    <script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+    <script src="~/Scripts/customscript/ProdScripts.js"></script>
+}

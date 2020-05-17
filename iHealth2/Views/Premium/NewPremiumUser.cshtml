@@ -1,0 +1,125 @@
+﻿@model IEnumerable<iHealth2.Models.premium_user>
+@using iHealth2.Models
+@{
+    ViewBag.Title = "New Premium User";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    char x = (char)8358;
+    ApplicationDbContext db = new ApplicationDbContext();
+}
+
+<section class="content">
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="table-responsive mailbox-messages">
+                @*<form role="form" method="post" action="/premium/ApprovePayment">
+                    @Html.AntiForgeryToken()*@
+                    <table id="table" class="">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                        <i class="fa fa-square-o"></i>
+                                    </button>
+                                </th>
+                                <th>Reference Id</th>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Phone Number
+                                </th>
+                                <th>
+                                    Premium Package
+                                </th>
+                                <th>Amount</th>
+                                <th>
+                                    Payment Status
+                                </th>
+                                <th>
+                                    Registered Date
+                                </th>
+                                <th>
+                                    Sponsor
+                                </th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+
+                                <tr>
+
+                                    <td><input type="checkbox" name="ItemId" id="markAsPaidbyId" value="@item.premiumUserId"></td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.referrence_Id)
+                                    </td>
+                                    <td>
+                                        @item.First_Name @item.Last_Name
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Phone)
+                                    </td>
+                                    <td>
+                                        @item.Hospital_List.ToString().Replace("_", " ") <span>, Plan </span>@item.plan
+                                    </td>
+                                    <td>
+                                        @x@String.Format("{0:n0}", item.Amount).00
+                                    </td>
+                                    <td>@item.PaymentStatus</td>
+                                    <td>
+                                        @{var rdate = Convert.ToDateTime(item.Register_Date).Date.ToString("dd MMM,yyy");} @rdate
+                                    </td>
+                                    <td>
+                                        @{ 
+                                            if (item.sponsorID != 0)
+                                            {
+                                                var sponsor = db.Users.Single(u => u.MyRefferalCode == item.sponsorID);
+                                                <span>@sponsor.FirstName @sponsor.LastName</span>
+                                            }else
+                                            {
+                                                <em>Nill</em>
+                                            }
+                                        }
+                                        
+                                    </td>
+                                    
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                    @*<button onclick="approvepayemntforPremiumUser()" id="btnappr" disabled title="Approve Payment" class="btn btn-danger">Approve Payment &nbsp;<i class="glyphicon glyphicon-ok "></i></button>*@
+
+                <input onclick="app_pmt_for_Premium_user()" type="submit" id="submitbtn" class="btn btn-success" disabled value="Approve Payment" />
+                    @*</form>*@
+
+</div>
+        </div>
+    </div>
+
+</section>
+
+
+@section scripts{
+<script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+<script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+<script src="~/Scripts/CustomScript/Ap_paymentscript.js"></script>
+<script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+}
+
+
+
+
+

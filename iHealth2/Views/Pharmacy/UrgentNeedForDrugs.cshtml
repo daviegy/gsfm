@@ -1,0 +1,271 @@
+﻿@using Recaptcha
+
+@model iHealth2.Models.UrgentNeedForDrugViewModel
+@using iHealth2.Models
+@{
+    ViewBag.Title = "UrgentNeedForDrugs";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext();
+    var con3 = db.country.ToList();
+}
+
+<div class="container">
+    <div class="divPanel page-content ">
+
+        <div class="breadcrumbs">
+            <a href="/">Home</a> &nbsp;/&nbsp; <span>Request for drugs</span>
+        </div>
+        <div class="row-fluid">
+            <div class="span5">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+
+
+                        @using (Html.BeginForm("UrgentNeedForDrugs", "Pharmacy", FormMethod.Post, new { @class = "", role = "form", enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <span class="text-error">@Html.ValidationSummary(true)</span>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        <h4>Drug Information</h4>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.DrugName, new { @class = "form-control", placeholder = "Drug Name*", name = "DrugName[]" })
+                                           @* <input type="text" name="DrugName[]" placeholder=" Drug Name" class="form-control" />*@
+                                            @Html.ValidationMessageFor(m => m.DrugName, "", new { @class = "text-error" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                           @* @Html.DropDownListFor(m => m.dosageForm.dosageFormValue, new SelectList(new iHealth2.Models.dosageFormModel().GetForm(), "dosageFormValue", "dosageFormName"), "Select Dosage Form*", new { @class = "form-control", @style = "width:92.8%", name = "dosageForm[]" })*@ 
+                                            <select name="dosageForm[]" class="form-control" style="width: 93%">
+                                                <option value="">Select dosage form</option>
+                                                <option value="Capsule">Capsule</option>
+                                                <option value="Cream">Cream</option>
+                                                <option value="Injection">Injection</option>
+                                                <option value="Tablet">Tablet</option>
+                                                <option value="Syrup">Syrup</option>                                                
+                                            </select>                                           
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.DrugStrength, new { @class = "form-control", placeholder = "Strength* (e.g. 500mg, 250mg/5ml)", @style = "margin-top:10px", name = "DrugStrength[]" })
+                                            @Html.ValidationMessageFor(m => m.DrugStrength, "", new { @class = "text-error" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.Manufacturer, new { @class = "form-control", placeholder = "Manufacturer", @style = "margin-top:0px", name = "Manufacturer[]" })
+                                            @Html.ValidationMessageFor(m => m.Manufacturer, "", new { @class = "text-error" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.ManufacturerCountry, new { @class = "form-control", placeholder = "Manufacturer's Country", @style = "margin-top:0px", name = "ManufacturerCountry[]" })
+                                            @Html.ValidationMessageFor(m => m.ManufacturerCountry, "", new { @class = "text-error" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            @*@Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Give us more information, if any?", @style = "margin-top:0px; width:87.8%", name = "Description[]" })*@
+                                            <textarea name="Description[]" class="form-control" placeholder="Give us more information, if available?" style="margin-top: 0px; width: 87.8%"></textarea>
+                                            @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-error" })
+                                        </div>
+                                    </div>                                   
+                                </div>
+                                <div id="addtionalField">
+
+                                </div>
+                                <div class="panel-body">
+                                   
+                                    <input type="button" class="btn btn-info" value="Add More" onclick="addtionalField();" />
+                                </div>
+                            </div>
+                            <div class="panel  panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        <h4>Basic Information</h4>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name*" })
+                                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-error" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Mobile Number*" })
+                                            @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-error" })
+                                            @*<p class="help-block">Please provide your E-mail</p>*@
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email*" })
+                                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-error" })
+                                            @*<p class="help-block">Please provide your E-mail</p>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        <h4>Delivery Location Information</h4>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <select name="Country" id="ddlCountry" required class="form-control" style="width:93%">
+                                                <option value="">Select Country</option>
+                                                @foreach (var item in con3)
+                                                {
+                                                    <option value="@item.ID">@item.CountryName</option>
+                                                }
+                                            </select>
+                                              @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-error" })
+                                        </div>
+                                    </div>
+                                    <div id="" class="control-group">
+                                        <div class="controls">
+                                            @Html.DropDownList("State", new List<SelectListItem> { new SelectListItem { Value = "", Text = "" } }, "Select State", new { id = "state", required = true, @class = "form-control", @style = "width:93%; margin-top:20px" })
+                                            @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-error" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.City, new { @class = "form-control", placeholder = "City",@style="margin-top : 12px" })
+                                            @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-error" })
+
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            @Html.TextAreaFor(m => m.Address, new { @class = "form-control", placeholder = "Address",@style="width:87.8%" })
+                                            @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-error" })
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.Landmark, new { @class = "form-control", placeholder = "Landmark",@style="margin-top:12px" })
+                                            @Html.ValidationMessageFor(m => m.Landmark, "", new { @class = "text-error" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        Upload Prescription, if Any?
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <input type="file" name="prescription" id="prescription" class="file-loading" accept="image/*"/>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class="g-recaptcha" data-sitekey="@System.Configuration.ConfigurationManager.AppSettings["recaptchaPublicKey"]"></div>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <!-- Button -->
+                                <div class="controls">
+                                    <button class="btn btn-success">Send Request</button>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            
+            </div>
+            <div class="span4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="alert alert-block alert-danger">
+                            <b>Note:</b>
+                            <p>
+                                Some specific drugs can only be delivered through a Doctor/Phamarcist
+                                on behalf of our client.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<script src="~/Scripts/Plugins/fileinput.js"></script>
+    <script>
+        $("#prescription").fileinput({
+           // uploadUrl: "/file-upload-batch/2",
+            autoReplace: false,
+            maxFileCount: 4,
+            allowedFileExtensions: ["jpg", "png", "gif"],
+            removeIcon: '<i class="icon icon icon-trash text-danger"></i>',
+            removeClass: 'btn  btn-danger',
+            removeTitle: 'Remove file',
+            uploadIcon: '<i class="icon icon-upload text-info"></i>',
+            uploadClass: 'btn btn-xs btn-success',
+            uploadTitle: 'Upload file',
+            previewFileIcon: '<i class="icon icon-file"></i>',
+            showCaption: false,
+            showUpload: false,
+            resizeImage: true,
+            //maxImageWidth: 350,
+            //maxImageHeight: 263,
+            // maxFileSize: 1000,
+        });
+    </script>
+    <script src="~/Scripts/customscript/UrgentDrugNeedScript.js" type="text/javascript"></script>
+    <script>
+    var room = 1;
+    function addtionalField() {
+
+        room++;
+        var objTo = document.getElementById('addtionalField')
+        var divtest = document.createElement("div");
+        divtest.setAttribute("class", "form-group removeclass" + room);
+        var rdiv = 'removeclass' + room;
+        divtest.innerHTML = '<div class = "panel-body"><div class="control-group"><div class="controls"> @Html.TextBoxFor(m => m.DrugName, new { @class = "form-control", placeholder = "Drug Name*", name = "DrugName[]" })</div>' +
+            '</div><div class="control-group"><div class="controls"> <select name="dosageForm[]" class="form-control" style="width: 93%">' +
+                                                '<option value="">Select dosage form</option>' +
+                                                '<option value="Capsule">Capsule</option>' +
+                                                '<option value="Cream">Cream</option>' +
+                                                '<option value="Injection">Injection</option>' +
+                                                '<option value="Tablet">Tablet</option>' +
+                                                '<option value="Syrup">Syrup</option></select></div></div>' +
+                                                '<div <div class="control-group"><div class="controls">' +
+            '@Html.TextBoxFor(m => m.DrugStrength, new { @class = "form-control", placeholder = "Strength* (e.g. 500mg, 250mg/5ml)", @style = "margin-top:10px", name = "DrugStrength[]" })</div></div>' +
+            '<div class="control-group"><div class="controls">@Html.TextBoxFor(m => m.Manufacturer, new { @class = "form-control", placeholder = "Manufacturer", @style = "margin-top:0px", name = "Manufacturer[]" })</div></div>' +
+            '<div class="control-group"><div class="controls">@Html.TextBoxFor(m => m.ManufacturerCountry, new { @class = "form-control", placeholder = "Manufacturer's Country", @style = "margin-top:0px", name = "ManufacturerCountry[]" })</div></div>' +
+            '<div class="control-group"><div class="controls"><textarea name="Description[]" class="form-control" placeholder="Give us more information, if available?" style="margin-top: 0px; width: 87.8%"></textarea></div></div>' +
+            '<div class="control-group"><div class="controls"><button class="btn btn-danger" type="button" onclick="remove_additional_fields(' + room + ');"> Remove </button></div></div><div class="clear"></div></div>';
+
+        objTo.appendChild(divtest)
+    }
+    function remove_additional_fields(rid) {
+        $('.removeclass' + rid).remove();
+    }
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        (function ($) {
+            $.validator.unobtrusive.adapters.addBool("BooleanRequired", "required");
+        }(jQuery));
+    </script>
+}

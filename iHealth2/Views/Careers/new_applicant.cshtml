@@ -1,0 +1,153 @@
+﻿@model IEnumerable<iHealth2.Models.Career>
+@{
+    ViewBag.Title = "new_applicant";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="table-responsive mailbox-messages">
+            <form role="form" method="post" action="/careers/MarkApplicantAsSeen">
+                @Html.AntiForgeryToken()
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                    <i class="fa fa-square-o"></i>
+                                </button>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FullName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Phone)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Gender)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.JobTitle)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Specialization)
+                            </th>
+                            <th>
+                                Curriculum Vitae(CV)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SubmittedDate)
+                            </th>
+
+                        </tr>
+
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+
+                            <tr>
+                                <td><input type="checkbox" id="markid" name="markid" value="@item.Id"></td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Phone)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Gender)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.JobTitle)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Specialization)
+                                </td>
+                                <td>
+                                    <a title="download cv" href="/careers/download_cv/?id=@item.Id">@item.CV_name <i class="glyphicon glyphicon-download-alt"></i></a>
+                                </td>
+                                <td>
+                                    @{var dt = Convert.ToDateTime(item.SubmittedDate).ToString("dd MMM,yyy");}
+                                    @dt
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+                <input type="submit" id="submitbtn" class="btn btn-info" disabled value="Mark As Seen" />
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+    <script>
+        $(document).ready(function () {
+
+                //Enable iCheck plugin for checkboxes
+                //iCheck for checkbox and radio inputs
+                $('.mailbox-messages input[type="checkbox"]').iCheck({
+                    checkboxClass: 'icheckbox_flat-blue',
+                    radioClass: 'iradio_flat-blue'
+                });
+
+                //Enable check and uncheck all functionality
+                $(".checkbox-toggle").click(function () {
+                    var clicks = $(this).data('clicks');
+                    if (clicks) {
+                        //Uncheck all checkboxes
+                        //  alert("i just got clicked")
+                        $(".mailbox-messages input[type='checkbox']").iCheck("uncheck");
+                        $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+                    } else {
+                        //Check all checkboxes
+                        $(".mailbox-messages input[type='checkbox']").iCheck("check");
+                        $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+                    }
+                    $(this).data("clicks", !clicks);
+                });
+
+                $('.mailbox-messages input[type="checkbox"]').on('ifToggled', function (e) {
+                    if ($('#markid:checked').length > 0) {
+                        $("#submitbtn").prop('disabled', false)
+                    }
+                    else {
+                        $("#submitbtn").prop('disabled', true)
+                    }
+
+                })
+         
+        })
+        $('#table').bootstrapTable({
+
+            striped: true,
+            // cardView: true,
+            pagination: true,
+            pageSize: 10,
+            pageList: [10, 30, 50, 100, 200],
+            smartDisplay: false,
+            showToggle: false,
+
+            //    border : true
+            //align: 'center',
+            //valign: 'bottom'
+
+        });
+
+    </script>
+
+}

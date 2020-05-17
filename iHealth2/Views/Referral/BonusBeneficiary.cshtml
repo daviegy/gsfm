@@ -1,0 +1,73 @@
+﻿@using iHealth2.Models;
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet
+@{
+    //ViewBag.Title = "Bonus Beneficiary";
+    //Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    //ApplicationDbContext db = new ApplicationDbContext();
+    //var bonus = db.referrerBonusTb.Where(r => r.ReferredCount >= 10);
+    //int counter = 0;
+   
+}
+
+@*<aside class="right-side">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th>
+                            SN
+                        </th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                        @if (bonus.Count() > 0)
+                        {
+                            foreach (var b in bonus)
+                            {
+                                counter++;
+                                <tr>
+                                    <td>
+                                       @counter
+                                    </td>
+                                    <td>@b.User.Name</td>
+                                    <td>@b.User.PhoneNumber</td>
+                                    <td>@b.User.Email</td>
+                                </tr>
+                            }
+                        }
+                           
+                </tbody>
+            </table>
+        </div>
+    </div>
+</aside>*@
+
+@section scripts{
+<script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script>
+     $('#table').bootstrapTable({
+
+         striped: true,
+         // cardView: true,
+         pagination: true,
+         pageSize: 10,
+         pageList: [10, 25, 50, 100, 200],
+         smartDisplay: false,
+         showToggle: true,
+         search: true,
+         showColumns: true,
+         showRefresh: true,
+             border : true,
+         align: 'center',
+         valign: 'bottom'
+
+     });
+</script>
+
+    }

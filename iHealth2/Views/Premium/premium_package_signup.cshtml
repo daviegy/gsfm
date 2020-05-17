@@ -1,0 +1,321 @@
+﻿@using Recaptcha;
+@using iHealth2.Models;
+@model iHealth2.Models.premium_user_Reg_ViewModel
+
+@{
+    ViewBag.Title = "premium_package_signup";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext();
+    var con3 = db.country.ToList();
+    var pro = db.Profession.ToList();
+
+}
+
+
+<div class="page-title">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title-heading">
+                    <h1 class="h1-title">Premium User</h1>
+                </div><!-- /.page-title-heading -->
+                <ul class="breadcrumbs">
+                    <li><a href="/" title="">Home<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    <li><a href="#" title="">Premium</a></li>
+                </ul><!-- /.breadcrumbs -->
+                <div class="clearfix"></div><!-- /.clearfix -->
+            </div>
+        </div>
+    </div>
+</div><!-- /.page-title -->
+
+<section class="flat-row pd-aboutv3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="wrap-main-post about-v3">
+                    @* <h3 class="center text-danger">Already have an account with us? <a class="text-success" href="/account/login"><b>LOGIN</b></a> to your dashboard to upgrade.</h3>*@
+                    <br />
+                    <div class="box-content">
+                        @using (Html.BeginForm("premium_package_signup", "premium", FormMethod.Post, new { role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <div style="width: 100%; height: 20px; border-bottom: 1px solid black; text-align: center">
+                                    <span style="font-size: 20px; background-color: #ffffff; padding: 0 10px;">
+                                        Personal Information
+                                    </span>
+                                </div>
+                            </div>
+                            <br><br>
+
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <label for="firstname" class="control-label">Firstname:</label>
+                                @Html.EditorFor(model => model.First_Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Firstname*", autofocus = true } })
+                                @Html.ValidationMessageFor(model => model.First_Name, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <label for="lastname" class="control-label">Lastname:</label>
+                                @Html.EditorFor(model => model.Last_Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Lastname*" } })
+                                @Html.ValidationMessageFor(model => model.Last_Name, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <label for="" class="control-label">Gender:</label> <br>
+                                @*<input type="radio" class="" name="gender" value="male"> Male <br>
+                                    <input type="radio" class="" name="gender" value="female"> Female*@
+                                &nbsp;&nbsp;  @Html.RadioButtonFor(model => model.Gender, "Male", new { @class = "rdClass" }) &nbsp;&nbsp; <b class="text-success">
+                                    Male
+                                </b>
+                                &nbsp;&nbsp; &nbsp;&nbsp;    @Html.RadioButtonFor(model => model.Gender, "Female", false) &nbsp;&nbsp; <b class="text-warning">
+                                    Female
+                                </b>
+                                <br />  @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+        <label for="dob" class="control-label">Birthday</label>
+
+        @Html.EditorFor(model => model.dob, new
+                           {
+                               htmlAttributes = new
+                               {
+                                   @class = "form-control",
+                                   placeholder = "dd/mm/yyy",
+                                   id="dob",
+                                   required = true,
+                               }
+                           })
+        @Html.ValidationMessageFor(model => model.dob, "", new { @class = "text-danger" })
+    </div>
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+        <label for="job" class="control-label">Occupation</label>
+
+        @Html.EditorFor(model => model.job, new
+                           {
+                               htmlAttributes = new
+                               {
+                                   @class = "form-control",
+                                   placeholder = "Occupation*",
+                                   id = "job"
+                               }
+                           })
+        @Html.ValidationMessageFor(model => model.job, "", new { @class = "text-danger" })
+    </div>
+
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <label for="email" class="control-label">E-mail Address:</label>
+
+                                @Html.EditorFor(model => model.Email, new
+                           {
+                               htmlAttributes = new
+                               {
+                                   @class = "form-control",
+                                   placeholder = "Name@example.com*"
+                               }
+                           })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <label for="mobile" class="control-label">Mobile:</label>
+
+                                @Html.EditorFor(model => model.Phone, new
+                           {
+                               htmlAttributes = new
+                               {
+                                   @class = "form-control",
+                                   placeholder = "Mobile*"
+                               }
+                           })
+                                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <div style="width: 100%; height: 20px; border-bottom: 1px solid black; text-align: center">
+                                    <span style="font-size: 20px;background-color: #ffffff; padding: 0 10px;">
+                                        Location Information
+                                    </span>
+                                </div>
+
+                                <br>
+                            </div>
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <label for="country" class="control-label">Country:</label>
+                                <select required name="Nationality" id="ddlCountry" class="">
+                                    <option value="">Select Country*</option>
+                                    @foreach (var item in con3)
+                                    {
+                                        <option value="@item.ID">@item.CountryName</option>
+                                    }
+                                </select>
+                                @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <label for="state" class="control-label">State:</label>
+                                @Html.DropDownList("State", new List<SelectListItem> { new SelectListItem { Value = "", Text = "" } }, "Select State*", new { id = "state",  @class = "" })
+                                @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <label for="city" class="control-label">City:</label>
+                                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", placeholder = "City*", autofocus = true } })
+                                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <label for="addr" class="control-label">Address:</label>
+                                @Html.TextAreaFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "Address*", autofocus = true } })
+                                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <div style="width: 100%; height: 20px; border-bottom: 1px solid black; text-align: center">
+                                    <span style="font-size: 20px;background-color: #ffffff; padding: 0 10px;">
+                                        Premium Package
+                                    </span>
+                                </div>
+
+                                <br>
+                            </div>
+                            
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <label for="plan" class="control-label">Plan:</label>
+                                @Html.DropDownListFor(model => model.premium_plan.planID, new SelectList(new iHealth2.Models.premium_planModel().GetPlan(), "planId", "planName", selectedValue: ViewBag.plan), "Select Plan*", new { @class = "", id = "plan" })
+                                @Html.ValidationMessageFor(model => model.premium_plan.planID, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <label for="Hosp_List" class="control-label">Hospital List:</label>
+                                @Html.DropDownList("Hospital_List", new List<SelectListItem> { new SelectListItem { Value = "", Text = "" } }, "Select List*", new { id = "Hosp_list", required = true, @class = "select2" })
+                                @Html.ValidationMessageFor(model => model.Hospital_List, "", new { @class = "text-danger" })
+                            </div>
+                            @*<div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <label for="Hosp_List" class="control-label">Hospital List:</label>
+                               
+                                <select class="select2">
+                                    <option selected="selected">Alabama</option>
+                                    <option>Alaska</option>
+                                    <option>California</option>
+                                    <option>Delaware</option>
+                                    <option>Tennessee</option>
+                                    <option>Texas</option>
+                                    <option>Washington</option>
+                                </select>
+                            </div>*@
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <label for="plan" class="control-label">Price:</label>
+                                @Html.DropDownList("Price", new List<SelectListItem> { new SelectListItem { Value = "", Text = "" } }, "Select Price*", new { id = "price_list", required = true, @class = "" })
+                                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <div style="width: 100%; height: 20px; border-bottom: 1px solid black; text-align: center">
+                                    <span style="font-size: 20px;background-color: #ffffff; padding: 0 10px;">
+                                        Referrer Information
+                                    </span>
+                                </div>
+                                <br>
+                            </div>
+
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <label for="sponsor" class="control-label">If you have a Referrer  code supply it here:</label>
+
+                                <input type="text" class="form-control" placeholder="Referrer  Code" name="RefCode" id="RefCode" value="@Session["spCode"]" />
+                                <b class="text-danger" style="text-decoration:underline;text-transform:uppercase" id="SponsorN">@Session["spName"]</b>
+                            </div>
+
+                            <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <div style="width: 100%; height: 20px; border-bottom: 1px solid black; text-align: center">
+                                    <span style="font-size: 20px;background-color: #ffffff; padding: 0 10px;">
+                                        Payment Information
+                                    </span>
+                                </div>
+
+                                <br>
+                            </div>
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <div>
+
+                                    <b class="text-warning"> Kindly pay into the account below:</b> <br />
+                                    <b>
+                                        Account Name: iHealth Nigeria GSFM Ltd.<br />
+                                        Account Number: 1018361479<br />
+                                    </b>
+                                    <img src="~/Content/Logo/ubalogo.fw.png" alt="Keystone Bank" />
+                                    <br /> <b class="text-info">
+                                        Once payment is completed kindly, forward proof of payment with the following information to <a href="mailto:support@ihealthgsfm.com">support@ihealthgsfm.com</a>.
+                                    </b>
+                                    <br />
+                                    <b style="font-size:small">
+                                        i. Teller Number(Optional) <br /> ii. Name of Depositor/Sender <br /> iii. Reference ID (this will be sent to you after registration is completed) <br />iv. Amount <br /> v. Date of Payment.
+                                    </b>
+
+                                </div>
+                            </div>                        <br>
+                            <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <div style="width: 100%; height: 20px; border-bottom: 1px solid black; text-align: center">
+                                    <span style="font-size: 20px;background-color: #ffffff; padding: 0 10px;">
+                                        Accept Terms &amp; Conditions
+                                    </span>
+                                </div>
+                                <br>
+                            </div>
+                            <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                @Html.CheckBoxFor(model => model.TermsAndConditions) I have Read and Accept the <a href="/home/terms"><b>Terms and Condtions</b></a> of using this Service
+                                <br />  @Html.ValidationMessageFor(model => model.TermsAndConditions, "", new { @class = "text-danger" })
+                                <br><br>
+                            </div>
+
+                            <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <div class="g-recaptcha" data-sitekey="@System.Configuration.ConfigurationManager.AppSettings["recaptchaPublicKey"]"></div>
+                                <br>
+                            </div>
+
+                            <div class="form-group form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <button type="submit" class="btn btn-danger">Buy Package</button>
+                            </div>
+                        }
+                        <div class="dividers dividers-bc-v4"></div>
+                    </div>
+
+                </div> <!-- /.wrap-main-post -->
+            </div> <!-- /.col-md-9 -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</section><!-- /.flat-row-iconbox -->
+@section Scripts {
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+<script src="~/Scripts/Plugins/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/Plugins/select2.full.min.js"></script>
+
+    <script>
+        $(".select2").select2();
+        $("#RefCode").blur(function () {
+            //alert( $("#RefCode").val())
+            //  var sponsor =
+            var sponsorName = document.getElementById
+            var opt = {};
+            opt.url = "/Home/CheckSponsor";
+            opt.type = "Post";
+            opt.dataType = "json";
+            opt.data = JSON.stringify({ RefCode: $("#RefCode").val() });
+            opt.contentType = "application/json";
+            opt.success = function (sponsordetails) {
+                $("#SponsorN").text(sponsordetails);
+            };
+
+            $.ajax(opt);
+
+
+        })
+    </script>
+    <script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+    <script src="~/Scripts/customscript/premiumPackageFormScrpt.js"></script>
+    @*<script src="~/Scripts/CustomScript/RegisterForm.js"></script>*@
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        (function ($) {
+            $.validator.unobtrusive.adapters.addBool("BooleanRequired", "required");
+        }(jQuery));
+    </script>
+}
+
+

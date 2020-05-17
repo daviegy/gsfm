@@ -1,0 +1,112 @@
+﻿@model IEnumerable<iHealth2.Models.BusinessInfo>
+@using iHealth2.CustomClasses
+<div class="table-responsive mailbox-messages">
+    <table id="table">
+
+        <thead style="text-align:justify">
+            <tr>
+                <th>
+                    <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                        <i class="fa fa-square-o"></i>
+                    </button>
+                </th>
+                <th></th>
+
+                <th>
+                    @Html.DisplayName("Business Owner")
+                </th>
+                <th>
+                    @Html.DisplayName("Business Name")
+                </th>
+
+                <th>
+                    @Html.DisplayName("Business Email")
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Phone)
+                </th>
+                <th>
+                    @Html.DisplayName("Category")
+                </th>
+                @*<th>
+                    @Html.DisplayName("SubCategory")
+                </th>
+                <th>
+                    @Html.DisplayName("Sub-SubCategory")
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Address)
+                </th>
+
+                <th>
+                    @Html.DisplayName("Registered Date")
+                </th>
+
+                @*<th></th>*@
+            </tr>
+
+        </thead>
+        <tbody>
+
+
+            @foreach (var item in Model)
+            {
+
+                string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+                String EncryptId = Cryptoclass.EncryptStringAES(item.ID.ToString(), s);
+                EncryptId = EncryptId.Replace("/", "$25");
+                EncryptId = EncryptId.Replace("+", "$24");
+
+                <tr>
+                    <td>
+                        <input type="checkbox" name="processId" id="processId" value="@item.ID">
+                    </td>
+                    <td>@Html.ActionLink("More Info", "BizDetails", "Company", new { id = EncryptId }, new { @class = "btn btn-warning" })</td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.businessName)
+                    </td>
+
+                    <td>
+                        <a href="#SendMailModal" data-toggle="modal">@Html.DisplayFor(modelItem => item.Email)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.subCategory1)
+                    </td>
+
+                    <td>
+
+                        @Html.DisplayFor(modelItem => item.subCategory2)
+                    </td>*@
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Website)
+                        </td>*@
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.regDate)
+                    </td>
+
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button onclick="approvebiz()" id="btnappr" disabled title="Approve" class="btn btn-success">Approve &nbsp;<i class="glyphicon glyphicon-ok "></i></button>
+    <button onclick="deletebiz()" id="btndel" disabled title="Delete" class="btn btn-danger">Delete &nbsp;<i class="glyphicon glyphicon-trash "></i></button>
+
+</div>

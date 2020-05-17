@@ -1,0 +1,160 @@
+﻿@using iHealth2.Models
+@{
+    ViewBag.Title = "Bonus";
+    Layout = "~/Views/Shared/_UserPanelLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext();
+}
+@if (Session["Name"] == null)
+{
+    Response.Redirect("/Account/login");
+}
+
+<aside>
+    <div class="Panel panel-default">
+        <div class="panel-body">
+            <div class="span12">
+                <div class="panel panel-primary">
+                    <div class="panel-body">
+                        @{
+                            string refid = ViewBag.refid;
+                            var b = db.IHealthUsersMLM.Where(r => r.UserID == refid).First();
+                            if (b == null)
+                            {
+                                <h1 id="textHeader" style="text-align:center; font-size:40pt">Oops,&nbsp;No&nbsp; Bonus&nbsp; for&nbsp; You!</h1>
+                                <br />
+                                <h2 class="typewriter">
+                                    <span style="font-weight:700;text-align:center"> To qualify for our bonuses, kindly refer others to this site by sharing the link sent to your email.</span>
+
+                                </h2>
+                                <br />
+                                <h2 class="text-danger" style="text-align:center"> Below is your references Log</h2>
+                                <br />
+                                <table class="table table-bordered  table-striped" style="font-size:larger">
+                                    <tr>
+                                        <th>Required Limit</th>
+                                        <td> 10</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total number of people who registered using your link</th>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Your New Target</th>
+                                        <td>@{int d = 10 - 0;} @d</td>
+                                    </tr>
+                                </table>
+                            }
+                            else if (b.MyDownlineCount > 0 && b.MyDownlineCount < 10)
+                            {
+                                <h1 style="text-align:center; font-size:40pt">You &nbsp; are&nbsp; almost&nbsp; close&nbsp; !!!</h1>
+                                <br />
+                                <h2 class="typewriter">
+                                    <span style="font-weight:700;text-align:center"> You are not yet qualify for Ihealth bonus, Kindly meet the <b> NEW TARGET</b> in your <b>REFERENCE LOG</b> to qualify.</span>
+                                </h2>
+                                <br />
+                                <h2 class="text-danger"> Below is your references Log</h2>
+                                <br />
+                                <table class="table table-bordered  table-striped" style="font-size:larger">
+                                    <tr>
+                                        <th>Required Target</th>
+                                        <td> 10</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total number of people who registered using your link</th>
+                                        <td> @b.MyDownlineCount</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Your New Target</th>
+                                        <td>@{int d = 10 - b.MyDownlineCount;} @d</td>
+                                    </tr>
+                                </table>
+                            
+                            }
+                            else
+                            {
+                                <h1 style="text-align:center; font-size:50pt">Congratulations &nbsp; !!!</h1>
+                                <br />
+                                <h2 class="typewriter">
+                                    <span style="font-weight:700;text-align:center"> You are now qualify for our bonus on Ihealth, Our Customer Care Center will contact you shortly.</span>
+                                </h2>
+                                <br />
+                                <h2 class="text-danger" style="text-align:center"> Below is your references Log</h2>
+                                <br />
+                                <table class="table table-bordered  table-striped" style="font-size:larger">
+                                    <tr>
+                                        <th>Required Target</th>
+                                        <td> 10</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total number of people who registered using your link</th>
+                                        <td> @b.MyDownlineCount</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Your New Target</th>
+                                        <td>
+                                            @{int d = 10 - b.MyDownlineCount;
+                                            if (d > 0)
+                                            {
+                                                <span>@d</span>
+                                            }
+                                            else
+                                            { <span>0</span>
+                                            }
+                                            }
+                                        </td>
+                                    </tr>
+                                </table>
+                            }
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</aside>
+@section scripts{
+
+    <script src="~/Scripts/Plugins/typewriter.js"></script>
+    <script>
+        $(function () {
+            $(".typewriter").typewriter({
+                'speed': 100 // default: 300
+            });
+        });
+    </script>
+    <script src="~/Scripts/Plugins/wavytext.js"></script>
+    <script>
+        $('#textHeader').wavyText({
+            // vendor prefixes
+            prefixes: ['-ms-', '-webkit-', '-o-', '-moz-', ''],
+
+            // animation name
+            animation_name: 'funkyGrad',
+
+            // animation speed
+            transition_speed: '0.8s',
+
+            // an object, where each key represents a number from 1-100,
+            // for each step of the keyframe animation.
+            keyframes: {
+                '0': ['0', 'red'],
+                '20': ['10px', 'orange'],
+                '40': ['20px', 'yellow'],
+                '60': ['25px', 'green'],
+                '80': ['10px', 'blue'],
+                '100': ['0', 'purple']
+            },
+
+            // an array of strings representing custom classes for each wavyText character
+            char_classes: [],
+
+            // the tag id to use
+            style_id: 'wavy-text-custom'
+
+        });
+
+    </script>
+}
+

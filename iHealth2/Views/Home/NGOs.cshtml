@@ -1,0 +1,62 @@
+﻿@model IEnumerable<iHealth2.Models.BusinessInfo>
+@using iHealth2.Models
+@using Microsoft.AspNet.Identity.Owin;
+@using Microsoft.AspNet.Identity
+
+@{
+    ViewBag.Title = "NGOs";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext();
+}
+
+<div class="page-content">
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span3 bs-docs-sidebar">
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <span class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">State/City<i class="icon icon-double-angle-down pull-right"></i></a>
+                            </span>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <ul class="nav nav-list bs-docs-sidenav">
+                                    @foreach (var item in db.BusinessInfoes.Where(b => b.Category == "NGO").GroupBy(p => p.State).Select(p => new { State = p.Key, Values = p.Distinct().Count() }))
+                                    {
+                                        <li><a href="javascript:void(0);" onclick="Search_Ngos_by_State('@item.State')"><i class="icon-chevron-right"></i> @item.State <span class="badge badge-important pull-right">@item.Values</span></a></li>
+                                    }
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="span6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div id="partialView">
+                            @{
+                                Html.RenderPartial("_ngospv", Model);
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Plugins/dpLoading-2.x.js"></script>
+    <script src="~/Scripts/customscript/FIndMenuLink.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+
+
+

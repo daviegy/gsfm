@@ -1,0 +1,89 @@
+﻿@using PagedList.Mvc
+@model  PagedList.IPagedList<iHealth2.Models.ING_Hospital_List>
+
+@using iHealth2.CustomClasses;
+@{
+    SEO_Friendly_URL seo = new SEO_Friendly_URL();
+}
+@if (Model.Count() != 0)
+{
+    foreach (var item in Model)
+    {
+        <div class="widget widget-brochure" style="background-color:#f5f5f5">
+            <table class="table table-no-bordered">
+                <tr class="no-border col-md-12">
+                    <td class="col-md-10">
+                        <b class="text-danger" style="font-size:14pt"><i class="icon icon-building"></i>@item.Hospital</b>
+                        <br />
+                        <b style="font-weight:bold; font-size:12pt">Speciality&nbsp;<i class="fa fa-medkit "></i>&nbsp; : </b><span style="font-size:12pt">&nbsp;&nbsp;
+                        @if (!string.IsNullOrEmpty(item.Speciality))
+                        {
+                            if (item.Speciality.ToLower() == "general")
+                            {
+                                <span>GENERAL PRACTICE</span>
+                            }
+                            else
+                            {
+                                <span>@item.Speciality</span>
+                            }
+
+                        }
+                        else
+                        {
+                            <span>GENERAL PRACTICE</span>
+                        }
+                        </span><br />
+                        @if (!string.IsNullOrEmpty(item.Address))
+                        {
+                            <b style="font-weight:bold ; font-size:12pt">Address &nbsp;<i class="fa fa-map-marker "></i> &nbsp;: </b><span style="font-size:12pt">&nbsp;&nbsp;@item.Address</span><br />
+                        }
+                        <b style="font-weight:bold ; font-size:12pt">City/State &nbsp;<i class="fa fa-location-arrow"></i>&nbsp;: </b><span style="font-size:12pt">&nbsp;&nbsp;@if (!string.IsNullOrEmpty(item.City))
+                        {
+                        <span>@item.City,</span>}
+                         @item.State</span><br />
+                        <b style="font-weight:bold ; font-size:12pt">Category:  &nbsp;<i class="fa fa-hospital-o "></i> &nbsp;: </b><span style="font-size:12pt">&nbsp;&nbsp;@if (item.category == "First_Hospital_List") {
+                            <span>First Hospital List</span>
+                  }else if(item.category== "second_hospital_List")
+                        {
+                            <span>Second Hospital List</span>
+                        }
+                        else if(item.category== "High_Class_Networker")
+                        {
+                            <span>High Class Networker</span>
+                        }
+                        </span><br />
+                        
+                    </td>
+                    <td class="col-md-2">
+                        <i class="fa fa-hospital-o fa-5x" style="width:100px;height:108px"></i>
+                        @*<img src="~/Content/images/iHealth_logo.png" class="img-polaroid" style="width:100px;height:108px" />*@
+                    </td>
+                    
+
+                </tr>
+            </table>
+        </div>
+        <br />
+
+    }
+    <div >
+           @* @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount)*@
+
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+        of @Model.PageCount  
+        @Html.PagedListPager(Model, page => Url.Action(ViewBag.Action, new { page,
+        ct = Request.QueryString["ct"],
+        searchTerm = Request.QueryString["searchTerm"]
+   }))
+
+
+    </div>
+
+}
+else
+{
+    <div class="alert alert-error">No Record Found</div>
+}
+
+
+

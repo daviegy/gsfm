@@ -1,0 +1,65 @@
+﻿@model iHealth2.Models.appBooking_ViewModel
+@using iHealth2.Models;
+@{
+    var db = new ApplicationDbContext();
+}
+
+       @using (Html.BeginForm("bookapp", "home", FormMethod.Post, new { role = "form" }))
+       {       
+        @Html.AntiForgeryToken()
+       <span class="text-danger">@Html.ValidationSummary(true)</span>        
+        <div class="control-group">
+            <div class="controls">
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name*" })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-error" })               
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email*" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-error" })            
+        </div>
+        <div class="control-group">
+            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Phone*" })
+            @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-error" })            
+        </div>
+        <div class="control-group">
+            @{
+           var pro = db.SubCategory2.ToList();
+            }
+            <select name="appwith" class="form-control" required>
+               
+                <option value="">Appointment with</option>
+                @foreach (var item in pro)
+                {
+                 <option value="@item.SubCat2name">@item.SubCat2name</option>
+                }
+
+            </select>
+        </div>
+        <div class="control-group">
+            <input type="text" name="appdate" placeholder="Appointment date (dd/mm/yyyy)*" class="datepicker form-control" data-date-format="dd/mm/yyyy" />
+        </div>
+        <div class="control-group">
+        @{
+           var st = db.State.ToList();
+        }
+        <select name="state" class="form-control" required>
+            <option value="">Select State</option>
+            @foreach (var item in st)
+            {
+                <option value="@item.StateName">@item.StateName</option>
+            }
+        </select>
+    </div>
+        <div class="control-group">
+        <input type="text" name="city" placeholder="City*"  required class="form-control"/>
+    </div>
+        <div class="control-group">
+            @Html.TextAreaFor(m => m.Message, new { @class = "form-control", placeholder = "Describe your need to us..." })
+            @Html.ValidationMessageFor(m => m.Message, "", new { @class = "text-error" })
+            @*  <textarea name="message" class="form-control" style="width:85%;height:150px" placeholder="Describe your need to us..."></textarea>*@
+        </div>
+        <div class="control-group">
+            <button type="submit" class="btn btn-danger btn-block">Submit booking</button>
+        </div>
+       }      

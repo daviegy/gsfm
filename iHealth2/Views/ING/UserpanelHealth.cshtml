@@ -1,0 +1,874 @@
+﻿@using iHealth2.Models
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = @Session["Name"];
+    Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+    String UserID = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(user.Id, s);
+    UserID = UserID.Replace("/", "$25");
+    UserID = UserID.Replace("+", "$24");
+    //string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+    String UserName = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(user.UserName, s);
+    UserName = UserName.Replace("/", "$25");
+    UserName = UserName.Replace("+", "$24");
+    //  var dt1 = DateTime.UtcNow;
+    var cds = user.INISubcriberExtraDetails.SDowlineSize; //Current downline size
+    var cst = user.INISubcriberExtraDetails.CurrentStage; // Current Stage
+}
+
+@if (user.INISubcriberExtraDetails.BenefitCategory != "HealthBenefit")
+{
+    Response.Redirect("/ing/userpanel");
+}
+
+
+<!-- Content Header (Page header) -->
+<!-- Small boxes (Stat box) -->
+<div class="row">
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-aqua ">
+            <div class="inner">
+                <h3>
+                    @user.INISubcriberExtraDetails.INI_Status
+                </h3>
+                <p>
+                    Networking Group Status
+                </p>
+            </div>
+
+
+            @*<a href="/Business/MyBusiness/?Id=@UserID" class="small-box-footer">
+                    More info <i class="fa fa-arrow-circle-right"></i>
+
+                </a>*@
+
+        </div>
+    </div><!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-yellow ">
+            <div class="inner">
+                <h3>
+                    @user.INISubcriberExtraDetails.PaymentStatus
+                </h3>
+                <p>
+                    PAYMENT STATUS
+                </p>
+            </div>
+
+
+            @*<a href="/Products/myProducts/?Id=@UserID" class="small-box-footer">
+                    More info <i class="fa fa-arrow-circle-right"></i>
+                </a>*@
+        </div>
+    </div><!-- ./col -->
+
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-red ">
+            <div class="inner">
+                <h3>
+                    @user.INISubcriberExtraDetails.SDowlineSize
+                </h3>
+                <p>
+                    Current Downline Size
+                </p>
+            </div>
+
+
+            @*<a href="#" class="small-box-footer">
+                    My Bonus <i class="fa fa-arrow-circle-right"></i>
+                </a>*@
+        </div>
+    </div><!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-green ">
+            <div class="inner">
+                <h3>
+                    @user.INISubcriberExtraDetails.BenefitCategory
+                </h3>
+                <p>
+                    My Benefit Category
+                </p>
+            </div>
+
+
+
+        </div>
+    </div><!-- ./col -->
+    @*<div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-teal">
+                <div class="inner">
+                    <h3>
+                        @{
+
+
+                          var dt1 = Convert.ToDateTime(user.INISubcriberExtraDetails.MaxDT2MtTarget).Date.ToString("dd MMM, yyy");
+
+                       }
+                      @dt1
+                    </h3>
+                    <p>
+                        Maximum to meet Target (i.e 3 months after sign up.)
+                    </p>
+                </div>
+
+            </div>
+        </div><!-- ./col -->*@
+
+
+
+
+    <!--TODO-->
+
+
+</div><!-- /.row -->
+<!-- top row -->
+<div class="row">
+    <div class="col-xs-12 connectedSortable">
+        <div class="panel panel-danger">
+            <div class="panel-body">
+                @{
+    /*
+                         this next lines of "if then else" is use to update the current stage of subscribers
+     * that is it will be use to update a subscriber stage whenever the current max date to meet target expires or less than datetime.now
+
+                         */
+                }
+                @if (DateTime.UtcNow.Date <= user.INISubcriberExtraDetails.MaxDT2MtTarget)
+                {
+                    INISubcriberExtraDetail inisubdetail = db.INISubcriberExtraDetails.Find(user.Id);
+                    inisubdetail.CurrentStage = "Starter";
+
+                    db.SaveChanges();
+                }
+                else if ((user.INISubcriberExtraDetails.MaxDT2MtTarget < DateTime.UtcNow.Date && DateTime.UtcNow.Date <= user.INISubcriberExtraDetails.MaxDT2MtTarget2))
+                {
+                    INISubcriberExtraDetail inisubdetail = db.INISubcriberExtraDetails.Find(user.Id);
+                    inisubdetail.CurrentStage = "Group Life Assurance";
+
+                    db.SaveChanges();
+                }
+                else if ((user.INISubcriberExtraDetails.MaxDT2MtTarget2 < DateTime.UtcNow.Date && DateTime.UtcNow.Date <= user.INISubcriberExtraDetails.MaxDT2MtTarget3))
+                {
+                    INISubcriberExtraDetail inisubdetail = db.INISubcriberExtraDetails.Find(user.Id);
+                    inisubdetail.CurrentStage = "Compensation Stage 1";
+
+                    db.SaveChanges();
+                }
+                else if ((user.INISubcriberExtraDetails.MaxDT2MtTarget3 < DateTime.UtcNow.Date && DateTime.UtcNow.Date <= user.INISubcriberExtraDetails.MaxDT2MtTarget4))
+                {
+                    INISubcriberExtraDetail inisubdetail = db.INISubcriberExtraDetails.Find(user.Id);
+                    inisubdetail.CurrentStage = "Renewal";
+
+                    db.SaveChanges();
+                }
+                else if (user.INISubcriberExtraDetails.MaxDT2MtTarget4 < DateTime.UtcNow.Date && DateTime.UtcNow.Date <= user.INISubcriberExtraDetails.MaxDT2MtTarget5)
+                {
+                    INISubcriberExtraDetail inisubdetail = db.INISubcriberExtraDetails.Find(user.Id);
+                    inisubdetail.CurrentStage = "Compensation Stage 2";
+
+                    db.SaveChanges();
+                }
+                @{
+    /*
+                         this next lines of "if then else" is use to update the current benefit of subscriber
+     * subscribers are expected to meet the target required by each stage before they can qualify for benefits
+     * failure to meet this target per stage denies them access to the benefit associated with that stage.
+     * if a subscriber meet the target required for a previous stage in the current stage, he / she is cannot be giving
+        benefit of that previous stage that he/she just met the target because he/she has been automatically moved to a new or higher stage.
+     * if a subscriber does not qualify for any benefit until he/she get to compensational stage 1, then he /she is being a compensation of 30% on the
+       total downlines registration fees.
+     */
+                }
+                @{
+                    if (cds >= 4 && cds < 8 && cst == "Starter" && user.INISubcriberExtraDetails.Stage1Benefit != "Settled")
+                {
+                    try
+                    {
+                        INISubcriberExtraDetail inisubdetail = db.INISubcriberExtraDetails.Find(user.Id);
+                        inisubdetail.Stage1Benefit = "Health Insurance Plan for 1 Year";
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+
+                    else if (cds >= 8 && cds < 12 && cst == "Group Life Assurance" && user.INISubcriberExtraDetails.Stage2Benefit != "Settled")
+                {
+                    try
+                    {
+
+                        INISubcriberExtraDetail inisubdetail = db.INISubcriberExtraDetails.Find(user.Id);
+
+                        inisubdetail.Stage2Benefit = "Group Life Insurance (Worth '" + string.Concat(((char)8358).ToString(), "1,000,000") + "' )";
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+
+                }
+
+
+                    else if (cds < 12 && cst == "Compensation Stage 1" && (user.INISubcriberExtraDetails.Stage1Benefit == "No Benefit" || user.INISubcriberExtraDetails.Stage1Benefit == "Settled") && (user.INISubcriberExtraDetails.Stage2Benefit == "No Benefit" || user.INISubcriberExtraDetails.Stage2Benefit == "Settled") && user.INISubcriberExtraDetails.Stage3Benefit != "Settled")
+                    {
+                        try
+                        {
+                            char x = (char)8358;
+                            int totalDowlinesMoney = user.INISubcriberExtraDetails.SDowlineSize * 5000;
+                            Decimal bonus = (30 * totalDowlinesMoney) / 100;
+                            INISubcriberExtraDetail inisubdetail = db.INISubcriberExtraDetails.Find(user.Id);
+                            inisubdetail.Stage3Benefit = string.Concat(x.ToString(), bonus.ToString());
+                            db.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
+                    }
+
+
+                    else if (cds >= 12 && cds < 16 && cst == "Compensation Stage 1" && user.INISubcriberExtraDetails.Stage3Benefit != "Settled")
+                {
+                    try
+                    {
+                        INISubcriberExtraDetail inisubdetail = db.INISubcriberExtraDetails.Find(user.Id);
+
+
+                        inisubdetail.Stage3Benefit = "iHealth Debit Card (worth 10,000 Naira )";
+
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+
+                    else if (cds >= 16 && cds < 20 && cst == "Renewal" && user.INISubcriberExtraDetails.Stage4Benefit != "Settled")
+                {
+                    try
+                    {
+                        INISubcriberExtraDetail inisubdetail = db.INISubcriberExtraDetails.Find(user.Id);
+
+                        inisubdetail.Stage4Benefit = "Health and life Insurance Plan Renewal for 1 Year";
+
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+
+                    else if (cds >= 20 && cst == "Compensation Stage 2" && user.INISubcriberExtraDetails.Stage5Benefit != "Settled")
+                {
+                    if(user.INISubcriberExtraDetails.MaxDT2MtTarget5 >= DateTime.UtcNow.Date)
+                    {
+                        try
+                        {
+                            INISubcriberExtraDetail inisubdetail = db.INISubcriberExtraDetails.Find(user.Id);
+
+                            inisubdetail.Stage5Benefit = "iHealth Debit Card worth 10,000 Naira ";
+
+                            db.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
+                    }
+                   
+                }
+            
+                }
+
+                <table class="table table-striped table-condensed table-bordered">
+                   @{ /*
+                       The "if then else" in this table is use to keep track of subscriber benefit.
+                       * How it Works
+                       * 1. if subscriber has an existing benefit(s) that has not been claim or processed
+                       * for a previous stage, this particular benefit is displayed along with the current stage 
+                       * benefit when available. otherwise the current stage benefit will be d only one to be displayed
+                       */}
+                    <tr>
+<th colspan="3">
+    <h3><b>Benefit Logs</b></h3>
+</th>
+
+                    </tr>
+                  
+                     <tr>
+                        <th><h4>Stages</h4></th>
+                        <th><h4>Earned Benefits</h4></th>
+                         <th><a href="/INI_Subscriber/ClaimBenefit/?ids=@UserName" style="font-size:inherit; animation-name: Blinks; animation-duration:1s;animation-iteration-count: infinite;" class="text-green"> Click here</a><span style="color:black">&nbsp; to claim benefits</span></th>
+                    </tr>
+                  
+                    @{if (user.INISubcriberExtraDetails.Stage1Benefit != "No Benefit")
+                    {
+                        <tr>
+                            <th>
+                              <h5>Starter</h5>  
+                            </th>
+                            <td>
+                                <h5>  @user.INISubcriberExtraDetails.Stage1Benefit</h5>
+                            </td>
+                            <td> 
+</td>
+                        </tr>
+
+                    }
+                      if (user.INISubcriberExtraDetails.Stage2Benefit != "No Benefit")
+                      {
+                        <tr>
+                            <th>
+                                <h5>  Group Life Assurance</h5>
+                            </th>
+                            <td>
+                                <h5>  @user.INISubcriberExtraDetails.Stage2Benefit</h5>
+                            </td>
+                            <td></td>
+                        </tr>
+
+                      }
+                        if (user.INISubcriberExtraDetails.Stage3Benefit != "No Benefit" && user.INISubcriberExtraDetails.Stage3Benefit != "₦0")
+                      {
+                        <tr>
+                            <th>
+                                <h5> Compensation Stage 1</h5>
+                            </th>
+                            <td>
+                                <h5> @user.INISubcriberExtraDetails.Stage3Benefit</h5>
+                            </td>
+                          <td></td>
+                        </tr>
+
+                      }
+                      if (user.INISubcriberExtraDetails.Stage4Benefit != "No Benefit")
+                      {
+                        <tr>
+                            <th>
+                                <h5>    Renewal</h5>
+                            </th>
+                            <td>
+                               <h5> @user.INISubcriberExtraDetails.Stage4Benefit</h5>
+                            </td>
+                          <td></td>
+                        </tr>
+
+                      }
+                      if (user.INISubcriberExtraDetails.Stage5Benefit != "No Benefit")
+                      {
+                        <tr>
+                            <th>
+                               <h5> Compensation Stage 2</h5>
+                            </th>
+                            <td>
+                               <h5> @user.INISubcriberExtraDetails.Stage5Benefit</h5>
+                            </td>
+                          <td></td>
+                        </tr>
+
+                      }
+                      
+}
+                 
+                 
+                </table>
+
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-body">
+                <table class="table table-no-bordered table-responsive table-striped">
+                    @if (DateTime.UtcNow.Date <= user.INISubcriberExtraDetails.MaxDT2MtTarget)
+                    {
+
+                        <tr>
+
+                            <th style="width:300px">
+                                Stage
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+                            <td style="font-size:14pt">
+                                @user.INISubcriberExtraDetails.CurrentStage
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <th style="width:300px">
+                                Required Downlines Size for this Stage
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+                            <td style="font-size:14pt">
+                                4
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th style="width:300px">
+                                Maximum Date to Meet Target
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+
+                            <td style="font-size:14pt">
+
+                                @{
+                        var dtc = Convert.ToDateTime(user.INISubcriberExtraDetails.MaxDT2MtTarget).Date.ToString("dd MMM, yyyy");
+                                }
+                                @dtc
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width:300px"> Numbers of Days left to Meet Target</th>
+                            <td><i style="align-items:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+
+                            <td>
+                                @{
+                        if (user.INISubcriberExtraDetails.MaxDT2MtTarget <= DateTime.UtcNow.Date)
+                        {
+                            <span class="text-danger" style="font-size:14pt">Your Validity period to meet target has expired <a href="/INI_Subscriber/ClaimBenefit/?ids=@UserName">Click Here</a> to Claim benefit</span>
+                        }
+                        else
+                        {
+                            TimeSpan spanc = Convert.ToDateTime(user.INISubcriberExtraDetails.MaxDT2MtTarget).Date.Subtract(DateTime.UtcNow.Date);
+                            <span id="co" style="font-size:20pt">@spanc.TotalDays &nbsp;&nbsp; Days &nbsp; Left</span>
+
+                        }
+
+                                }
+                            </td>
+
+                        </tr>
+
+                    }
+                    else if ((user.INISubcriberExtraDetails.MaxDT2MtTarget < DateTime.UtcNow.Date && DateTime.UtcNow.Date <= user.INISubcriberExtraDetails.MaxDT2MtTarget2))
+                    {
+
+                        <tr>
+
+                            <th style="width:300px">
+                                Stage
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+                            <td style="font-size:14pt">
+                                @user.INISubcriberExtraDetails.CurrentStage
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <th style="width:300px">
+                                Required Downlines Size for this Stage
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+                            <td style="font-size:14pt">
+                                8
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th style="width:300px">
+                                Maximum Date to Meet Target
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+
+                            <td style="font-size:14pt">
+
+                                @{
+                        var dtc = Convert.ToDateTime(user.INISubcriberExtraDetails.MaxDT2MtTarget2).Date.ToString("dd MMM, yyyy");
+                                }
+                                @dtc
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width:300px"> Numbers of Days left to Meet Target</th>
+                            <td><i style="align-items:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+
+                            <td>
+                                @{
+                        if (user.INISubcriberExtraDetails.MaxDT2MtTarget2 <= DateTime.UtcNow.Date)
+                        {
+                            <span class="text-danger" style="font-size:14pt">Your Validity period to meet target has expired <a href="/INI_Subscriber/ClaimBenefit/?ids=@UserName">Click Here</a> to Claim benefit</span>
+                        }
+                        else
+                        {
+                            TimeSpan spanc = Convert.ToDateTime(user.INISubcriberExtraDetails.MaxDT2MtTarget2).Date.Subtract(DateTime.UtcNow.Date);
+                            <span id="co" style="font-size:20pt">@spanc.TotalDays &nbsp;&nbsp; Days &nbsp; Left</span>
+
+                        }
+
+                                }
+                            </td>
+
+                        </tr>
+                    }
+                    else if (user.INISubcriberExtraDetails.MaxDT2MtTarget2 < DateTime.UtcNow.Date && DateTime.UtcNow.Date <= user.INISubcriberExtraDetails.MaxDT2MtTarget3)
+                    {
+
+                        <tr>
+
+                            <th style="width:300px">
+                                Stage
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+                            <td style="font-size:14pt">
+                                @user.INISubcriberExtraDetails.CurrentStage
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <th style="width:300px">
+                                Required Downlines Size for this Stage
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+                            <td style="font-size:14pt">
+                                12
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th style="width:300px">
+                                Maximum Date to Meet Target
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+
+                            <td style="font-size:14pt">
+
+                                @{
+                        var dtc = Convert.ToDateTime(user.INISubcriberExtraDetails.MaxDT2MtTarget3).Date.ToString("dd MMM, yyyy");
+                                }
+                                @dtc
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width:300px"> Numbers of Days left to Meet Target</th>
+                            <td><i style="align-items:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+
+                            <td>
+                                @{
+                        if (user.INISubcriberExtraDetails.MaxDT2MtTarget3 <= DateTime.UtcNow.Date)
+                        {
+                            <span class="text-danger" style="font-size:14pt">Your Validity period to meet target has expired <a href="/INI_Subscriber/ClaimBenefit/?ids=@UserName">Click Here</a> to Claim benefit</span>
+                        }
+                        else
+                        {
+                            TimeSpan spanc = Convert.ToDateTime(user.INISubcriberExtraDetails.MaxDT2MtTarget3).Date.Subtract(DateTime.UtcNow.Date);
+                            <span id="co" style="font-size:20pt">@spanc.TotalDays &nbsp;&nbsp; Days &nbsp; Left</span>
+
+                        }
+
+                                }
+                            </td>
+
+                        </tr>
+
+                    }
+                    else if (user.INISubcriberExtraDetails.MaxDT2MtTarget3 < DateTime.UtcNow.Date && DateTime.UtcNow.Date <= user.INISubcriberExtraDetails.MaxDT2MtTarget4)
+                    {
+
+                        <tr>
+
+                            <th style="width:300px">
+                                Stage
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+                            <td style="font-size:14pt">
+                                @user.INISubcriberExtraDetails.CurrentStage
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <th style="width:300px">
+                                Required Downlines Size for this Stage
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+                            <td style="font-size:14pt">
+                                16
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th style="width:300px">
+                                Maximum Date to Meet Target
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+
+                            <td style="font-size:14pt">
+
+                                @{
+                        var dtc = Convert.ToDateTime(user.INISubcriberExtraDetails.MaxDT2MtTarget4).Date.ToString("dd MMM, yyyy");
+                                }
+                                @dtc
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width:300px"> Numbers of Days left to Meet Target</th>
+                            <td><i style="align-items:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+
+                            <td>
+                                @{
+                        if (user.INISubcriberExtraDetails.MaxDT2MtTarget4 <= DateTime.UtcNow.Date)
+                        {
+                            <span class="text-danger" style="font-size:14pt">Your Validity period to meet target has expired <a href="/INI_Subscriber/ClaimBenefit/?ids=@UserName">Click Here</a> to Claim benefit</span>
+                        }
+                        else
+                        {
+                            TimeSpan spanc = Convert.ToDateTime(user.INISubcriberExtraDetails.MaxDT2MtTarget4).Date.Subtract(DateTime.UtcNow.Date);
+                            <span id="co" style="font-size:20pt">@spanc.TotalDays &nbsp;&nbsp; Days &nbsp; Left</span>
+
+                        }
+
+                                }
+                            </td>
+
+                        </tr>
+                    }
+                    else if (user.INISubcriberExtraDetails.MaxDT2MtTarget4 < DateTime.UtcNow.Date && DateTime.UtcNow.Date <= user.INISubcriberExtraDetails.MaxDT2MtTarget5)
+                    {
+
+                        <tr>
+
+                            <th style="width:300px">
+                                Stage
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+                            <td style="font-size:14pt">
+                                @user.INISubcriberExtraDetails.CurrentStage
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <th style="width:300px">
+                                Required Downlines Size for this Stage
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+                            <td style="font-size:14pt">
+                                20
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th style="width:300px">
+                                Maximum Date to Meet Target
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+
+                            <td style="font-size:14pt">
+
+                                @{
+                        var dtc = Convert.ToDateTime(user.INISubcriberExtraDetails.MaxDT2MtTarget5).Date.ToString("dd MMM, yyyy");
+                                }
+                                @dtc
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width:300px"> Numbers of Days left to Meet Target</th>
+                            <td><i style="align-items:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+
+                            <td>
+                                @{
+                        if (user.INISubcriberExtraDetails.MaxDT2MtTarget5 <= DateTime.UtcNow.Date)
+                        {
+                            <span class="text-danger" style="font-size:14pt">Your Validity period to meet target has expired <a href="/INI_Subscriber/ClaimBenefit/?ids=@UserName">Click Here</a> to Claim benefit</span>
+                        }
+                        else
+                        {
+                            TimeSpan spanc = Convert.ToDateTime(user.INISubcriberExtraDetails.MaxDT2MtTarget5).Date.Subtract(DateTime.UtcNow.Date);
+                            <span id="co" style="font-size:20pt">@spanc.TotalDays &nbsp;&nbsp; Days &nbsp; Left</span>
+
+                        }
+
+                                }
+                            </td>
+
+                        </tr>
+                    }
+                    else if (DateTime.UtcNow.Date > user.INISubcriberExtraDetails.MaxDT2MtTarget5)
+                    {
+                        <tr>
+
+                            <th style="width:300px">
+                                Stage
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+                            <td style="font-size:14pt">
+                                @user.INISubcriberExtraDetails.CurrentStage
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <th style="width:300px">
+                                Required Downlines Size for this Stage
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+                            <td style="font-size:14pt">
+                                20
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th style="width:300px">
+                                Maximum Date to Meet Target
+                            </th>
+                            <td><i style="align-content:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+
+                            <td style="font-size:14pt">
+
+                                @{
+                        var dtc = Convert.ToDateTime(user.INISubcriberExtraDetails.MaxDT2MtTarget5).Date.ToString("dd MMM, yyyy");
+                                }
+                                @dtc
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width:300px"> Numbers of Days left to Meet Target</th>
+                            <td><i style="align-items:center" class="glyphicon glyphicon-arrow-right icon"></i></td>
+
+                            <td>
+                                @{
+                        if (user.INISubcriberExtraDetails.MaxDT2MtTarget5 <= DateTime.UtcNow.Date)
+                        {
+                            <span class="text-danger" style="font-size:14pt">Your Validity period to meet target has expired <a href="/INI_Subscriber/ClaimBenefit/?ids=@UserName">Click Here</a> to Claim benefit</span>
+                        }
+                       
+
+                       }
+                            </td>
+
+                        </tr>
+
+                    }
+
+
+                </table>
+
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Your Refferral URL
+                </div>
+            </div>
+            <div class="panel-body">
+                <b>Replicate Url :        <a href="@user.Refferal_Url">@user.Refferal_Url</a></b>
+            </div>
+        </div>
+        @*<div class="panel panel-success">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    News
+                </div>
+            </div>
+            <div class="panel-body">
+                <h3>
+                    <marquee direction="scroll" behaviour="alternate" style="font-size:large">
+                        1. You automatically change stage every 3 month. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. Once there is a benefit for you, Kindly Click the
+                        <b class="text-info">Claim Benefit</b> link at the left Panel to process your Benefit.
+                    </marquee>
+                </h3>
+            </div>
+        </div>*@
+    </div><!-- /.col -->
+</div>
+<!-- /.row -->
+<!-- Main row -->
+<div class="row">
+    <!-- Left col -->
+    <section id="helpdesk" class="col-lg-6 connectedSortable">
+
+        <!-- quick email widget -->
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="glyphicon glyphicon-question-sign"></i>
+                <h2 class="box-title">Help Desk:<small> Send us mail</small> </h2>
+                <!-- tools box -->
+                <div class="pull-right box-tools">
+                    <button class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+                </div><!-- /. tools -->
+            </div>
+            <form action="/support/HelpDesk/?hlpids=@UserName" method="post">
+                @Html.AntiForgeryToken()
+                <div class="box-body">
+                    @*<div class="form-group">
+                        <input type="email" class="form-control" name="emailFrom" placeholder="" />
+                    </div>*@
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="subject" placeholder="Subject:" required />
+                    </div>
+                    <div>
+                        <textarea id="Message" name="Message" placeholder="message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required></textarea>
+                    </div>
+
+                </div>
+                <div class="box-footer clearfix">
+                    <button class="pull-right btn btn-default" id="sendEmail">Send <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </form>
+        </div>
+
+
+    </section><!-- /.Left col -->
+
+</div><!-- /.row (main row) -->
+@section scripts{
+<script src="~/Scripts/Plugins/summernote.min.js"></script>
+    <script src="~/Scripts/Plugins/wavytext.js"></script>
+    <script>
+        $(function () {
+            $('#Message').summernote()
+        });
+        $('#co, #co2, #co3, #co4, #co5').wavyText({
+            // vendor prefixes
+            prefixes: ['-ms-', '-webkit-', '-o-', '-moz-', ''],
+
+            // animation name
+            animation_name: 'funkyGrad',
+
+            // animation speed
+            transition_speed: '0.8s',
+
+            // an object, where each key represents a number from 1-100,
+            // for each step of the keyframe animation.
+            keyframes: {
+                '0': ['0', 'red'],
+                '20': ['10px', 'orange'],
+                '40': ['20px', 'yellow'],
+                '60': ['25px', 'green'],
+                '80': ['10px', 'blue'],
+                '100': ['0', 'purple']
+            },
+
+            // an array of strings representing custom classes for each wavyText character
+            char_classes: [],
+
+            // the tag id to use
+            style_id: 'wavy-text-custom'
+
+        });
+
+    </script>
+}
+
+
+
+
+
+

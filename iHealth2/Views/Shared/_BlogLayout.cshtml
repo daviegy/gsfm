@@ -1,0 +1,504 @@
+﻿@using iHealth2.Models
+@using Microsoft.AspNet.Identity.Owin;
+@using Microsoft.AspNet.Identity
+@{
+    ApplicationDbContext dbs = new ApplicationDbContext();
+    var news = dbs.News.OrderByDescending(n => n.EntryDate).ToList().Take(3);
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Ihealth GSFM|@ViewBag.Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="description" content="iHealth Nigeria is an online health care product of Guarantee Structure and Facility Management (GSFM) Ltd. At iHealth Nigeria GSFM, we are challenged to ensure that every person and organization that we serve received the greatest possible value for their health investment." />
+    <meta name="keywords" content="Nigeria Health,iHealth,Health Nigeria, Health News, Nigeria Health News,ihealth gsfm,Idris Gbenga Oyesiku, health deal in Nigeria" />
+    <meta name="author" content="iHealthGsfm" />
+
+    <meta property="og:title" content="Ihealth GSFM|@ViewBag.Title" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="iHealth Nigeria is an online health care product of Guarantee Structure and Facility Management (GSFM) Ltd. At iHealth Nigeria GSFM, we are challenged to ensure that every person and organization that we serve received the greatest possible value for their health investment." />
+    <meta property="og:image" content="http://ihealthgsfm.com/content/images/Aboutus.png" />
+    <meta property="og:image:url" content="http://ihealthgsfm.com/content/images/Aboutus.png" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="761" />
+    <meta property="og:image:height" content="364" />
+    <meta property="og:url" content="http://ihealthgsfm.com/" />
+    <meta property="og:site_name" content="iHealth Nigeria Gsfm" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@(" @")ihealthgsfm">
+    <meta name="twitter:creator" content="@(" @")ihealthgsfm">
+    <meta name="twitter:title" content="Ihealth GSFM|@ViewBag.Title">
+    <meta name="twitter:description" content="iHealth Nigeria is an online health care product of Guarantee Structure and Facility Management (GSFM) Ltd. At iHealth Nigeria GSFM, we are challenged to ensure that every person and organization that we serve received the greatest possible value for their health investment..">
+    <meta name="twitter:image" content="http://ihealthgsfm.com/content/images/Aboutus.png">
+    <meta name="twitter:url" content="http://ihealthgsfm.com/" />
+
+    <!-- Essential styles -->
+  
+    <link href="~/Boomerang/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Boomerang/font-awesome/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Boomerang/assets/fancybox/jquery.fancybox.css" media="screen">
+
+    <!-- Boomerang styles -->
+    <link id="wpStylesheet" type="text/css" href="~/Boomerang/css/global-style-green.css" rel="stylesheet" media="screen">
+
+
+    <!-- Favicon -->
+    <link rel="Shortcut Icon" href="/iHealthIcon.ico" />
+    <!-- Assets -->
+    <link rel="stylesheet" href="~/Boomerang/assets/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="~/Boomerang/assets/owl-carousel/owl.theme.css">
+    <link rel="stylesheet" href="~/Boomerang/assets/sky-forms/css/sky-forms.css">
+    <!--[if lt IE 9]>-->
+    <link rel="stylesheet" href="~/Boomerang/assets/sky-forms/css/sky-forms-ie8.css">
+    <!--<![endif]-->
+    <link href="~/Boomerang/assets/animate/animate.min.css" rel="stylesheet" />
+    
+    <link href="~/Content/rm-menu.css" rel="stylesheet" />
+</head>
+
+<body>
+ 
+    <!-- MODALS -->
+    <!-- MOBILE MENU - Option 2 -->
+    <section id="navMobile" class="aside-menu left">
+        <form class="form-horizontal form-search">
+            <div class="input-group">
+                <input type="search" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button id="btnHideMobileNav" class="btn btn-close" type="button" title="Hide sidebar"><i class="fa fa-times"></i></button>
+                </span>
+            </div>
+        </form>
+        <div id="dl-menu" class="dl-menuwrapper">
+            <ul class="dl-menu"></ul>
+        </div>
+    </section>
+
+    <!-- SLIDEBAR -->
+    <section id="asideMenu" class="aside-menu right">
+        <form class="form-horizontal form-search">
+            <div class="input-group">
+                <input type="search" class="form-control" placeholder="Search..." />
+                <span class="input-group-btn">
+                    <button id="btnHideAsideMenu" class="btn btn-close" type="button" title="Hide sidebar"><i class="fa fa-times"></i></button>
+                </span>
+            </div>
+        </form>
+
+        <h5 class="side-section-title">Optional sidebar menu</h5>
+        <div class="nav">
+            <ul>
+                <li>
+                    <a href="#">HMo and NGOs</a>
+                </li>
+                <li>
+                    <a href="#" title="Mobile Health Service">Mobile Health Service</a>
+                </li>
+                <li>
+                    <a href="#" title="International Health Service">International Health Service</a>
+                </li>
+                <li>
+                    <a href="#" title="Ambulance Service">Ambulance Service</a>
+                </li>
+                <li>
+                    <a href="#" title="Book Appointment">Book Appointment</a>
+                </li>
+                <li>
+                    <a href="#" title="Service, Quality and Audit">Service, Quality and Audit</a>
+                </li>
+                <li>
+                    <a href="#" title="Help the Sick">Help the Sick</a>
+                </li>
+                <li>
+                    <a href="#" title="Newsletter">Newsletter</a>
+                   
+                </li>
+                <li><a href="/home/About">About us</a></li>
+                <li><a href="/support/ContactUs">Contact us</a></li>
+                <li><a href="/Home/FAQ">FAQ</a></li>
+                <li><a href="/careers/careers">Career and Networking</a></li>
+                <li><a href="/Advert/How_to_Place_Ads" title="Advertise with us">Advertise</a></li>
+            </ul>
+        </div>
+
+        <h5 class="side-section-title">Social media</h5>
+        <div class="social-media">
+            <a href="https://www.facebook.com/iHealthGSFM/"><i class="fa fa-facebook facebook"></i></a>
+            <a href="#"><i class="fa fa-google-plus google"></i></a>
+            <a href="#"><i class="fa fa-twitter twitter"></i></a>
+        </div>
+
+        <h5 class="side-section-title">Contact information</h5>
+        <div class="contact-info">
+            <h5>Address</h5>
+            <p> 123 Street 12345 City, FCT ABUJA NIGERIA</p>
+
+            <h5>Email</h5>
+            <p>support@ihealthgsfm.com</p>
+
+            <h5>Phone</h5>
+            <p>+234 803-0000-0000 </p>
+        </div>
+    </section>
+    <div class="body-wrap">
+          <!-- HEADER -->
+        <div id="divHeaderWrapper">
+            <header class="header-standard-2">
+                <!-- MAIN NAV -->
+                <div class="navbar navbar-wp navbar-arrow mega-nav" role="navigation">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle navbar-toggle-aside-menu">
+                                <i class="fa fa-outdent icon-custom"></i>
+                            </button>
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <i class="fa fa-bars icon-custom"></i>
+                            </button>
+
+                            <a class="navbar-brand" href="/home/index" title="iHealth Nigeria GSFM">
+                                <img src="~/Content/Logo/ihealthlogo.png" alt="iHealth Nigeria GSFM">
+                            </a>
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="hidden-md hidden-lg">
+                                    <div class="bg-light-gray">
+                                        <form class="form-horizontal form-light p-15" role="form">
+                                            <div class="input-group input-group-lg">
+                                                <input type="text" class="form-control" placeholder="I want to find ...">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-white" type="button">
+                                                        <i class="fa fa-search"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </li>
+                                <li class="dropdown dropdown-meganav mega-dropdown-fluid">
+                                    <a href="/" class="" data-toggle=""style="font-family: Calligraffitti">Home<br /><br /></a>
+                                </li>
+                                <li class="dropdown" style="font-family: Calligraffitti">
+                                    <a href="#" class="dropdown-toggle" style="font-family: Calligraffitti">Ihealth Networking<br /><span style="font-family:Calligraffitti;text-align:match-parent">Group</span><b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/ING/Membership_benefits">Membership Benefits</a></li>
+                                        <li><a href="/ING/Hospital_list_for_ING">Hospital List for ING</a></li>
+                                        <li class="dropdown-submenu">
+                                            <a href="#" tabindex="-1">Client Boosters</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="/ING/clientbooster">About ClientBoosters</a></li>
+                                                <li><a href="/ING/Client_Booster_List">List of ClientBoosters</a></li>
+                                                <li><a href="/Home/Terms">SLA</a></li>
+                                                <li><a href="/Account/iniRegformLandingPage">Register with us</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="/ING/Training_guide" style="font-size:13pt">Training Guide</a></li>
+                                        <li><a target="_blank" href="~/PDF.JS/web/viewer.html?File=%2FHealthInsuranceBenefits4ING.pdf" style="font-size:13pt">Health Insurance Benefits</a></li>
+                                        <li><a href="/Account/iniRegformLandingPage" style="font-size:13pt">Sign up</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="dropdown" style="font-family: Calligraffitti">
+                                    <a href="#" class="dropdown-toggle" style="font-family: Calligraffitti" data-toggle="dropdown">Shop for Health<br /><small>Products</small></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Health Insurance</a></li>
+                                        @*<li><a href="#">Life Insurance</a></li>*@
+                                        @*<li><a href="/Pharmacy/Search_Drugs">Medicines</a></li>*@
+                                        @* <li><a href="/Pharmacy/UrgentNeedForDrugs">Urgent Drug Request</a></li>*@
+                                        <li><a href="#">Medical Equipments</a></li>
+                                        @*<li><a href="#">Herbal Products</a></li>
+                                        <li><a href="#">Vet. Products</a></li>*@
+                                        <li><a href="/Advert/How_to_Place_Ads">Advertise</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown" >
+                                    <a href="#" class="dropdown-toggle" style="font-family: Calligraffitti" data-toggle="dropdown">Find Health<br /><small style="font-size:small">Professionals</small></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/search/professionals/?profession=Medical Doctor">Find a Medical Doctor</a></li>
+                                        <li><a href="/search/professionals/?profession=Herbal Doctor">Find a Herbal Doctor</a></li>
+                                        <li><a href="/search/professionals/?profession=Vet Doctor">Find a Vet. Doctor</a></li>
+                                        <li><a href="/search/professionals/?profession=Pharmacist">Find a Pharmacist</a></li>
+                                        <li><a href="/search/professionals/?profession=Nurse">Find a Nurse</a></li>
+                                        <li><a href="/search/professionals/?profession=Lab Scientist/Technician">Find a Laboratory Scientist</a></li>
+                                        <li><a href="/Advert/How_to_Place_Ads">Advertise</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" style="font-family: Calligraffitti" data-toggle="dropdown">Find Health <br /> Centres</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/Hospital/Find_Hospital">Find a Hospital</a></li>
+                                        <li><a href="/pharmacy/Find_Pharmacy">Find a Pharmacy</a></li>
+                                        <li><a href="/lab/Find_Lab">Find a Laboratory</a></li>
+                                        <li><a href="/Herbal/Find_Herbs_Center">Find a Herbal Centre</a></li>
+                                        <li><a href="/Vet/Find_Vet_Center">Find a Veterinary Clinics</a></li>
+                                        <li><a href="/Med_Equipments/medEquipCompany">Find Medical Equipments Store</a></li>
+                                        <li><a href="#">Tour a Hospital</a></li>
+                                        <li><a href="/Advert/How_to_Place_Ads">Advertise</a></li>
+
+                                    </ul>
+                                </li>                              
+                                <li class="dropdown"><a href="/blog/blog_list" style="font-family: Calligraffitti">Blog<br /><br /></a></li>
+                                @if (Session["Name"] == null)
+                                {
+                                    <li class="dropdown active"><a href="/Account/Login" style="font-family: Calligraffitti">SignIn / SignUp<br /><br /></a></li>
+                                }
+                                else
+                                {
+                                    var user = dbs.Users.Find(User.Identity.GetUserId());
+                                    @*if (User.IsInRole("SuperAdmin"))
+                                    {
+                                        <li class="dropdown"><a href="/superAdm/Index" title="Click to Manage Account" style="color: #ff0000; font-weight:700;font-family:'Times New Roman', Times, serif">ADMIN DASHBOARD<br /><br /></a></li>
+                                    }
+                                    else*@
+                                    if (User.IsInRole("Admin")|| User.IsInRole("SuperAdmin"))
+                                    {
+                                        <li class="dropdown"><a href="/Admin/Index" title="Click to Manage Account" style="color:#ff0000; font-weight:700;font-family:'Times New Roman', Times, serif">ADMIN DASHBOARD<br /><br /></a></li>
+
+                                    }
+                                    else if (User.IsInRole("Users"))
+                                    {
+                                        <li class="dropdown">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" href="/users/Userpanel" style="color:#ff0000; font-family:'Times New Roman', Times, serif;font-size:16pt">@user.FirstName.ToString().ToUpper()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="caret"></i></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="/users/Userpanel" title="Click to Manage Account" style="color: Orange; font-weight:700;font-family:'Times New Roman', Times, serif">Goto Dashboard</a></li>
+                                                <li><a href="/Business/Create_Biz" style="font-family: 'Times New Roman', Times, serif">List Service</a></li>
+                                                <li><a href="/products/Register_Product" style="font-family: 'Times New Roman', Times, serif">Register Product</a></li>
+                                                <li>
+                                                    <a href="javascript:document.getElementById('logoutForm').submit()" style="font-family: 'Times New Roman', Times, serif">Sign Out</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="dropdown">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" href="/ING/Userpanel/?bc=@user.INISubcriberExtraDetails.BenefitCategory" style="color:#ff0000; font-family:'Times New Roman', Times, serif">@user.FirstName.ToString().ToUpper()<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="caret"></i></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="/ING/Userpanel/?bc=@user.INISubcriberExtraDetails.BenefitCategory" title="Click to Manage Account" style="color: Orange; font-weight:700;">Goto Dashboard</a></li>
+                                                <li><a href="/Business/Create_Biz">List Service</a></li>
+                                                <li><a href="/products/Register_Product">Register Product</a></li>
+                                                <li>
+                                                    <a href="javascript:document.getElementById('logoutForm').submit()">Sign Out</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+
+
+                                }
+                                
+                                <li class="dropdown dropdown-aux animate-click" data-animate-in="animated bounceInUp" data-animate-out="animated fadeOutDown" style="z-index:500;">
+                                    <a href="#" class="dropdown-form-toggle" data-toggle="dropdown"><i class="fa fa-search"></i></a>
+                                    <ul class="dropdown-menu dropdown-menu-user animate-wr">
+                                        <li id="dropdownForm">
+                                            <div class="dropdown-form">
+                                                <form class="form-horizontal form-light p-15" role="form">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" placeholder="I want to find ...">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-base" type="button">Go</button>
+                                                        </span>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-aux">
+                                    <a href="#" id="cmdAsideMenu" class="dropdown-toggle dropdown-form-toggle" title="Open slidebar">
+                                        <i class="fa fa-outdent"></i>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </div><!--/.nav-collapse -->
+                    </div>
+                </div>
+             
+            </header>
+        </div>
+        <div class="col-md-12 col-md-offset-2">
+            <a href="/Home/index"><img src="~/Content/images/AdsBanner/animation.gif" /></a>
+        </div>
+
+        @RenderBody()
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="col">
+                        <h2>About us</h2>
+                        <p class="no-margin">
+                            iHealth Nigeria is an online healthcare product
+                            of Guarantee Structure and Facility Management (GSFM) Ltd.
+                            <a href="/home/About" class="btn btn-block btn-base btn-icon fa-check" title="Click to read more">Read more...</a>
+                        </p>
+                        <p>
+                            
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="col">
+                        <h2>Our Services</h2>
+                        <p class="text-success">
+                            <a href="#" title="Mobile Health Service">Mobile Health Service</a><br />
+                            <a href="#" title="International Health Service">International Health Service</a><br />
+                            <a href="#" title="Ambulance Service">Ambulance Service</a><br />
+                            <a href="#" title="Book Appointment">Book Appointment</a><br />
+                            <a href="#" title="Service, Quality and Audit">Service, Quality and Audit</a><br />
+                            <a href="#" title="Help the Sick">Help the Sick</a><br />
+                            <a href="#" title="Newsletter">Newsletter</a><br />
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="col col-social-icons">
+                        <h2>Mailing list/Follow Us</h2>
+                        <p>Sign up if you would like to receive occasional treats from us.</p>
+                        <form class="form-horizontal form-light">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Your email address...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-base" type="button">Go!</button>
+                                </span>
+                            </div>
+                        </form>
+                        <br />
+
+                        <a href="https://www.facebook.com/iHealthGSFM/"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-google-plus"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                      
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="col">
+                        <h2>Contact us</h2>
+                        <ul>
+                            <li>5th Avenue, New York - United States</li>
+                            <li>Phone: +10 724 1234 567 | Fax: +10 724 1234 567 </li>
+                            <li>Email: <a href="mailto:support@ihealthgsfm.com" title="Email Us">support@ihealthgsfm.com</a></li>
+                            <li> To fill our Contact Us Form <a class="btn btn-block btn-base btn-icon fa-check" href="/support/ContactUs">Contact Us </a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="span12 copyright">
+                    Copyright © @DateTime.UtcNow.Year iHealth Nigeria All Rights Reserved. Developed by Productive In Nature Nig. Ltd.
+                    <a href="/Home/Terms" title="Terms of Use">Terms and Conditions</a>
+                    <a href="/Home/PrivacyPolicy" title="Privacy Policy">Privacy Policy</a>
+                    <a href="/Home/FAQ" title="FAQ">FAQ</a>
+                    <a href="/careers/careers">Career and Networking</a>
+                    <a href="/careers/careers">Coperate Governance</a>
+                </div>
+               
+            </div>
+        </div>
+    </footer>
+    <!-- Required JS -->
+
+  
+    <script src="~/Boomerang/js/jquery.js"></script>
+    <script src="~/Boomerang/js/jquery-ui.min.js"></script>
+      <!-- Essentials -->
+    <script src="~/Boomerang/js/modernizr.custom.js"></script>
+    <script src="~/Boomerang/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Boomerang/js/jquery.mousewheel-3.0.6.pack.js"></script>
+    <script src="~/Boomerang/js/jquery.easing.js"></script>
+    <script src="~/Boomerang/js/jquery.metadata.js"></script>
+    <script src="~/Boomerang/js/jquery.hoverup.js"></script>
+    <script src="~/Boomerang/js/jquery.hoverdir.js"></script>
+    <script src="~/Boomerang/js/jquery.stellar.js"></script>
+
+    <!-- Boomerang mobile nav - Optional  -->
+    <script src="~/Boomerang/assets/responsive-mobile-nav/js/jquery.dlmenu.js"></script>
+    <script src="~/Boomerang/assets/responsive-mobile-nav/js/jquery.dlmenu.autofill.js"></script>
+
+    <!-- Forms -->
+    <script src="~/Boomerang/assets/ui-kit/js/jquery.powerful-placeholder.min.js"></script>
+    <script src="~/Boomerang/assets/ui-kit/js/cusel.min.js"></script>
+    <script src="~/Boomerang/assets/sky-forms/js/jquery.form.min.js"></script>
+    <script src="~/Boomerang/assets/sky-forms/js/jquery.validate.min.js"></script>
+    <script src="~/Boomerang/assets/sky-forms/js/jquery.maskedinput.min.js"></script>
+    <script src="~/Boomerang/assets/sky-forms/js/jquery.modal.js"></script>
+
+    <!-- Assets -->
+    <script src="~/Boomerang/assets/hover-dropdown/bootstrap-hover-dropdown.min.js"></script>
+    <script src="~/Boomerang/assets/page-scroller/jquery.ui.totop.min.js"></script>
+    <script src="~/Boomerang/assets/mixitup/jquery.mixitup.js"></script>
+    <script src="~/Boomerang/assets/mixitup/jquery.mixitup.init.js"></script>
+    <script src="~/Boomerang/assets/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script src="~/Boomerang/assets/waypoints/waypoints.min.js"></script>
+    <script src="~/Boomerang/assets/milestone-counter/jquery.countTo.js"></script>
+    <script src="~/Boomerang/assets/easy-pie-chart/js/jquery.easypiechart.js"></script>
+    <script src="~/Boomerang/assets/social-buttons/js/rrssb.min.js"></script>
+    <script src="~/Boomerang/assets/nouislider/js/jquery.nouislider.min.js"></script>
+    <script src="~/Boomerang/assets/owl-carousel/owl.carousel.js"></script>
+    <script src="~/Boomerang/assets/bootstrap/js/tooltip.js"></script>
+    <script src="~/Boomerang/assets/bootstrap/js/popover.js"></script>
+
+    <!-- Sripts for individual pages, depending on what plug-ins are used -->
+    <!-- Boomerang App JS -->
+    <script src="~/Boomerang/js/wp.app.js"></script>
+    <!--[if lt IE 9]>
+        <script src="js/html5shiv.js"></script>
+        <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+    <!--[if lt IE 9]>-->
+        <script src="~/Boomerang/js/html5shiv.js"></script>
+        <script src="~/Boomerang/js/respond.min.js"></script>
+    <!--<![endif]-->
+    <!-- Temp -- You can remove this once you started to work on your project -->
+    <!--<script src="js/jquery.cookie.js"></script>
+    <script src="js/wp.switcher.js"></script>
+    <script type="text/javascript" src="js/wp.ga.js"></script>-->
+  <!--BEGINS Go to www.addthis.com/dashboard to customize social media share tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-585ab43cbe262664"></script>
+    <!-- Go to www.addthis.com/dashboard to customize recommed for you tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-585ab43cbe262664"></script>
+    <!--END Go to www.addthis.com/dashboard to customize recommed for you tools -->
+    <script type="text/javascript" src="~/Scripts/Plugins/jquery.easy-ticker.js"></script>
+    <script src="~/Scripts/siteScripts/jquery.easing.1.3.js" type="text/javascript"></script>
+    <script>
+        $(function () {
+            $('.News').easyTicker({
+                direction: 'up', // up or down
+                easing: 'swing', // easing options
+                speed: 'slow', // animation speed
+                interval: 2000,
+                height: 'auto',
+                visible: 0, // change the number of default visible elements.
+                mousePause: 1, // pause on hover
+                controls: {
+                    up: '',
+                    down: '',
+                    toggle: '',
+                    playText: 'Play',
+                    stopText: 'Stop'
+                }
+            });
+        });
+    </script>
+    <script src="~/Scripts/siteScripts/responsive-menu.js" type="text/javascript"></script>
+    <script>
+        $('.rm-nav').rMenu({
+            minWidth: '980px',
+        });
+    </script>
+</body>
+</html>

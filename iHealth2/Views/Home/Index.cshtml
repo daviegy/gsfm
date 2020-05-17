@@ -1,0 +1,1121 @@
+﻿@model iHealth2.Models.LoginViewModel
+@using Recaptcha
+@using Microsoft.AspNet.Identity.Owin;
+@using Microsoft.AspNet.Identity
+@using iHealth2.CustomClasses;
+@using iHealth2.Models
+
+
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext();
+    SEO_Friendly_URL seo = new SEO_Friendly_URL();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    var news = db.News.OrderByDescending(n => n.EntryDate).ToList();
+    var Entries = db.BusinessInfoes.OrderByDescending(b => b.regDate).ToList().Take(4);
+}
+
+<!-- START REVOLUTION SLIDER 5.4.2 auto mode -->
+<div id="banner-container" class="rev_slider_wrapper fullwidthbanner-container" data-alias="classic4export"
+     data-source="gallery"
+     style="margin:0px auto;background-color:transparent;padding:0px;margin-top:0px;margin-bottom:0px;">
+    <!-- START REVOLUTION SLIDER 5.3.0.2 auto mode -->
+    <div id="banner-slide" class="rev_slider fullwidthabanner" style="display:none;" data-version="5.3.0.2">
+        <div class="slotholder"></div>
+        <ul>
+            <!-- SLIDE  -->
+            <li data-index="rs-3049" data-transition="slideremovedown" data-slotamount="7" data-hideafterloop="0"
+                data-hideslideonmobile="off" data-easein="Power4.easeInOut" data-easeout="Power4.easeInOut"
+                data-masterspeed="2000" data-rotate="0" data-saveperformance="off" data-title="Ken Burns"
+                data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6=""
+                data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
+                <!-- MAIN IMAGE -->
+
+                <img src="~/Content/images/slides/Slider_ihealth.jpg" onclick="" alt="" data-bgposition="center center"
+                     data-kenburns="off"
+                     data-duration="30000" data-ease="Linear.easeNone" data-scalestart="100" data-scaleend="120"
+                     data-rotatestart="0" data-rotateend="0" data-offsetstart="0 0" data-offsetend="0 0"
+                     data-bgparallax="10" class="rev-slidebg" data-no-retina border="0" />
+            </li>
+            <li data-index="rs-3049" data-transition="slideremovedown" data-slotamount="7" data-hideafterloop="0"
+                data-hideslideonmobile="off" data-easein="Power4.easeInOut" data-easeout="Power4.easeInOut"
+                data-masterspeed="2000" data-rotate="0" data-saveperformance="off" data-title="Ken Burns"
+                data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6=""
+                data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
+                <!-- MAIN IMAGE -->
+                <img src="~/Content/images/slides/Slider_ihealth4.jpg" alt="" data-bgposition="center center"
+                     data-kenburns="off"
+                     data-duration="30000" data-ease="Linear.easeNone" data-scalestart="100" data-scaleend="120"
+                     data-rotatestart="0" data-rotateend="0" data-offsetstart="0 0" data-offsetend="0 0"
+                     data-bgparallax="10" class="rev-slidebg" data-no-retina>
+            </li>
+            <li data-index="rs-3049" data-transition="slideremovedown" data-slotamount="7" data-hideafterloop="0"
+                data-hideslideonmobile="off" data-easein="Power4.easeInOut" data-easeout="Power4.easeInOut"
+                data-masterspeed="2000" data-rotate="0" data-saveperformance="off" data-title="Ken Burns"
+                data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6=""
+                data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
+
+                <!-- MAIN IMAGE -->
+                <img src="~/Content/images/slides/Slider_ihealth3.jpg" alt="" data-bgposition="center center"
+                     data-kenburns="off"
+                     data-duration="30000" data-ease="Linear.easeNone" data-scalestart="100" data-scaleend="120"
+                     data-rotatestart="0" data-rotateend="0" data-offsetstart="0 0" data-offsetend="0 0"
+                     data-bgparallax="10" class="rev-slidebg" data-no-retina>
+            </li>
+        </ul>
+    </div>
+</div><!-- END REVOLUTION SLIDER -->
+<section class="flat-row pd-imagebox">
+    <div class="container">        
+        <div class="row">
+            <div class="col-md-8">
+                <div class="sidebar left">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="title-section left">
+                                <h2 style="margin-bottom: .6em">Explore iHealth</h2>
+                                <small>
+                                    <em>Our experienced team are always giving their best to make the clients happy!</em>
+                                </small>
+                            </div><!-- /.title-section -->
+                        </div>
+                    </div><!-- /.row -->                   
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="height24"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="iconbox-item">
+                                <div class="iconbox style1">
+                                    <div class="box-header">
+                                        <div class="icon-rounded global">
+                                        </div><!-- /.icon-rounded -->
+                                        <div class="box-title">
+                                            <a href="/account/networking" title="">Networking</a>
+                                        </div><!-- /.box-title -->
+                                    </div><!-- /.box-header -->
+                                    <div class="box-content text-justify">
+                                        Wise men will always advise on the need to diversify income opportunities. Don't just surf our site looking at the designs, MAKE MONEY, enjoy some HEALTH INSURANCE BENEFITS and other discount on health products and services by joining us now on iHealth Networking Group.
+                                    </div><!-- /.box-content -->
+                                </div><!-- /.iconbox -->
+                            </div><!-- /.iconbox-item -->
+                        </div><!-- /.col-md-4 -->
+                     
+                        @*<div class="iconbox-item">
+                            <div class="iconbox style3 center">
+                                <div class="box-header">
+                                    <a href="" title="">
+                                        <div class="icon-benefit options">
+
+                                        </div>
+                                        <div class="box-title">
+                                           
+                                        </div>
+                                    </a>
+                                </div><!-- /.box-header -->
+                                <div class="box-content">
+                                   
+                                </div><!-- /.box-content -->
+                            </div><!-- /.iconbox -->
+                        </div><!-- /.iconbox-item -->
+                        <div class="iconbox-item">
+                            <div class="iconbox style3 center">
+                                <div class="box-header">
+                                    @*<a href="http://marketplace.ihealthgsfm.com/" title="">
+                                            <div class="icon-benefit global">
+
+                                            </div>
+                                            <div class="box-title">
+                                                Shop Health
+                                            </div>
+                                        </a>@
+                                    <a href="#" title="">
+                                        <div class="icon-benefit global">
+
+                                        </div>
+                                        <div class="box-title">
+                                            Shop Health
+                                        </div>
+                                    </a>
+                                </div><!-- /.box-header -->
+                                <div class="box-content">
+                                    You can buy or sell quality healthcare products and services using our e-commerce at a discounted rate. You must be a licensed dealer to provide paid products and services on our platform. All other types of Health Product sellers and Alternative health providers must get requisite permissions from the relevant authorities to do same.
+                                </div><!-- /.box-content -->
+                            </div><!-- /.iconbox -->
+                        </div><!-- /.iconbox-item -->
+                        <div class="iconbox-item">
+                            <div class="iconbox style3 center">
+                                <div class="box-header">
+                                    @*<a href="http://directory.ihealthgsfm.com" title="">
+                                            <div class="icon-benefit people">
+
+                                            </div>
+                                            <div class="box-title">
+                                                Directory
+                                            </div>
+                                        </a>@
+                                    <a href="#" title="">
+                                        <div class="icon-benefit people">
+
+                                        </div>
+                                        <div class="box-title">
+                                            Directory
+                                        </div>
+                                    </a>
+                                </div><!-- /.box-header -->
+                                <div class="box-content">
+                                    Do you have or own a Hospital, Clinic, Pharmaceutical Company, Pharmaceutical Shop, Herbal
+                                    Center, Vet. Hospital/Clinic OR are you a dealer of medical equipment/gadgets. List your
+                                    business with us and reach millions of our site visitors
+                                </div><!-- /.box-content -->
+                            </div><!-- /.iconbox -->
+                        </div><!-- /.iconbox-item -->*@
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="height24"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="iconbox-item">
+                                <div class="iconbox style1">
+                                    <div class="box-header">
+                                        <div class="icon-rounded">
+                                        </div><!-- /.icon-rounded -->
+                                        <div class="box-title">
+                                            <a href="#" title="">Shop</a>
+                                        </div><!-- /.box-title -->
+                                    </div><!-- /.box-header -->
+                                    <div class="box-content text-justify">
+                                        You can buy or sell quality healthcare products and services using our e-commerce at a discounted rate. You must be a licensed dealer to provide paid products and services on our platform. All other types of Health Product sellers and Alternative health providers must get requisite permissions from the relevant authorities to do same.
+                                    </div><!-- /.box-content -->
+                                </div><!-- /.iconbox -->
+                            </div><!-- /.iconbox-item -->
+                        </div><!-- /.col-md-4 -->
+                      
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="height24"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="iconbox-item">
+                                <div class="iconbox style1">
+                                    <div class="box-header">
+                                        <div class="icon-rounded magic">
+                                        </div><!-- /.icon-rounded -->
+                                        <div class="box-title">
+                                            <a href="#" title="">Directory</a>
+                                        </div><!-- /.box-title -->
+                                    </div><!-- /.box-header -->
+                                    <div class="box-content text-justify">
+                                        Do you have or own a Hospital, Clinic, Pharmaceutical Company, Pharmaceutical Shop, Herbal
+                                        Center, Vet. Hospital/Clinic OR are you a dealer of medical equipment/gadgets. List your
+                                        business with us and reach millions of our site visitors
+                                    </div><!-- /.box-content -->
+                                </div><!-- /.iconbox -->
+                            </div><!-- /.iconbox-item -->
+                        </div><!-- /.col-md-4 -->
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-4 bg-theme">
+                <div class="sidebar">                    
+                    <div class="flexslider s1">
+                        <div class="flat-slides">
+                            <ul class="slides">
+                                <li class="item">
+                                    <img src="~/Content/images/banner/placeurAdshere.png" alt="" />
+                                </li>  
+                                <li class="item">
+                                    <img src="~/Content/images/banner/Airplane Retirement Medium Rectangle Ad.jpg" alt="" />
+                                </li>                                
+                            </ul>
+                        </div> <!-- /.flat-slides -->                        
+                    </div> <!-- /.wrar-slides -->                   
+                    <div class="flexslider">                       
+                        <div class="flat-slides">
+                            <ul class="slides">
+                                <li class="item">
+                                    <img src="~/Content/images/banner/ads 300.png" alt="" />
+                                </li>
+                            </ul>
+                        </div>
+                    </div>                    
+                </div>
+            </div><!-- /.col-md-4 -->
+        </div>
+    </div>
+</section>
+
+<section class="flat-row flat-iconbox bg-theme">
+    <div class="container">
+        <div class="col-md-6">
+            <div class="iconbox-item">
+                <div class="iconbox style1">
+                    <div class="box-header">
+                        <div class="box-title">
+                            <a href="/home/about" title="">About iHealth</a>
+                        </div><!-- /.box-title -->
+                    </div><!-- /.box-header -->
+                    <div class="box-content">
+                        IHealthGSFM – Nigeria’s premiere meeting point of quality health, good technology and easy
+                        access.
+                        Our core business is to make quality health care more accessible to you. <br> <br>
+                        We are a holistic healthcare service company that uses technology to give you this access,
+                        through our website on the internet (www.ihealthgsfm.com)and the internet of things which
+                        gives you quality healthcare services from around the globe.
+                        <br><br><br>
+                        <a href="/Home/About" class="iButton">Read More</a>
+                    </div><!-- /.box-content -->
+                </div><!-- /.iconbox -->
+            </div><!-- /.iconbox-item -->
+        </div><!-- /.col-md-4 -->
+
+        <div class="col-md-6">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/_N-3vSI-2PU" frameborder="0"
+                    allowfullscreen></iframe>
+        </div><!-- /.col-md-4 -->
+
+    </div><!-- /.container -->
+</section><!-- /.flat-row-iconbox -->
+<section class="flat-row pd-imagebox">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="title-section left">
+                    <h2 style="margin-bottom: .6em">Buy Premium</h2>
+                    <small>
+                        <em>We network with multiple and credble HMOs with wide range of Health Providers to choose from at low cost.</em>
+                    </small>
+                </div><!-- /.title-section -->
+            </div>
+        </div><!-- /.row -->    
+        <div class="row">
+            <div class="col-md-12">
+                <div class="height24"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="imagebox-item">
+                    <div class="imagebox style1">
+                        <div class="imagebox-image">
+                            <img src="~/Content/images/PremiumPlanImage/FHLPA.png" alt="">
+                        </div><!-- /.imagebox-image -->
+
+                        <div class="imagebox-title">
+                            <h3><a href="/premium/premium_package_signup?plan=FHLPA" title="">BUY NOW!</a></h3>
+                        </div><!-- /.iamgebox-title -->
+                        <div class="imagebox-content">
+                            <div class="imagebox-desc">
+                               <ul>
+                                   <li>
+                                       <i class="fa fa-check"></i>  Preventive Services
+                                   </li>
+                                   <li>
+                                       <i class="fa fa-check"></i>  Physical Examination
+                                   </li>
+                                   <li>
+                                       <i class="fa fa-check"></i>  Maternity Care
+                                   </li>
+                                   <li>
+                                       <i class="fa fa-check"></i>  Antenatal Care
+                                   </li>
+                                   <li>
+                                       <i class="fa fa-check"></i>  Immunization: BCG, OPV, DPT, Measles, Pentavalent, Yellow fever, Hepatitis B, Vit A vaccines.
+                                   </li>
+                                   <li>
+                                       <i class="fa fa-check"></i>  Emergency Medical Services
+                                   </li>
+                                   <li>
+                                       <i class="fa fa-check"></i>  Surgical Services
+                                   </li>
+                               </ul>
+                            </div>
+                            <div class="imagebox-button">
+                                <a href="/premium/FHLPA">More...</a>
+                                <a href="/premium/premium_package_signup?plan=FHLPA">Buy</a>
+                            </div>
+                        </div><!-- /.imagebox-content -->
+                    </div><!-- /.imagebox -->
+                </div><!-- /.imagebox-item -->
+            </div><!-- /.col-md-4 -->
+            <div class="col-md-4">
+                <div class="imagebox-item">
+                    <div class="imagebox style1">
+                        <div class="imagebox-image">
+                            <img src="~/Content/images/PremiumPlanImage/FHLPB.png" alt="">
+                        </div><!-- /.imagebox-image -->
+                        <div class="imagebox-title">
+                            <h3><a href="/premium/premium_package_signup?plan=FHLPB" title="">BUY NOW!</a></h3>
+                        </div><!-- /.iamgebox-title -->
+                        <div class="imagebox-content">
+                            <div class="imagebox-desc">
+                                <ul>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Preventive Services
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Physical Examination
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Maternity Care
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Antenatal Care
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Immunization: BCG, OPV, DPT, Measles, Pentavalent, Yellow fever, Hepatitis B, Vit A vaccines.
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Emergency Medical Services
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Surgical Services
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="imagebox-button">
+                                <a href="/premium/FHLPB" title="">More...</a>
+                                <a href="/premium/premium_package_signup?plan=FHLPB" title="">Buy</a>
+                            </div>
+                        </div><!-- /.imagebox-content -->
+                    </div><!-- /.imagebox -->
+                </div><!-- /.imagebox-item -->
+            </div><!-- /.col-md-4 -->
+            <div class="col-md-4">
+                <div class="imagebox-item">
+                    <div class="imagebox style1">
+                        <div class="imagebox-image">
+                            <img src="~/Content/images/PremiumPlanImage/SHLPA.png" alt="">
+                        </div><!-- /.imagebox-image -->
+                        <div class="imagebox-title">
+                            <h3><a href="/premium/premium_package_signup?plan=SHLPA" title="">BUY NOW!</a></h3>
+                        </div><!-- /.iamgebox-title -->
+                        <div class="imagebox-content">
+                            <div class="imagebox-desc">
+                                <ul>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Preventive Services
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Physical Examination
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Maternity Care
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Antenatal Care
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Immunization: BCG, OPV, DPT, Measles, Pentavalent, Yellow fever, Hepatitis B, Vit A vaccines.
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Emergency Medical Services
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Surgical Services
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="imagebox-button">
+                                <a href="/premium/SHLPA" title="">More...</a>
+                                <a href="/premium/premium_package_signup?plan=SHLPA" title="">Buy</a>
+                            </div>
+                        </div><!-- /.imagebox-content -->
+                    </div><!-- /.imagebox -->
+                </div><!-- /.imagebox-item -->
+            </div><!-- /.col-md-4 -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="height24"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="imagebox-item">
+                    <div class="imagebox style1">
+                        <div class="imagebox-image">
+                            <img src="~/Content/images/PremiumPlanImage/SHLPB.png" alt="">
+                        </div><!-- /.imagebox-image -->
+
+                        <div class="imagebox-title">
+                            <h3><a href="/premium/premium_package_signup?plan=SHLPB" title="">BUY NOW!</a></h3>
+                        </div><!-- /.iamgebox-title -->
+                        <div class="imagebox-content">
+                            <div class="imagebox-desc">
+                                <ul>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Preventive Services
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Physical Examination
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Maternity Care
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Antenatal Care
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Immunization: BCG, OPV, DPT, Measles, Pentavalent, Yellow fever, Hepatitis B, Vit A vaccines.
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Emergency Medical Services
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Surgical Services
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="imagebox-button">
+                                <a href="/premium/SHLPB" title="">More...</a>
+                                <a href="/premium/premium_package_signup?plan=SHLPB" title="">Buy</a>
+                            </div>
+                        </div><!-- /.imagebox-content -->
+                    </div><!-- /.imagebox -->
+                </div><!-- /.imagebox-item -->
+            </div><!-- /.col-md-4 -->
+            <div class="col-md-4">
+                <div class="imagebox-item">
+                    <div class="imagebox style1">
+                        <div class="imagebox-image">
+                            <img src="~/Content/images/PremiumPlanImage/HCN1.png" alt="">
+                        </div><!-- /.imagebox-image -->
+                        <div class="imagebox-title">
+                            <h3><a href="/premium/premium_package_signup?plan=HCN1" title="">BUY NOW!</a></h3>
+                        </div><!-- /.iamgebox-title -->
+                        <div class="imagebox-content">
+                            <div class="imagebox-desc">
+                                <ul>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Preventive Services
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Physical Examination
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Maternity Care
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Antenatal Care
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Immunization: BCG, OPV, DPT, Measles, Pentavalent, Yellow fever, Hepatitis B, Vit A vaccines.
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Emergency Medical Services
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Surgical Services
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="imagebox-button">
+                                <a href="/premium/HCN1" title="">More...</a>
+                                <a href="/premium/premium_package_signup?plan=HCN1" title="">Buy</a>
+                            </div>
+                        </div><!-- /.imagebox-content -->
+                    </div><!-- /.imagebox -->
+                </div><!-- /.imagebox-item -->
+            </div><!-- /.col-md-4 -->
+            <div class="col-md-4">
+                <div class="imagebox-item">
+                    <div class="imagebox style1">
+                        <div class="imagebox-image">
+                            <img src="~/Content/images/PremiumPlanImage/HCN2.png" alt="">
+                        </div><!-- /.imagebox-image -->
+                        <div class="imagebox-title">
+                            <h3><a href="/premium/premium_package_signup?plan=HCN2" title="">BUY NOW!</a></h3>
+                        </div><!-- /.iamgebox-title -->
+                        <div class="imagebox-content">
+                            <div class="imagebox-desc">
+                                <ul>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Preventive Services
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Physical Examination
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Maternity Care
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Antenatal Care
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Immunization: BCG, OPV, DPT, Measles, Pentavalent, Yellow fever, Hepatitis B, Vit A vaccines.
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Emergency Medical Services
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Surgical Services
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="imagebox-button">
+                                <a href="/premium/HCN2" title="">More...</a>
+                                <a href="/premium/premium_package_signup?plan=HCN2" title="">Buy</a>
+                            </div>
+                        </div><!-- /.imagebox-content -->
+                    </div><!-- /.imagebox -->
+                </div><!-- /.imagebox-item -->
+            </div><!-- /.col-md-4 -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="height24"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="imagebox-item">
+                    <div class="imagebox style1">
+                        <div class="imagebox-image">
+                            <img src="~/Content/images/PremiumPlanImage/HCN.png" alt="">
+                        </div><!-- /.imagebox-image -->
+                        <div class="imagebox-title">
+                            <h3><a href="/premium/premium_package_signup?plan=HCN" title="">BUY NOW!</a></h3>
+                        </div><!-- /.iamgebox-title -->
+                        <div class="imagebox-content">
+                            <div class="imagebox-desc">
+                                <ul>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Preventive Services
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Physical Examination
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Maternity Care
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Antenatal Care
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Immunization: BCG, OPV, DPT, Measles, Pentavalent, Yellow fever, Hepatitis B, Vit A vaccines.
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Emergency Medical Services
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-check"></i>  Surgical Services
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="imagebox-button">
+                                <a href="/premium/HCN" title="">More...</a>
+                                <a href="/premium/premium_package_signup?plan=HCN" title="">Buy</a>
+                            </div>
+                        </div><!-- /.imagebox-content -->
+                    </div><!-- /.imagebox -->
+                </div><!-- /.imagebox-item -->
+            </div><!-- /.col-md-4 -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</section><!-- /.flat-row-imagebox -->
+@*<section class="flat-row pd-imagebox">
+    <div class="container">
+        <div class="row">
+           
+            <div class="col-md-6">
+                <img src="~/content/images/App.jpg" alt="" height="200" width="200" class="pull-right"
+                     style="margin-right: 10%">
+            </div>
+            <div class="col-md-6">
+                <h2 style="color: #11d576">iHEALTH APP </h2>
+                <h2 style="color: #000">DOWNLOAD</h2> <br>
+                Enim ad minim veniam, quis nostrud exercitation ullamco laboris. <br>
+                    Enim ad minim veniam, quis nostrud exercitation ullamco laboris. <br>
+                    Enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+                    <br><br>
+                    <ul style="list-style-type: circle; margin-left: 16px">
+                        <li>Enim ad minim veniam, quis nostrud exercitation ullamco</li>
+                        <li>Enim ad minim veniam, quis nostrud exercitation ullamco</li>
+                        <li>Enim ad minim veniam, quis nostrud exercitation ullamco</li>
+                    </ul>
+                    <br><br>
+                <a href="#" class="iButton_Android">ANDROID <b>USER</b></a>
+                <a href="#" class="iButton_IOS">IOS</a>
+            </div>
+        </div>
+    </div>
+</section>*@
+
+@*<section class="flat-row parallax parallax2 overlay-s1 flat-counter">
+        <div class="overlay-parallax"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="counter">
+                        <div class="counter-content">
+                            <div class="counter-number">
+                                <p class="numb-count" data-from="0" data-to="1603" data-speed="1000"
+                                   data-waypoint-active="yes">1603</p>
+                            </div>
+                        </div>
+                        <p class="name">Project Completed</p>
+                    </div><!-- /.counter -->
+                </div><!-- /.col-md-3 -->
+
+                <div class="col-md-3">
+                    <div class="counter">
+                        <div class="counter-content">
+                            <div class="counter-number">
+                                <p class="numb-count" data-from="0" data-to="2154" data-speed="1000"
+                                   data-waypoint-active="yes">2154</p>
+                            </div>
+                        </div>
+                        <p class="name">Happy Clients</p>
+                    </div><!-- /.counter -->
+                </div><!-- /.col-md-3 -->
+
+                <div class="col-md-3">
+                    <div class="counter">
+                        <div class="counter-content">
+                            <div class="counter-number">
+                                <p class="numb-count" data-from="0" data-to="4321" data-speed="1000"
+                                   data-waypoint-active="yes">4321</p>
+                            </div>
+                        </div>
+                        <p class="name">Medical Vendors</p>
+                    </div><!-- /.counter -->
+                </div><!-- /.col-md-3 -->
+
+                <div class="col-md-3">
+                    <div class="counter">
+                        <div class="counter-content">
+                            <div class="counter-number">
+                                <p class="numb-count" data-from="0" data-to="5321" data-speed="1000"
+                                   data-waypoint-active="yes">5321</p>
+                            </div>
+                        </div>
+                        <p class="name">Registered HMO's</p>
+                    </div><!-- /.counter -->
+                </div><!-- /.col-md-3 -->
+
+            </div><!-- /.row -->
+        </div><!-- /.container -->
+    </section><!-- /.flat-counter -->*@
+
+<section class="flat-row flat-callback">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-5 col-md-offset-1">
+                <div class="text-block-callback" style="text-align: left;">
+                    <h2>Make Money, Enjoy Some Health Insurance Benefits</h2>
+                    <div class="text-callback-content" style="text-align: left;">
+                        Be your own Oga boss! We create opportunities for you to make more money while making new friends on our networking platform
+
+                        <br><br><br>
+                        <a href="/ing/networking" class="iButton"
+                           style="background-color: transparent; color: #11d576; border: 1px solid #11d576;">
+                            Read
+                            More
+                        </a>
+                    </div>
+                </div><!-- /.text-block-callback -->
+            </div><!-- /.col-md-4 -->
+
+            <div class="col-md-4">
+                <div class="flat-callback-form">
+                    <img src="~/content/images/banner.jpg" alt="">
+                </div><!-- /.callback-form -->
+            </div><!-- /.col-md-8 -->
+
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</section><!-- /.flat-callback -->
+
+<section class="flat-row flat-news">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="title-section center">
+                    <h2>Latest news</h2>
+                </div><!-- /.title-section -->
+            </div>
+        </div><!-- /.row -->
+
+        <div class="row">
+            @{
+                var blog_list = db.blog_posts.OrderBy(b => b.publish_date).ToList().OrderByDescending(b => b.publish_date).Take(3);
+                if (blog_list.Count() > 0)
+                {
+                    foreach (var blog_post in blog_list)
+                    {
+                        <div class="col-md-4">
+                            <article class="post style2">
+                                <div class="featured-post">
+                                    <a href="#" title="" class="post-image">
+                                        @{
+                                            var featureImg = "";
+                                            if (blog_post.Feature_Image != null)
+                                            {
+                                                featureImg = "data:image/png;base64," + Convert.ToBase64String(blog_post.Feature_Image);
+                                                <img src="@featureImg" alt="">
+                                            }
+                                            var pdate = Convert.ToDateTime(blog_post.publish_date);
+                                        }
+                                    </a>
+                                    <ul class="post-date">
+                                        <li class="day">@pdate.Day</li>
+                                        <li class="month">@Convert.ToDateTime(blog_post.publish_date).ToString("MMM")</li>
+                                    </ul>
+                                </div><!-- /.featured-post -->
+                                <div class="content-post">
+                                    <h4 class="title-post">
+                                        <a href="/blog/post_details/@seo.GenerateSlug(blog_post.post_id.ToString(),blog_post.post_url)" title="">@blog_post.post_Title</a>
+                                    </h4>
+                                    <div class="entry-post">
+                                        <p>
+                                            @Html.Raw(Server.HtmlDecode(blog_post.short_description))
+                                        </p>
+                                        <div class="more-link">
+                                            <a href="/blog/post_details/@seo.GenerateSlug(blog_post.post_id.ToString(), blog_post.post_url)" title="">Readmore</a>
+                                        </div>
+                                    </div>
+                                </div><!-- /.content-post -->
+                            </article><!-- /.post -->
+                        </div><!-- /.col-md-4 -->
+
+                                                }
+                                            }
+                                            else
+                                            {
+
+                                            }
+
+
+            }
+
+
+
+        </div><!-- /.row -->
+
+    </div><!-- /.container -->
+</section><!-- /.flat-news -->
+<!-- Carousel -->
+<section class="flat-row flat-client bg-theme">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="flat-carousel" data-item="5" data-nav="false" data-dots="false" data-auto="true">
+                    <li class="item">
+                        <img src="~/content/images/iHealth_logo.png" alt="img">
+                    </li>
+                    <li class="item">
+                        <img src="~/content/images/iHealth_logo.png" alt="img">
+                    </li>
+                    <li class="item">
+                        <img src="~/content/images/iHealth_logo.png" alt="img">
+                    </li>
+                    <li class="item">
+                        <img src="~/content/images/iHealth_logo.png" alt="img">
+                    </li>
+                    <li class="item">
+                        <img src="~/content/images/iHealth_logo.png" alt="img">
+                    </li>
+                </ul>
+            </div> <!-- /.col-md-12 -->
+        </div> <!-- /.row -->
+    </div> <!-- /.container -->
+</section> <!-- /.flat-row -->
+@*<div id="decorative1" style="position:relative;">
+        <div class="container">
+            <div class="divPanel headerArea">
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="span3">
+                            <div class="panel panel-default" style="height:inherit;">
+                                <div class="panel-body">
+                                    <div class="panel panel-default" style="height:250px">
+                                        <div class="panel-heading" style="text-align:right">
+                                            <div class="panel-title">
+                                                <h4>Quick Search</h4>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            @using (Html.BeginForm("QsearchResult", "Search", FormMethod.Post))
+                                            {
+                                                <div class="control-group">
+                                                    <input required class="form-control" id="SearchBox" type="text" placeholder="Type here ..." name="SearchText" />
+                                                    <input type="submit" class="btn btn-danger  pull-right" value="Search" />
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span6">
+                            <div class="slider-container" id="slider-container">
+                                <div class="slider">
+                                    @{
+                                        var homeAds = db.AdvertManagerTb.Where(adv => adv.AdsStatus == "Active" && adv.Adspage == "HomePage" && adv.AdsLocOnPage == "slider").ToList();
+                                        if (homeAds.Count > 0)
+                                        {
+                                            foreach (var image in homeAds)
+                                            {
+                                                var img = "data:image/png;base64," + Convert.ToBase64String(image.AdsImage);
+                                                <div class="slide">
+                                                    <a href="@image.AdsURL">  <img src="@img" alt=""></a>
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="slide">
+                                                <a href="#">  <img src="~/Content/images/HomeImgTwo.jpg" alt=""></a>
+                                            </div>
+                                            <div class="slide">
+                                                <a href="#">  <img src="~/Content/images/HomeImgOne.jpg" alt=""></a>
+                                            </div>
+        <div class="slide">
+            <a href="#">  <img src="~/Content/images/HomeImgTwo.jpg" alt=""></a>
+        </div>                                <div class="slide">
+                                        <a href="#">  <img src="~/Content/images/HomeImgTwo.jpg" alt=""></a>
+                                    </div>                                <div class="slide">
+                                        <a href="#">  <img src="~/Content/images/HomeImgTwo.jpg" alt=""></a>
+                                    </div>                                <div class="slide">
+                                        <a href="#">  <img src="~/Content/images/HomeImgTwo.jpg" alt=""></a>
+                                    </div>
+                                        }
+
+    }
+                                </div>
+                                <div class="switch" id="prev"><span></span></div>
+                                <div class="switch" id="next"><span></span></div>
+                            </div>
+                            <br /><br />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container">
+        <div class="divPanel page-content">
+            <!--Edit Main Content Area here-->
+            <div class="row-fluid">
+                <div class="span9">
+                    <hr style="margin-top:1px" />
+                    <div class="lead">
+                        <h1 style="font-family:'Times New Roman';color:#087212">What You Can Do!!!</h1>
+
+                            <div class="arrow bounce">
+
+                            </div>
+
+                        <a href="#" class="back-to-top" style="display: inline;">
+                            <i class="fa fa-arrow-circle-up"></i>
+                        </a>
+                    </div>
+                    <hr />
+                    <div class="row-fluid">
+
+                        <div class="span4" style="font-family:Times New Roman, serif;font-size:14pt">
+                            <blockquote>
+                                <h4 class="text-error"><b>List Your Services</b></h4>
+                                <small>Get accessed by our site users.</small>
+                            </blockquote>
+                            <img src="~/content/images/BizImg.jpg" class="img-polaroid" style="margin:5px 0px 15px;" alt="">
+                            <p>
+                                Do you have or own a Hospital, Clinic, Pharmaceutical Company, Pharmaceutical Shop, Herbal Center, Vet. Hospital/Clinic
+                                <b><em>OR</em></b> are you a dealer of medical equipment/gadgets. List your business with us and reach millions of our site visitors.
+                                <br /><br /><br />
+                            </p>
+                            <p>
+                                @if (Session["Name"] != null)
+                                {
+                                    if (!User.IsInRole("Admin"))
+                                    {
+                                        <a href="/Business/Create_Biz" class="btn btn-warning btn-block" style="margin:5px 0px 15px;">List Service</a>
+                                    }
+                                }
+                                else
+                                {
+                                    <a class="btn btn-primary btn-block" href="/Account/login">Sign up and List Service</a>
+                                }
+                            </p>
+                        </div>
+                        <div class="span4" style="font-family:Times New Roman, serif;font-size:14pt">
+                            <blockquote>
+                                <h4 class="text-error"><b>Create an Expert Profile</b></h4>
+                                <small>Professionals and Organizations</small>
+                            </blockquote>
+                            <img src="~/content/images/Professionals2.jpg" class="img-polaroid" style="margin:5px 0px 15px;" alt="">
+                            <p>
+                                Are you a Medical Doctor, Nurse, Pharmacist, Veterinary Doctor, Herbal Doctor, Laboratory Scientist, or Professional in the medical discipline.
+                               As a professional member you can shop on our site at a discount. we can refer members to you and also recommend you for job interviews. To get started<br /><br />
+                            </p>
+                            <p><a href="/Account/register" class="btn btn-primary btn-block" style="margin:5px 0px 15px;">Create Profile</a></p>
+                        </div>
+
+                        <div class="span4" style="font-family:Times New Roman, serif;font-size:14pt;">
+                            <blockquote>
+                                <h4 class="text-error"><b>iHealth Networking</b></h4>
+                                <small>Sign Up to enjoy health insurance</small>
+                            </blockquote>
+                            <img src="~/content/images/Networking.png" class="img-polaroid" style="margin:5px 0px 15px;" alt="">
+                            <p>
+                                A wise man once said that to earn more money never depend on a single source of income.
+                                Don't just surf our site looking at the designs, <b class=" text-error"> MAKE MONEY</b>, enjoy some<b class="text-error"> HEALTH INSURANCE BENEFITS</b> and other discount on health
+                                products and services by joining us now
+                                on <b><em>iHealth Networking Group</em></b>.
+                            </p>
+                            <p><a href="/Insurance/Iniregform" class="btn btn-primary btn-block" style="margin:5px 0px 15px;">Join</a></p>
+                        </div>
+
+
+                    </div>
+
+                    <hr style="margin:20px 0 35px" />
+
+                    <div class="lead">
+                        <h1 style="font-family:'Times New Roman';color:#087212">What We Do!!!</h1>
+                    </div>
+                    <hr />
+
+                    <div class="row-fluid">
+
+                        <div class="span4" style="font-family:Times New Roman, serif;font-size:14pt">
+                            <blockquote>
+                                <h4 class="text-error"><b>Mobile Health Service</b></h4>
+                                <small>Get Health from the Comfort of Your Home</small>
+                            </blockquote>
+
+                            <img src="~/content/images/ServiceIMGs/MobileService.png" class="img-polaroid" style="margin:5px 0px 15px;" alt="">
+                            <p>
+                                Get Medical services at the comfort of your home. Let our Hospitals, Clinics, Pharmaceutical Companies, Pharmaceutical Shops, Herbal Centers, Vet. Hospitals, Maternity Clinics, Medical equipment or suppliers etc. come to you. At the click of a button we will send the best of Healthcare to your doorsteps
+                            </p>
+                            <p><a href="/support/ContactUs" class="btn btn-primary btn-block" style="margin:5px 0px 15px;">Learn More</a></p>
+                        </div>
+                        <div class="span4" style="font-family:Times New Roman, serif;font-size:14pt">
+                            <blockquote>
+                                <h4 class="text-error"><b>Int'l Health Service</b></h4>
+                                <small>Medical Tourism and Advanced Health Cases</small>
+                            </blockquote>
+                            <img src="~/content/images/ServiceIMGs/Intl.Service.jpg" class="img-polaroid" style="margin:5px 0px 15px;" alt="">
+                            <p>
+                                Healthcare since the turn of the century has gone global. Undertake Medical Tourism and get the best of Foreign Healthcare with us.
+                                We only use hospitals experienced in treating international patients with top class doctors so that you are in safe hands.
+                                See our Foreign Listings.<br /><br />
+
+                            </p>
+                            <p><a href="#" class="btn btn-primary btn-block" style="margin:5px 0px 15px;">Learn More</a></p>
+                        </div>
+
+                        <div class="span4" style="font-family:Times New Roman, serif;font-size:14pt;">
+                            <blockquote>
+                                <h4 class="text-error"><b>Ambulance Service</b></h4>
+                                <small>Get Ambulance Service 24/7<br /><br /></small>
+                            </blockquote>
+                            <img src="~/content/images/ServiceIMGs/Ambulance.png" class="img-polaroid" style="margin:5px 0px 15px;" alt="">
+                            <p>
+                                We give ambulance services at the click of a button.
+                                Our ambulances carry as standard equipment, a ventilator, a Defibrillator, Oxygen and all the other life saving drugs. Staff manning these ambulances are well trained in managing emergencies.
+                                We give ambulance services at the click of a button.
+                            </p>
+                            <p><a href="/support/ContactUs" class="btn btn-primary btn-block" style="margin:5px 0px 15px;">Contact Us</a></p>
+                        </div>
+
+
+                    </div>
+                    <hr />
+                    <div class="lead">
+                        <h1 style="font-family:'Times New Roman';color:#087212">Make an Appointment</h1>
+                    </div>
+                    <hr />
+                    <div class="span4">
+                        <img src="~/Content/images/appp2.fw.png" />
+                    </div>
+                    <div class="span3">
+                        <h5>
+                           BOOK AN APPOINTMENT WITH A CONSULTANT AND RECEIVE A QUALITY HEALTHCARE SERVICES THAT IS FAST AND CONVENIENT
+                        </h5>
+                        <p style="text-align:left">
+                           Our Health Professionals are dedicated to providing you with standard healthcare services at a discounted amount.
+                        </p>
+                    </div>
+
+                    <div class="span4">
+                        @Html.Partial("_appBookingform")
+
+                    </div>
+
+
+                    <!-- Go to www.addthis.com/dashboard to customize Content Recommendation tools -->
+                    @*<div class="addthis_relatedposts_inline"></div>@
+                </div>
+
+            </div>
+
+            <!--End Main Content Area here-->
+
+            <div id="footerInnerSeparator"></div>
+        </div>
+
+    </div>
+    @section scripts{
+        <script src="~/Scripts/Plugins/jquery.auto-complete.min.js"></script>
+        <script src="~/Scripts/CustomScript/myHomeCust.js"></script>
+        <script src="~/Scripts/Plugins/dpLoading-2.x.js"></script>
+        <script src="~/Scripts/Plugins/bootstrap-datepicker.js"></script>
+        <script>
+            $('.datepicker').datepicker({
+                startDate: "@DateTime.Now"
+            });
+        </script>
+     <script>
+        $(document).ready(function () {
+
+            var offset = 250;
+
+            var duration = 300;
+
+            $(window).scroll(function () {
+
+                if ($(this).scrollTop() > offset) {
+
+                    $('.back-to-top').fadeIn(duration);
+
+                } else {
+
+                    $('.back-to-top').fadeOut(duration);
+
+                }
+            });
+            $('.back-to-top').click(function (event) {
+
+                event.preventDefault();
+
+                $('html, body').animate({ scrollTop: 0 }, duration);
+
+                return false;
+
+            })
+
+        });
+
+    </script>
+
+
+        @Scripts.Render("~/bundles/jqueryval")
+    }*@
+
+
+

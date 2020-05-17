@@ -1,0 +1,137 @@
+﻿@model IEnumerable<iHealth2.Models.Job>
+
+@{
+    ViewBag.Title = "viewJobList";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <p>
+            @Html.ActionLink("Create New", "create_Job_Ads")
+        </p>
+        <div class="table-responsive mailbox-messages">
+            <form role="form" method="post" action="/careers/deletejob">
+                @Html.AntiForgeryToken()
+                <table id="table">
+                    <thead>
+
+                        <tr>
+                            <th>
+                                <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                    <i class="fa fa-square-o"></i>
+                                </button>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.JobTitle)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Jobdescription)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Specialization)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Min_Experience) (yrs)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CreatedDate)
+                            </th>
+                          
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td><input type="checkbox" name="deleteid" id="deleteid" value="@item.id"></td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.JobTitle)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Jobdescription)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Specialization)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Min_Experience)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                                </td>
+                               
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+                <input type="submit" id="submitbtn" class="btn btn-danger" disabled value="Delete Job" />
+            </form>
+        </div>
+        </div>
+</div>
+@section scripts{
+<script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+<script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+
+<script>
+    
+    $(document).ready(function () {
+        //Enable iCheck plugin for checkboxes
+        //iCheck for checkbox and radio inputs
+        $('.mailbox-messages input[type="checkbox"]').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+        });
+
+        //Enable check and uncheck all functionality
+        $(".checkbox-toggle").click(function () {
+            var clicks = $(this).data('clicks');
+            if (clicks) {
+                //Uncheck all checkboxes
+                //  alert("i just got clicked")
+                $(".mailbox-messages input[type='checkbox']").iCheck("uncheck");
+                $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+            } else {
+                //Check all checkboxes
+                $(".mailbox-messages input[type='checkbox']").iCheck("check");
+                $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+            }
+            $(this).data("clicks", !clicks);
+        });
+        $('.mailbox-messages input[type="checkbox"]').on('ifToggled', function (e) {
+            if ($('#deleteid:checked').length > 0) {
+                $("#submitbtn").prop('disabled', false)
+            }
+            else {
+                $("#submitbtn").prop('disabled', true)
+            }
+
+        })
+    });
+
+    $('#table').bootstrapTable({
+
+        striped: true,
+        // cardView: true,
+        pagination: true,
+        pageSize: 15,
+        pageList: [15, 30, 50, 100, 200],
+        smartDisplay: false,
+        showToggle: false,
+        search: true,
+        showColumns: true,
+        showRefresh: true,
+        //    border : true
+        //align: 'center',
+        //valign: 'bottom'
+
+    });
+</script>
+
+
+}

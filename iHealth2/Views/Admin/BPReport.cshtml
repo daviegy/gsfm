@@ -1,0 +1,246 @@
+﻿@model iHealth2.Models.BPReportViewModel
+@{
+    ViewBag.Title = "BPReport";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    char x = (char)8358;
+}
+
+<div class="panel panel-danger" id="printable">
+    <div class="panel-body">
+
+
+
+        <h3 style="text-align:center"><b> Benefit Processing Report</b></h3>
+        <div class="pad margin no-print">
+            <div class="callout callout-info" style="margin-bottom: 0!important;">
+                <h4><i class="fa fa-info"></i> Note:</h4>
+                This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
+            </div>
+        </div>
+        <div>
+            <div>
+                <section class="invoice">
+                    <!-- title row -->
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h2 class="page-header">
+                                <img src="~/Content/Logo/ihealthlogo.png" />
+                                <small class="pull-right">
+                                    Processed Date: <b> @{var dt = Convert.ToDateTime(Model.ProcessedDate).Date.ToString("dd MMM, yyy");}@dt</b>
+                                    <br /><br />
+                                    Benefit Process ID: <b>@Model.ProcessingId</b>
+
+                                </small>
+                            </h2>
+
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- info row -->
+                    <div class="row invoice-info">
+                        <div class="col-sm-4 invoice-col">
+                            <h4><strong>Beneficiary Info</strong></h4>
+                            <address>
+                                Name: <b><span>@Model.Name</span></b><br>
+                                Membership ID:<b> @Model.MembershipID</b><br>
+                                Phone: <b>@Model.Phone</b><br>
+                                Email: <b>@Model.Email</b>
+                                <br /><br />
+                                <b>Current Status : </b><b style="color:#b94a48;text-transform:uppercase">@Model.CurrentStatus</b>
+                            </address>
+                        </div>
+                        <!-- /.col -->
+                        <!-- /.col -->
+                        <!-- /.col -->
+                        <div class="pull-right">
+                            <h4>
+                                <strong>
+                                    Beneficiary Account
+                                </strong>
+                            </h4>
+                            <address>
+                                Account Name:  <strong>
+                                    @if (string.IsNullOrEmpty(Model.AccountName))
+                                    {
+                                        <span>Not Available</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@Model.AccountName</span>
+                                    }
+                                </strong><br>
+                                Account Number:<b>
+                                    @if (string.IsNullOrEmpty(Model.AccountNo))
+                                    {
+                                        <span>Not Available</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@Model.AccountNo</span>
+                                    }
+                                </b><br />
+                                Bank Name: <b>
+                                    @if (string.IsNullOrEmpty(Model.BankName))
+                                    {
+                                        <span>Not Available</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@Model.BankName</span>
+                                    }
+                                </b><br>
+
+                            </address>
+
+                        </div>
+
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                    <!-- Table row -->
+                    <div class="row">
+                        <div class="col-xs-12 table-responsive">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        <h4>
+                                            <strong>
+                                                Benefit information
+                                            </strong>
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-striped">
+
+
+                                        <tbody>
+                                            <tr>
+                                                <th>
+                                                    Benefit Category
+                                                </th>
+                                                <td>
+                                                    @Model.BenefitCat
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <td></td>
+
+                                            </tr>
+                                            <tr>
+                                                <th>Benefit(s)</th>
+                                                <td>
+                                                    @if (Model.BenefitCat == "Cash")
+                                                    {
+                                                        <span> @x @string.Format("{0:n0}",Convert.ToInt32(Model.Benefit))</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@Model.Benefit</span>
+                                                    }
+                                                </td>
+
+
+                                            </tr>
+
+
+
+                                        </tbody>
+
+
+                                    </table>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+                        <!-- /.col-- >
+
+
+                        </div >
+
+
+                        <!-- /.row-- >
+
+
+
+                        < div class="row">
+                        <!-- accepted payments column -->
+                        @*<div class="col-xs-6">
+                                <p class="lead">Payment Methods:</p>
+                                <img src="../../dist/img/credit/visa.png" alt="Visa">
+                                <img src="../../dist/img/credit/mastercard.png" alt="Mastercard">
+                                <img src="../../dist/img/credit/american-express.png" alt="American Express">
+                                <img src="../../dist/img/credit/paypal2.png" alt="Paypal">
+
+                                <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                    Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr
+                                    jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
+                                </p>
+                            </div>*@
+                        <!-- /.col -->
+                        <div class="col-xs-12">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        Official use only
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <br />
+                                    <table class="table">
+                                        <tr style="float:right">
+                                            <td>
+
+                                                ----------------------------------------------
+                                                <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                Signature and Date
+                                                <br />
+                                                &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>(@Model.SignedBy )</b>
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                    <div class="row no-print">
+                        <div class="col-xs-12">
+
+                            <button id="print" class="btn btn-success pull-right"><i class="fa fa-print"></i> Print this </button>
+                            <button type="button" class="btn btn-danger pull-left" onclick="javascript:window.history.back();">
+                                <i class="fa fa-angle-left"></i> Back
+                            </button>
+                            @*<button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                                    <i class="fa fa-download"></i> Generate PDF
+                                </button>*@
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    @*<script src="~/Scripts/JqueryPrint/jquery.PrintArea.js_4.js"></script>
+        <script src="~/Scripts/JqueryPrint/core.js"></script>*@
+    <script src="~/Scripts/JqueryPrint/jQuery.print.js"></script>
+    <script type='text/javascript'>
+        $(function () {
+            $("#printable").find('#print').on('click', function () {
+                $.print("#printable");
+            });
+        });
+    </script>
+}
+

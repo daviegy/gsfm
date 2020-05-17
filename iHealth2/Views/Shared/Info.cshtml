@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Info";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<div class="page-title">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title-heading">
+                    <h1 class="h1-title">Info</h1>
+                </div><!-- /.page-title-heading -->
+                <ul class="breadcrumbs">
+                    <li><a href="/" title="">Home<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    <li><a href="#" title="">Info</a></li>
+                </ul><!-- /.breadcrumbs -->
+                <div class="clearfix"></div><!-- /.clearfix -->
+            </div>
+        </div>
+    </div>
+</div><!-- /.page-title -->
+
+<section class="flat-row pd-aboutv3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 center">
+                <h3>@{ var msg = new HtmlString(ViewBag.Message);} @msg</h3>
+            </div>
+        </div>
+    </div>
+</section>

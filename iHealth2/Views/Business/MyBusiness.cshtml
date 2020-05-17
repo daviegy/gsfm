@@ -1,0 +1,222 @@
+﻿@model IEnumerable<iHealth2.Models.BusinessInfo>
+@using iHealth2.Models;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+
+
+@if (Session["Name"] == null)
+{
+    Response.Redirect("/Account/login");
+}
+
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+    ViewBag.Title = "MyBusiness";
+    var user = db.Users.Find(User.Identity.GetUserId());
+    if (user.UserType == "BusinessUser")
+    {
+        Layout = "~/Views/Shared/_UserPanelLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+    }  
+ //   int counter = 0;
+}
+
+@*<section class="content-header">
+    <h1>
+        Dashboard
+        <small>My Business</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Dashboard</li>
+    </ol>
+</section>*@
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h2>My Registered Business</h2>
+            <p>
+                @Html.ActionLink("Register a Business ", "Create_Biz", "Business", new { @class = "" })
+            </p>
+            <div class="table-responsive mailbox-messages">
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                    <i class="fa fa-square-o"></i>
+                                </button>
+                            </th>                            
+                            <th>
+                                Logo
+                            </th>
+                            <th>
+                                Business Name
+                            </th>
+                            <th>
+                             Location
+                            </th> 
+                            <th>
+                                @Html.DisplayNameFor(model => model.Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Phone)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Category)
+                            </th>                           
+                            <th>
+                                @Html.DisplayNameFor(model => model.Website)
+                            </th>                    
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {              
+
+                            <tr>
+                                <td><input type="checkbox" name="processId" id="processId" value="@item.ID"></td>
+                                <td>
+                                    @if (item.logo != null)
+                                    {
+                                        <img src="data:image/png;base64,@Convert.ToBase64String(item.logo)" alt="Business Logo" style="width:100px;height:100px" />
+
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/Logo/ihealthlogo.png" alt="Business Logo" style="width:100px;height:100px" />
+                                    }
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.businessName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Address)
+                                </td>      
+                                @*<td>
+                                    @Html.DisplayFor(modelItem => item.City) @Html.DisplayFor(modelItem => item.State)   @Html.DisplayFor(modelItem => item.Country)
+                                </td>*@
+                                 <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Phone)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Category)
+                                </td>                                
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Website)
+                                </td>
+                                <td>
+                                    <a href="/business/my_business_profile/?id=@item.ID" class="btn btn-success">More Info</a>
+                                </td>                          
+
+                                @*<td>
+                                    @if (item.ApprovedStatus == "P")
+                                    {
+                                        <span>Pending</span>
+                                    }
+                                    else if (item.ApprovedStatus == "A")
+                                    {
+                                        <span>Approved</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.VerifiedStatus == "NV")
+                                    {
+                                        <span>Not Verified</span>
+                                    }
+                                    else if (item.VerifiedStatus == "V")
+                                    {
+                                        <span>Verified</span>
+                                    }
+                                </td>*@
+                            </tr>
+                        }
+                    </tbody>
+
+
+                </table>
+                <button onclick="deletebiz()" class="btn btn-danger" id="btndel" disabled>Delete Service(s)&nbsp;<i class="glyphicon glyphicon-trash"></i></button>
+
+            </div>
+        </div>
+    </div>
+
+
+@section scripts{
+<script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+<script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+<script>
+        $(document).ready(function (e) {
+
+            //Enable iCheck plugin for checkboxes
+            //iCheck for checkbox and radio inputs
+            var $b = $('input[type = "checkbox"]');
+            $('.mailbox-messages input[type="checkbox"]').iCheck({
+                checkboxClass: 'icheckbox_flat-blue',
+                radioClass: 'iradio_flat-blue'
+            });
+            //Enable check and uncheck all functionality
+            $(".checkbox-toggle").click(function () {
+                var clicks = $(this).data('clicks');
+                if (clicks) {
+                    //Uncheck all checkboxes
+                    //  alert("i just got clicked")
+                    $(".mailbox-messages input[type='checkbox']").iCheck("uncheck");
+                    $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+
+                } else {
+                    //Check all checkboxes
+                    $(".mailbox-messages input[type='checkbox']").iCheck("check", function () {
+                        $("#btndel").prop('disabled', false)
+                    });
+                    $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+                }
+                $(this).data("clicks", !clicks);
+            });
+
+            $('.mailbox-messages input[type="checkbox"]').on('ifToggled', function (e) {
+                if ($('#processId:checked').length > 0) {
+                    $("#btndel").prop('disabled', false)
+                }
+                else {
+                    $("#btndel").prop('disabled', true)
+                }
+
+            })
+
+
+
+        });
+
+        $('#table').bootstrapTable({
+
+            striped: true,
+            // cardView: true,
+            pagination: true,
+            pageSize: 10,
+            pageList: [10, 25, 50, 100, 200],
+            smartDisplay: false,
+            showToggle: true,
+            search: true,
+            showColumns: true,
+            showRefresh: true,
+             border : false
+            //align: 'center',
+            //valign: 'bottom'
+
+        });
+    </script>
+<script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+<script src="~/Scripts/Plugins/dpLoading-2.x.js"></script>
+<script src="~/Scripts/customscript/CompScript.js"></script>
+
+}

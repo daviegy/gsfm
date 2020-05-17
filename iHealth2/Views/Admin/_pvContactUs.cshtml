@@ -1,0 +1,64 @@
+﻿@model IEnumerable<iHealth2.Models.FeedBack>
+
+<div class="table-responsive">
+    <h2>Contact Us</h2>
+    <table id="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    @Html.DisplayName("Sender Name")
+                </th>
+                <th>
+                    @Html.DisplayName("Sender Email")
+                </th>
+                <th>
+                    <span> Phone Number</span>
+                </th>
+                <th>
+                    @Html.DisplayName("Message")
+                </th>
+                <th>
+                    @Html.DisplayName("Status")
+                </th>
+                <th>
+                    @Html.DisplayName("Recieve Date")
+                </th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>
+                        @Html.ActionLink("View Message", "ViewFeedBack", "Admin", new { id = item.ID }, new { @class="btn btn-info"})
+                        @*<a data-target="#repModal" data-toggle="modal" class="btn btn-danger">Reply</a>*@
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FRName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FREmail)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FRPhone)
+                    </td>
+                    <td >
+                        <span style="text-wrap:normal; width:10px">@item.FBMessage</span>
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FBStatus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SentDate)
+                    </td>
+                </tr>
+
+
+            }
+        </tbody>
+    </table>
+</div>

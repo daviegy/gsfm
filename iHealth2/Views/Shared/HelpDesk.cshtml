@@ -1,0 +1,165 @@
+﻿@using iHealth2.Models
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@using iHealth2.CustomClasses;
+@{
+    ViewBag.Title = "Helpdesk";
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+    String UserName = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(user.UserName, s);
+    UserName = UserName.Replace("/", "$25");
+    UserName = UserName.Replace("+", "$24");
+    switch (user.UserType)
+    {
+        case "BusinessUser":
+            Layout = "~/Views/Shared/_UserPanelLayout.cshtml";
+            break;
+        case "INISubcriber":
+            Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+            break;
+
+    }
+    var support = db.supports.Where(sp => sp.Support_Requestor_Email == user.Email);
+}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-lg-12">
+            <div class="panel panel-info">
+                <div class="panel-body">                   
+                <table id="table">
+                    <thead>
+                        <tr>    
+                            <th></th>                      
+                            <th>Ticket ID</th>
+                            <th>My Support Request</th>
+                            <th>Created date</th>
+                            <th>Reply</th>
+                            <th>Reply Date</th>
+                            <th>Support Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in support)
+                        {
+                            <tr>
+                                <td>@Html.ActionLink("Delete", "Delete_Support_Request", new { id = item.Id })</td>
+                                <td>
+                                    @item.TicketId
+                                </td>
+                                <td>
+                                    <div class="fr-view">
+                                        <p style="text-align:justify; border-left: 6px outset #0094ff;background-color: #00ffff; padding-left:5px; padding-right:5px">
+                                            @Html.Raw(Server.HtmlDecode(item.Content))
+                                        </p>
+                                    </div>
+                                </td>
+                                <td>
+                                    @item.Support_createdDate
+                                </td>
+                                <td>
+                                    <p style="text-align:justify; border-left: 6px outset #ff6a00;background-color: #dddddd; padding-left:5px; padding-right:5px">
+                                        @item.Support_Reply_Text_From_Admin
+                                    </p>
+</td>
+                                <td>
+                                    @item.Support_ProcessedDate
+                                </td>
+                                <td>
+                                    @if (item.support_status == "Fresh")
+                                    {
+                                        <span>@item.support_status</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Solved</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                       
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+       
+
+    </div>
+    <div class="panel-body">
+        <div class="row">
+
+            <!-- Left col -->
+            <section class="col-lg-12 connectedSortable">
+
+                <!-- quick email widget -->
+                <div class="box box-info">
+                    <div class="box-header">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                        <h2 class="box-title">Help Desk:<small> Send us mail</small> </h2>
+                        <!-- tools box -->
+                        <div class="pull-right box-tools">
+                            <button class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+                        </div><!-- /. tools -->
+                    </div>
+                    <form action="/support/HelpDesk/?hlpids=@UserName" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="box-body">
+                            @*<div class="form-group">
+                                <input type="email" class="form-control" name="emailFrom" placeholder="" />
+                            </div>*@
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="subject" placeholder="Subject:" required />
+                            </div>
+                            <div>
+                                <textarea id="Message" name="Message" placeholder="message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required></textarea>
+                            </div>
+
+                        </div>
+                        <div class="box-footer clearfix">
+                            <button class="pull-right btn btn-success" id="sendEmail">Send <i class="fa fa-arrow-circle-right"></i></button>
+                        </div>
+                    </form>
+                </div>
+
+
+            </section><!-- /.Left col -->
+
+        </div>
+
+    </div>
+</div>
+
+       <!-- Main row -->
+
+@section scripts{
+    <!-- CK Editor -->
+
+
+<script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+  <script src="~/Scripts/Plugins/summernote.min.js"></script>
+    <script>
+
+        $(function () {
+            $('#Message').summernote()
+        });
+        $('#table').bootstrapTable({
+            striped: true,
+            // cardView: true,
+            pagination: true,
+            pageSize: 10,
+            pageList: [10, 25, 50, 100, 200],
+            smartDisplay: false,
+            showToggle: true,
+            search: true,
+            showColumns: true,
+            showRefresh: true,
+            cellStyle: "color:red"
+
+
+        });
+    </script>
+
+
+
+}

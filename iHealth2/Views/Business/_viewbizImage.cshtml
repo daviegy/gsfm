@@ -1,0 +1,55 @@
+﻿@using IhealthPaging
+@model  IEnumerable<iHealth2.Models.BusinessImages>
+@using iHealth2.CustomClasses;
+
+<div class="table-responsive mailbox-messages">
+    <button id="btnDel1" disabled onclick="delImg()" class="btn btn-danger">Delete Image&nbsp;<i class="glyphicon glyphicon-trash "></i></button>
+    <button id="btnFeatured1" disabled onclick="featuredImg()" class="btn btn-success">Mark as Featured Image&nbsp;<i class="glyphicon glyphicon-ok-circle "></i></button>
+    <button id="btnUnFeatured1" disabled onclick="unfeaturedImg()" class="btn btn-warning">Unmarked as Featured Image&nbsp;<i class="glyphicon glyphicon-eye-close "></i></button>
+    <br /><br />
+    <table id="example" class="table  table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    Business Images
+                </th>
+                <th>Image Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+
+                foreach (var img in Model)
+                {
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="markImgId" id="markImgId" value="@img.ID">
+                        </td>
+                        <td>
+
+                            <img src="data:image/png;base64,@Convert.ToBase64String(img.galleryImage)"
+                                 data-darkbox="data:image/png;base64,@Convert.ToBase64String(img.galleryImage)"
+                                 data-darkbox-description="Image Caption" style="width:200px;height:200px">
+
+                        </td>
+                        <td>@if (img.isSliderImage == "true")
+                            {
+                                <span>Featured Image</span>
+                            }
+                            else
+                            {
+                                <span>Gallery Image</span>
+                            }
+                            </td>
+                    </tr>
+
+                }
+            }
+        </tbody>
+    </table>
+   
+    <button id="btnDel" disabled onclick="delImg()" class="btn btn-danger">Delete Image&nbsp;<i class="glyphicon glyphicon-trash "></i></button>
+    <button id="btnFeatured" disabled onclick="featuredImg()" class="btn btn-success">Mark as Featured Image&nbsp;<i class="glyphicon glyphicon-ok-circle "></i></button>
+    <button id="btnUnFeatured" disabled onclick="unfeaturedImg()" class="btn btn-warning">Unmarked as Featured Image&nbsp;<i class="glyphicon glyphicon-eye-close "></i></button>
+</div>

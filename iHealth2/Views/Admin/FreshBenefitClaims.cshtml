@@ -1,0 +1,183 @@
+﻿@model IEnumerable<iHealth2.Models.BenefitClaimersTb>
+@using iHealth2.CustomClasses;
+@using iHealth2.Models
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+
+
+@{
+    ViewBag.Title = "FreshBenefitClaims";
+    char x = (char)8358;
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    switch (user.UserType)
+    {
+
+        case "AD":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            break;
+        case "SA":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+         //   Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+            break;
+
+    }
+}
+
+<div class="panel panel-success">
+    <div class="panel-body">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <div class="table-responsive mailbox-messages">
+                        <table id="table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    
+                                    <th>Processing ID</th>
+                                    <th>Category</th>
+                                    @*<th>Stage</th>*@
+                                    <th>
+                                        Benefit(s)
+                                    </th>
+                                    <th>
+                                        Applied Date
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @{
+                                                string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+                                                String EncryptId = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(item.ID.ToString(), s);
+                                                EncryptId = EncryptId.Replace("/", "$25");
+                                                EncryptId = EncryptId.Replace("+", "$24");
+                                            }
+                                           
+                                                <a href="/Admin/BPReport/?bpd=@EncryptId" class="btn btn-primary">Process</a>
+                                                                                       
+                                            <button onclick="getDetails(@item.SubRefCode,'@item.ProcessingId')" class="btn btn-warning">Detail</button>
+                                        </td>
+                                        @*<td>
+                                            
+                                        </td>*@
+                                        <td class="text-danger"><b>@item.ProcessingId</b></td>
+                                        <td>@item.BenefitCategory</td>
+                                        @*<td>
+
+                                                @item.BenefitStage
+
+                                            </td>*@
+                                        <td>
+                                            <div style="width:auto">
+                                                @if (item.BenefitCategory == "Cash")
+                                                {
+                                                    @*if (item.Meet_promo_target == true)
+                                                        {
+                                                            double bonus = item.CashBenefits + (item.CashBenefits * 0.1);
+                                                            <span>@x@String.Format("{0:n0}", bonus)</span>
+                                                        }
+                                                        else
+                                                        {*@
+                                                    @x@String.Format("{0:n0}", item.totalCashBenefits)
+
+                                                    //}
+
+                                                }
+                                                else
+                                                {
+                                                            @item.HealthBenefits
+
+                                                }
+
+                                                  
+
+                                                </div>
+
+                                            </td>
+                                            <td>
+                                                @{var dt = Convert.ToDateTime(
+                                        item.B_applicationDate).Date.ToString("dd MMM, yyy");}
+                                                @dt
+                                            </td>
+                                        </tr>
+                                                    }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-danger" hidden id="dtpanel">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Beneficiary's Details
+                    </div>
+                </div>
+                <div class="panel-body table-responsive" id="dt" style="">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal fade" id="sndMail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-success">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                        <h2 class="box-title">Email Desk:<small> Send mail to client</small> </h2>
+                        <!-- tools box -->
+                        <div class="pull-right box-tools">
+                            <button class="btn btn-info btn-sm" onclick="getModal()" title="Remove"><i class="fa fa-times"></i></button>
+                        </div><!-- /. tools -->
+                    </div>
+                    <form action="/Admin/sendmail" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="box-body">
+                            <div class="form-group">
+                                <input type="email" class="form-control" readonly id="emailto" name="emailto" placeholder="Email To" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject:" required />
+                            </div>
+                            <div>
+                                <textarea id="Message" name="Message" placeholder="message" rows="10" cols="80" required></textarea>
+                            </div>
+
+                        </div>
+                        <div class="box-footer clearfix">
+                            <button class="pull-right btn btn-default" id="sendEmail">Send <i class="fa fa-arrow-circle-right"></i></button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script src="~/Scripts/Plugins/summernote.min.js"></script>
+    <script>
+        $(function () {
+            $('#Message').summernote()
+        });
+    </script>
+    <script src="~/Scripts/Plugins/dpLoading-2.x.js"></script>
+    <script type="text/javascript" src="~/Scripts/CustomScript/fbcScript.js"></script>
+}

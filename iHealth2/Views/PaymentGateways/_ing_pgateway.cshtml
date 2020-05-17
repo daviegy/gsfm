@@ -1,0 +1,112 @@
+﻿@using iHealth2.CustomClasses
+
+@{
+    var url = Url.Action("ing_pmt_response_status", "PaymentGateways", null, protocol: Request.Url.Scheme);
+    int amount = Convert.ToInt32(TempData["amount"]);
+    amount *= 100;
+    #region//Text environment
+    //string product_id = "1076";
+    //string Mac_key = "D3D1D05AFE42AD50818167EAC73C109168A0F108F32645C8B59E897FA930DA44F9230910DAC9E20641823799A107A02068F7BC0F4CC41D2952E249552255710F";
+    //var input = string.Concat(TempData["trans_id"], product_id, "101", amount, url, Mac_key);
+    //string interswicth_url = "https://sandbox.interswitchng.com/collections/w/pay";
+    #endregion
+    #region //Live environment
+    string product_id = "8308";
+    string Mac_key = "pk68bGDQ14RZT64i5yuX3lR8xuFs2gtkZRxGIF9KSlrcRr4nAeO82k86NDQDzyH9CFbkoyTM522iKpv8GN54AzUvNULAfPKIAzY27y0jx89b6ekDTVPKayVFAqNNMK6k";
+    var input = string.Concat(TempData["trans_id"], product_id, "101", amount, url, Mac_key);
+    string interswicth_url = "https://webpay.interswitchng.com/collections/w/pay";
+    #endregion
+    var hash = Cryptoclass.GenerateSHA512String(input);
+}
+<section class="flat-row pd-aboutv3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-offset-2 " style="width:500px; box-shadow:0 0 3px #aaa; height:auto;color:#666;">
+                    <div style="width:100%; padding:10px; background:#5cb85c; float:left; color:#fff; font-size:30px; text-align:center;">
+                        Payment Details
+                    </div>
+                    <div style="width:100%; padding:0px 0px;border-bottom:1px solid rgba(0,0,0,0.2);float:left;">
+                        <div style="width:30%; float:left;padding:10px;">
+
+                            <span style="font-size:14px;float:left; width:100%;">
+                                @TempData["cust_name"]
+                            </span>
+
+                            <span style="font-size:14px;float:left;width:100%;">
+                                @TempData["Email"]
+                            </span>
+                        </div>
+
+                        <div style="width:40%; float:right;padding:">
+                            <span style="font-size:14px;float:right;  padding:10px; text-align:right;">
+                                <b>Date : </b>@DateTime.UtcNow.Date.ToString("dd MMM, yyy")
+                            </span>
+                            <span style="font-size:14px;float:right;  padding:10px; text-align:right;">
+                                <b>Ref# : </b>@TempData["trans_id"]
+                            </span>
+                        </div>
+                    </div>
+                    <div style="width:100%; padding:0px; float:left;">
+
+                        <div style="width:100%;float:left;background:#efefef;">
+                            <span style="float:left; text-align:left;padding:10px;width:50%;color:#888;font-weight:600;">
+                                Decription
+                            </span>
+                            <span style="font-weight:600;float:left;padding:10px ;width:40%;color:#888;text-align:right;">
+                                Amount
+                            </span>
+                        </div>
+
+                        <div style="width:100%;float:left;">
+                            <span style="float:left; text-align:left;padding:10px;width:50%;color:#888;">
+                                iHealth Networking Group
+
+
+                                <span style="font-size:15px; float:left; width:100%;">
+                                    (Sign up fee)
+                                </span>
+                            </span>
+                            <span style="font-weight:normal;float:left;padding:10px ;width:40%;color:#888;text-align:right;">
+                                &#8358 @String.Format("{0:n0}",TempData["amount"]).00
+                            </span>
+                        </div>
+
+                        <div style="width:100%;float:left; background:#fff;">
+
+                            <span style="font-weight:600;float:right;padding:10px 0px;width:40%;color:#666;text-align:center;">
+                                Total : &#8358 @String.Format("{0:n0}", TempData["amount"]).00
+                            </span >
+                        </div >
+                    </div >
+                    <br/>
+                    <div style = "width:100%; padding:0px;" >
+                        <form method = "post" action = @interswicth_url >
+                            @*REQUIRED HIDDEN FIELDS*@
+                            <input name="product_id" type="hidden" value="8308" />
+                            <input name="pay_item_id" type="hidden" value="101" />
+                            <input name="amount" type="hidden" value="@amount" />
+                            <input name="currency" type="hidden" value="566" />
+                            <input name="site_redirect_url" type="hidden" value="@Url.Action("ing_pmt_response_status", "PaymentGateways", null, protocol: Request.Url.Scheme)" />
+                            <input name="txn_ref" type="hidden" value="@TempData["trans_id"]" />
+                            <input name="cust_id" type="hidden" value="@TempData["cust_id"]" />
+                            <input name="site_name" type="hidden" value="www.ihealthgsfm.com" />
+                            <input name="cust_name" type="hidden" value="@TempData["cust_name"]" />
+                            <input name="hash" type="hidden" value="@hash" />
+                            <button class="btn btn-success btn-block" style="background:#5cb85c; color:#fff; width:100%; font-family:Helvetica Neue, Helvetica, Arial, sans-serif" type="submit" value="">
+                                Proceed with payment &nbsp;  <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div style="width:100%; padding:0px; float:left;">
+                        <br />
+                    </div>
+                    <div style="width:100%; padding:0px; float:left;">
+                        <a href="/account/cancelRegistration/?t=@TempData["cust_id"]" class="btn btn-danger btn-block"><i class="fa fa-arrow-left"></i> &nbsp;Go Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "premium";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    var x = (char)8358;
+}
+
+
+<div class="page-title">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title-heading">
+                    <h1 class="h1-title">
+                        Premium
+                    </h1>
+                </div><!-- /.page-title-heading -->
+                <ul class="breadcrumbs">
+                    <li><a href="/" title="">Home<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+
+                    <li><a href="#" title="">Premium</a></li>
+                </ul><!-- /.breadcrumbs -->
+                <div class="clearfix"></div><!-- /.clearfix -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="flat-row pd-aboutv3">
+    <div class="container">
+        <div class="row">
+            <!--<div class="col-md-8 col-md-offset-2">-->
+            <div class="wrap-main-post about-v3">
+                <div class="box-content">
+                    <p style="text-align:justify">
+                        Premium Users are users who want to pay from their pocket to benefit
+                        from any of our group health insurance plans with or without being
+                        a member of iHealth Networking Group - iHNG. Because we network with
+                        credible and multiple HMOs, they will have wider range of hospitals
+                        to choose from at a reduced cost.
+                    </p>
+                    <br />
+                    <div class="col-md-12">
+                        <div class="col-md-7">
+                            <div class="table-responsive ">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="6" class="center">
+                                                <h2>
+                                                    <b>
+                                                        Premium Plan/Annum
+                                                    </b>
+                                                </h2>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            @*<th><b>Category</b></th>*@
+                                            <th><b>Plan</b></th>
+                                            <th><b>Pricing (per year) </b></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>@*<td>First Hospital List A </td>*@<td>FHLPA</td><td>@x 15,000.00</td><td><a href="/premium/FHLPA" class="btn btn-success">Benefits</a> <a href="/premium/premium_package_signup?plan=FHLPA" class="btn btn-danger">Buy Now!</a> <a href="/ing/hospital_list/?ct=First_Hospital_List" class="btn btn-info">Health Providers</a></td></tr>
+                                        <tr>@*<td>First Hospital List B</td>*@<td>FHLPB</td><td>@x 25,000.00</td><td><a href="/premium/FHLPB" class="btn btn-success">Benefits</a> <a href="/premium/premium_package_signup?plan=FHLPB" class="btn btn-danger">Buy Now!</a> <a href="/ing/hospital_list/?ct=First_Hospital_List"class="btn btn-info">Health Providers</a></td></tr>
+                                        <tr>@*<td>Second Hospital List A</td>*@<td>SHLPA</td><td>@x 25,000.00</td><td><a href="/premium/SHLPA" class="btn btn-success">Benefits</a> <a href="/premium/premium_package_signup?plan=SHLPA" class="btn btn-danger">Buy Now!</a> <a href="/ing/hospital_list/?ct=second_hospital_List"class="btn btn-info">Health Providers</a></td></tr>
+                                        <tr>@*<td>Second Hospital List B</td>*@<td>SHLPB</td><td>@x 50,000.00</td><td><a href="/premium/SHLPB" class="btn btn-success">Benefits</a> <a href="/premium/premium_package_signup?plan=SHLPB" class="btn btn-danger">Buy Now!</a> <a href="/ing/hospital_list/?ct=second_hospital_List"class="btn btn-info">Health Providers</a></td></tr>
+                                        <tr>@*<td>High Class Networking</td>*@<td>HCN1</td><td>@x 60,000.00</td><td><a href="/premium/HCN1" class="btn btn-success">Benefits</a> <a href="/premium/premium_package_signup?plan=HCN1" class="btn btn-danger">Buy Now!</a> <a href="/ing/hospital_list/?ct=High_Class_Networker"class="btn btn-info">Health Providers</a></td></tr>
+                                        <tr>@*<td>High Class Networking</td>*@<td>HCN2</td><td>@x 90,000.00</td><td><a href="/premium/HCN2" class="btn btn-success">Benefits</a> <a href="/premium/premium_package_signup?plan=HCN2" class="btn btn-danger">Buy Now!</a> <a href="/ing/hospital_list/?ct=High_Class_Networker" class="btn btn-info">Health Providers</a></td></tr>
+                                        <tr>@*<td>High Class Networking</td>*@<td>HCN</td><td>@x 220,000.00</td><td><a href="/premium/HCN" class="btn btn-success">Benefits</a> <a href="/premium/premium_package_signup?plan=HCN" class="btn btn-danger">Buy Now!</a> <a href="/ing/hospital_list/?ct=High_Class_Networker" class="btn btn-info">Health Providers</a></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                 
+                        <div class="col-md-5">
+                            <div class="table-responsive ">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="6" class="center">
+                                                <h2>
+                                                    <b>
+                                                        Referrals and Commission for iHealth Partners
+                                                    </b>
+                                                </h2>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th><b>Plans</b></th>                                            
+                                            <th><b>No. of Referrals</b></th>                                           
+                                            <th>
+                                                <b> 5% commission earned<br /> by iHealth Partners <br /> on every purchase </b>
+                                            </th>
+                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>FHLPA</td><td>2</td><td>@x 750.00</td></tr>
+                                        <tr><td>FHLPB</td><td>4</td><td>@x 1,250.00</td></tr>
+                                        <tr><td>SHLPA</td><td>4</td><td>@x 1,250.00</td></tr>
+                                        <tr><td>SHLPB</td><td>8</td><td>@x 2,500.00</td></tr>
+                                        <tr><td>HCN1</td><td>10</td><td>@x 3,000.00</td></tr>
+                                        <tr><td>HCN2</td><td>15</td><td>@x 4,500.00</td></tr>
+                                        <tr><td>HCN</td><td>25</td><td>@x 11,000.00</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                   
+                    <div class="col-md-12">
+                        <p style="text-align:justify">
+                            <h3><b class="text-danger">Please note:</b></h3>
+                            <i class="fa fa-angle-double-right"></i>   Team members who could NOT meet their promotional targets of 2referrals and above within 30days but wish to join and enjoy our group health insurance plan can do so by purchasing any of the plans at 5% discount.
+                        </p>
+                        <p style="text-align:justify">
+                            <i class="fa fa-angle-double-right"></i>Team members are also allowed to enroll someone or group of people who are interested in enjoying any of our group health insurance plans and earn 5% commission on every successful enrolled premium user with their referrers’ code
+                        </p>
+                        <p style="text-align:justify">
+                            <i class="fa fa-angle-double-right"></i>   Age limit is 60yrs. Clients that are above 60yrs will be required to pay certain percentage in addition to the premium.
+                        </p>
+                        <p style="text-align:justify">
+                            <i class="fa fa-angle-double-right"></i> We also have special offers for family or group enrollement.
+
+                        </p>
+                        <p style="text-align:justify">
+                            <i class="fa fa-angle-double-right"></i> The terms and conditions under these Premium users/ no. of referrals are subject to review based on our HMOs' recommendations.
+                            <br />
+                            <a href="/premium/premium_package_signup" class="btn btn-danger">Click here to buy</a>
+                        </p>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+

@@ -1,0 +1,112 @@
+﻿@model iHealth2.Models.Support
+
+@{
+    ViewBag.Title = "Process_Support_Request";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="panel panel-default">
+   
+    <div class="panel-body">
+       
+        <div class="col-md-6">
+            <div class="panel panel-success">
+                <div class="panel-body">
+                   <table class="table table-striped">
+                       <tr>
+                           <th>
+                               @Html.DisplayNameFor(model => model.TicketId)
+                           </th>
+                           <td>&rArr;</td>
+                           <td>
+                               @Html.DisplayFor(model => model.TicketId)
+                           </td>
+                       </tr>
+                       <tr>
+                           <th>
+                              Sender
+                           </th>
+                           <td>&rArr;</td>
+                           <td>
+                               @Html.DisplayFor(model => model.Support_Requestor_Name)
+                           </td>
+                       </tr>
+                       <tr>
+                           <th>
+                               @Html.DisplayNameFor(model => model.Subject)
+                           </th>
+                           <td>&rArr;</td>
+                           <td>
+                               @Html.DisplayFor(model => model.Subject)
+                           </td>
+                       </tr>
+                       <tr>
+                           <td>
+                               
+                               <p style="text-align:justify; border-left: 6px outset #0094ff;
+    background-color: #00ffff; font-weight:500; padding-left:5px; padding-right:5px">@Html.Raw(Server.HtmlDecode(Model.Content))</p>
+                           </td>
+                       </tr>
+                       <tr>
+                           <th>
+                               @Html.DisplayNameFor(model => model.support_status)
+                           </th>
+                           <td>&rArr;</td>
+                           <td>
+                               @Html.DisplayFor(model => model.support_status)
+                           </td>
+                       </tr>
+                   </table>
+                    <a href="@Request.UrlReferrer.ToString()" class="btn btn-danger"><i class="fa fa-arrow-circle-left"></i> Back</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h4>Reply with a message</h4>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form action="/support/Process_Support_Request" method="post">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m=>m.Id)
+                       
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label class="control-label"> To: </label>
+                                <input type="email" class="form-control" name="emailFrom" placeholder="" value="@Model.Support_Requestor_Email" disabled />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label"> Subject: </label>
+                                <input type="text" class="form-control" name="subject" placeholder="Subject:" value="[Ticket ID: @Model.TicketId] RE: @Model.Subject" disabled />
+                            </div>
+                            <div>                                
+                               <textarea id="Message" name="Message" placeholder="message" rows="10" cols="80" required></textarea>
+                            </div>
+
+                        </div>
+                        <div class="box-footer clearfix">
+                            <a href="@Request.UrlReferrer.ToString()" class="btn btn-danger"><i class="fa fa-arrow-circle-left"></i> Back</a>
+                            <button class="pull-right btn btn-default" id="sendEmail">Send <i class="fa fa-arrow-circle-right"></i></button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section scripts{
+    <!-- CK Editor -->
+<script src="~/Scripts/Plugins/summernote.min.js"></script>
+   @* <script src="~/Scripts/Plugins/ckeditor.js"></script>*@
+    <script>
+        $(function () {
+            $('#Message').summernote()
+        });
+    </script>
+    }

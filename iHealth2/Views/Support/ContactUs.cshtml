@@ -1,0 +1,112 @@
+﻿@using Recaptcha
+
+@model iHealth2.Models.FeedBackViewModel
+@{
+    ViewBag.Title = "Contact Us";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+<div class="page-title">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title-heading">
+                    <h1 class="h1-title">Contact</h1>
+                </div><!-- /.page-title-heading -->
+                <ul class="breadcrumbs">
+                    <li><a href="#" title="">Home<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    <li><a href="#" title="">Contact</a></li>
+                </ul><!-- /.breadcrumbs -->
+                <div class="clearfix"></div><!-- /.clearfix -->
+            </div>
+        </div>
+    </div>
+</div><!-- /.page-title -->
+<section class="flat-row pd-contact-v1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="contact-info">
+                     <div class="info info-address">
+                        <div class="title">Address</div>
+                        <p>
+                            Discovery Mall, 215 Konoko Crescent,
+                            Off Ademola Adetokunbo Crescent,
+                            Wuse 2, Abuja-FCT, Nigeria.
+                        </p>
+                    </div>
+
+                    <div class="info info-address">
+                        <div class="title">Phone number</div>
+                        <p>+234 908 016 3224⁠</p>
+                        <p>+234 803 938 8611</p>
+                        <p>+234 902 726 2831</p>
+                    </div>
+
+                    <div class="info info-address">
+                        <div class="title">E-mail address</div>
+                        <p>support@ihealthgsfm.com</p>
+                    </div>
+                </div>
+            </div> <!-- /.col-md-4 -->
+
+            <div class="col-md-8">
+                <div class="flat-form-info">
+                    @using (Html.BeginForm("ContactUs", "Support", FormMethod.Post, new { @class="form-info"}))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="one-half v3">
+                            <p class="input-info">
+                                @Html.EditorFor(model => model.FRName, new { htmlAttributes = new {  placeholder = "Name*" } })
+                                 @Html.ValidationMessageFor(model => model.FRName, "", new { @class = "text-danger" })
+
+                            </p>
+                            <p class="input-info">
+                                @Html.EditorFor(model => model.FREmail, new { htmlAttributes = new { placeholder = "Email*" } })
+                              @Html.ValidationMessageFor(model => model.FREmail, "", new { @class = "text-danger" })
+
+                            </p>
+                            <p class="input-info">
+                                @Html.EditorFor(model => model.FRPhone, new { htmlAttributes = new { placeholder = "Phone*" } })
+                                @Html.ValidationMessageFor(model => model.FRPhone, "", new { @class = "text-danger" })
+
+                            </p>
+                            <p class="input-info">
+                                @Html.EditorFor(model => model.subject, new { htmlAttributes = new {placeholder = "Subject*" } })
+                                @Html.ValidationMessageFor(model => model.subject, "", new { @class = "text-danger" })
+                            </p>
+                           <p class="input-info">
+                                <div class="g-recaptcha" data-sitekey="@System.Configuration.ConfigurationManager.AppSettings["recaptchaPublicKey"]"></div>
+                            </p>
+                            <p class="input-info"><input type="submit" value="Send Message"></p>
+                        </div>
+                        <div class="one-half v4">
+                            <p class="input-info">
+                                @Html.TextAreaFor(model => model.FBMessage, new { placeholder = "Message"})
+                             
+                                <br />@Html.ValidationMessageFor(model => model.FBMessage, "", new { @class = "text-danger" })
+                            </p>
+                        </div>
+                        
+  
+                    } <!-- /.flat-form-info -->
+                </div>
+            </div> <!-- /.col-md-8 -->
+
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</section><!-- /.flat-row-iconbox -->
+<!-- map -->
+@*<section class="flat-row pdmap">
+        <div class="flat-maps" data-address="Thành phố New York, Tiểu bang New York" data-height="454" data-images="images/map/map-1.png" data-name="Themesflat Map"></div>
+        <div class="gm-map">
+            <div class="map" id="map_canvasContactUs"></div>
+        </div>
+    </section>*@
+
+
+@section scripts{
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+@Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,114 @@
+﻿@model iHealth2.Models.FeedBackViewModel
+
+@{
+    ViewBag.Title = "Report Fraud";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+<h2>Report Fraud</h2>
+
+<ul id="contact-info">
+    <li>
+        <i class="general foundicon-phone icon"></i>
+        <span class="field">Phone:</span>
+        <br />
+        (+234) 9080163224
+    </li>
+    <li>
+        <i class="general foundicon-mail icon"></i>
+        <span class="field">Email:</span>
+        <br />
+        <a href="mailto:support@ihealthgsfm.com" title="Email">support@ihealthgsfm.com</a>
+    </li>
+</ul>
+<br />
+ <div class="span12">
+                <div class="span5">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-error" })
+                                <div class="control-group">
+                                    Name
+                                    <span class="text-error">*</span>
+                                    <div class="controls">
+                                        @Html.EditorFor(model => model.FRName, new { htmlAttributes = new { @class = "form-control" } })
+                                        <br />   @Html.ValidationMessageFor(model => model.FRName, "", new { @class = "text-error" })
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    Email<span class="text-error">*</span>
+                                    <div class="controls">
+                                        @Html.EditorFor(model => model.FREmail, new { htmlAttributes = new { @class = "form-control" } })
+                                        <br />   @Html.ValidationMessageFor(model => model.FREmail, "", new { @class = "text-error" })
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    @Html.LabelFor(model => model.FRPhone, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="controls">
+                                        @Html.EditorFor(model => model.FRPhone, new { htmlAttributes = new { @class = "form-control" } })
+                                        <br /> @Html.ValidationMessageFor(model => model.FRPhone, "", new { @class = "text-error" })
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    Report Type <span class="text-error">*</span>
+                                    <div class="controls">
+                                        <select name="ReportType" required class="form-control" style="width:94%">
+                                            <option value="">Select</option>
+                                            <option value="MedicalFraud">Medical Fraud</option>
+                                            <option value="FakeDrug">Fake Drug</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <hr />
+
+                                <span style="font-style:italic;color:red; font-size:small">Please, kindly give us a full detail of your report thanks</span>
+                                <div class="control-group">
+                                    <label class="">   Message<span class="text-error">*</span></label>
+                                    <br />
+                                    <div class="control">
+                                        @*@Html.TextAreaFor(model => model.FBMessage, new { htmlAttributes = new { @class = "input", @style = "" } })*@
+                                        <textarea name="FBMessage" class="form-control" required></textarea>
+                                           <br /> @Html.ValidationMessageFor(model => model.FBMessage, "", new { @class = "text-error" })
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <div class="controls">
+
+                                        <div class="g-recaptcha" data-sitekey="@System.Configuration.ConfigurationManager.AppSettings["recaptchaPublicKey"]"></div>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <input type="submit" value="Submit" class="btn btn-success" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="span6">
+                    <div class="panel panel-default">
+                        <div class=" panel-body">
+                            <div id="map_canvasContactUs" style="width:inherit;height:500px">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            
+       
+@section scripts{
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+}

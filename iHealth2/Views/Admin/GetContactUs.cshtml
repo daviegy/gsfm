@@ -1,0 +1,41 @@
+﻿@model IEnumerable<iHealth2.Models.FeedBack>
+
+@{
+    ViewBag.Title = "Contact Us";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div id="#partialView">
+                @Html.Partial("_pvContactUs",Model)
+            </div>
+        </div>
+    </div>
+
+
+
+    @section scripts{
+        <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+        <script>
+    $('#table').bootstrapTable({
+
+        striped: true,
+        // cardView: true,
+        pagination: true,
+        pageSize: 10,
+        pageList: [10, 25, 50, 100, 200],
+        smartDisplay: false,
+        showToggle: true,
+        search: true,
+        showColumns: true,
+        showRefresh: true,
+        cellStyle: "color:red"
+        //    border : true
+        //align: 'center',
+        //valign: 'bottom'
+
+    });
+        </script>
+      
+    }

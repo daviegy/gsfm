@@ -1,0 +1,50 @@
+﻿@using Microsoft.AspNet.Identity
+@using iHealth2.Models
+@using Microsoft.AspNet.Identity.Owin;
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <div class="form-group">
+                @{
+        //var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+        //var roleManager = HttpContext.Current.GetOwinContext().Get<ApplicationRoleManager>();
+        ApplicationDbContext db = new ApplicationDbContext();
+        var user = db.Users.Find(User.Identity.GetUserId());
+       // var UserRole = userManager.GetRoles(user.Id);
+                }
+
+                @if (Session["Name"] != null)
+                {
+                    if (User.IsInRole("Admin"))
+                    {
+                        @Html.ActionLink("Manage your Account : " + user.FullName + "!    ", "Index", "Admin", routeValues: null, htmlAttributes: new {@style="color: Orange; font-weight:700", title = "Click to Manage Account" })
+    @*<span style="font-size:x-large; color:greenyellow; font-weight:800">||</span>  <a href="javascript:document.getElementById('logoutForm').submit()" style="color:red; font-weight:700" >SignOut</a>*@
+
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Manage your Account : " + user.FullName + "!    ", "Index", "Users", routeValues: null, htmlAttributes: new { @style = "color: Orange; font-weight:700", title = "Click to Manage Account" })
+    @*<span style="font-size:x-large; color:greenyellow; font-weight:800">||</span> <a href="javascript:document.getElementById('logoutForm').submit()" style="color:red; font-weight:700">SignOut</a>*@
+                    }
+                }
+                    
+                 </div>
+             </li>
+        
+    </ul>
+    
+ 
+    }
+}
+@*else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Signup", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}*@

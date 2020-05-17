@@ -1,0 +1,281 @@
+﻿@if (Session["Name"] == null)
+{
+    Response.Redirect("/Account/login");
+
+}
+@model iHealth2.Models.BusinessInfo
+@using iHealth2.Models;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+    ViewBag.Title = "Create";
+    var user = db.Users.Find(User.Identity.GetUserId());
+    if (user.UserType == "BusinessUser")
+    {
+        Layout = "~/Views/Shared/_UserPanelLayout.cshtml";
+    }
+    else {
+        Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+    }
+
+ }   
+   
+
+    <div class="panel panel-default">
+        <div class="alert alert-danger">
+            <h3>Register your business/company profile</h3>
+        </div>
+        <div class="panel-body">
+            <div class="panel panel-primary">
+                @using (Html.BeginForm("Create_Biz", "Business", FormMethod.Post, new { onsubmit = "return submitEntry(this)", id = "BCreate", enctype = "multipart/form-data" }))
+                {
+                    <span class="text-danger">@Html.ValidationSummary()</span> 
+                    @Html.AntiForgeryToken()
+                    <div class="panel-body">
+                        <div class=" panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Basic Info
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <b>
+                                        Business Name
+                                    </b><span class="text-danger" style="font-weight:700">*</span>
+                                    &nbsp; <img src="~/Content/images/helpicon.png" title="This is the name of your business e.g ihealth specialist hospital" />
+                                    <div class="">
+                                        @Html.EditorFor(model => model.businessName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.businessName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <b> Business Logo</b> &nbsp; <img src="~/Content/images/helpicon.png" title="Upload logo of business or  service" /> <span class="text-danger">Maximum Image Size is 2000kb(i.e 2MB)</span>
+
+                                <input id="logo" name="logo" type="file" class="file-loading" accept="image/*">
+                               <br />
+                                 <div class="form-group">
+                                    <b>Business Overview</b>
+                                    <textarea id="summary" name="summary" class="form-control" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" panel panel-info">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Set Location Information
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <b>
+                                        Address
+                                    </b><span class="text-danger" style="font-weight:700">*</span>
+                                    <div class="">
+                                        <textarea class="textarea" name="Address" placeholder="Address" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                        @*@Html.TextAreaFor(model => model.Address, new { htmlAttributes = new { @class ="form-control", @style="width:200px; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" } })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })*@
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <b>
+                                        Country
+                                    </b><span class="text-danger" style="font-weight:700">*</span>
+                                    @*@Html.DropDownList("Country", null, "Select Country", new { id = "Country",@class="form-control", required = true})*@
+                                    <select class="form-control" name="Country" id="Country" required>
+                                        <option value="">Select Country</option>
+                                        @{
+                    var contry = db.country.ToList();
+                    foreach (var con3 in contry)
+                    {
+                            <option value="@con3.ID">@con3.CountryName</option>
+                    }
+
+                                        }
+                                    </select>
+                                    @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="">
+                                        <b>
+                                            State
+                                        </b><span class="text-danger" style="font-weight:700">*</span>
+                                        @Html.DropDownList("state", new List<SelectListItem> { new SelectListItem { Value = "", Text = "" } }, "Select State", new { id = "state", required = true, @class = "form-control" })
+                                        <span class="text-danger" id="stateError"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <b>
+                                        City
+                                    </b>
+                                    <span class="text-danger" style="font-weight:700">*</span>
+                                    <div class="">
+                                        <input type="text" name="city" class="form-control" value="" />
+                                        <span class="text-danger" id="cityError"></span>
+                                    </div>
+                                </div>
+                                @*<div class="form-group">
+                                    <b>
+                                        Latitude
+                                    </b>
+                                    <div class="">
+
+                                        <input type="text" name="lat" id="CityLat" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <b>
+                                        Longitude
+                                    </b>
+                                    <div class="">
+                                        <input type="text" name="long" id="CityLong" class="form-control" />
+                                    </div>
+                                </div>*@
+                                @*<table>
+                                    <tr>
+                                        <td style="width:60%">                                            
+                                            
+                                        </td>
+                                        <td style="width:20%"></td>
+                                        <td>
+                                            <div id="map_canvas" style="width:400px;height:400px"></div>
+                                        </td>
+                                    </tr>
+                                </table>*@
+
+                            </div>
+
+                        </div>
+                        <div class=" panel panel-danger">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Set Category Information
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <b>
+                                    Business Type
+                                </b><span class="text-danger" style="font-weight:700">*</span>
+                                &nbsp; <img src="~/Content/images/helpicon.png" title="From the list select the type of service you or your business renders" />
+                                <div class="form-group">
+                                    <div class="">
+
+                                       @* @Html.DropDownList("Category", null, "Select Category", new { id = "cat", required = true, @class = "form-control" })*@
+                                        <select class="form-control" name="Category" id="cat" required>
+                                            <option value="">Select Category</option>
+                                            @{
+                    var cate = db.category.ToList();
+                    foreach (var cat in cate)
+                    {
+                                        <option value="@cat.ID">@cat.CatName</option>
+                    }
+
+                                            }
+                                        </select>
+                                                @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 2px" id="subTr1" >
+                                    <span class="text-success" style="font-weight:600">Subcategory </span>
+                                    @Html.DropDownList("subCat1", new List<SelectListItem> { new SelectListItem { Value = "", Text = "" } }, "Select item", new { id = "subCat1", @class = "form-control" })
+                                </div>
+                                <div style="margin-bottom: 5px" id="subTr2" >
+                                    <span class="text-error" style="font-weight:600">Sub-Subcategory</span>
+                                    @Html.DropDownList("subCat2", new List<SelectListItem> { new SelectListItem { Value = "", Text = "" } }, "Select item", new { id = "subCat2", @class = "form-control"})
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class=" panel panel-success">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Set Contact Information
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                
+                                <div class="form-group">
+                                    <b>
+                                        Business Email
+                                    </b><span class="text-danger" style="font-weight:700">*</span>
+                                    <div class="">
+
+                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                              
+                                <div class="form-group">
+                                    <b>
+                                        Phone
+                                    </b><span class="text-danger" style="font-weight:700">*</span>
+                                    <div class="">
+
+                                        @Html.TextBoxFor(model => model.Phone, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                               <div class="form-group">
+                                   <b>
+                                       Website  &nbsp; <img src="~/Content/images/helpicon.png" title="Enter a valid Webiste address to your business, if available?" />
+                                   </b>
+                                   @Html.TextBoxFor(model => model.Website, new { @class = "form-control", placeholder = "http://mycompany.com" })<br />
+
+                               </div>
+                                <div class="form-group">
+                                    <b>
+                                        Facebook Url  &nbsp; <img src="~/Content/images/helpicon.png" title="Enter a valid Facebook address to your business, if available?" />
+                                    </b>
+                                    @Html.TextBoxFor(model => model.Facebook, new { @class = "form-control", placeholder = "http://facebook.com/mycompany" })<br />
+
+                                </div>
+                                <div class="form-group">
+                                    <b>
+                                        Twitter Url  &nbsp; <img src="~/Content/images/helpicon.png" title="Enter a valid Twitter address to your business, if available?" />
+                                    </b>
+                                    @Html.TextBoxFor(model => model.Twitter, new { @class = "form-control", placeholder = "http://twitter.com/mycompany" })<br />
+
+                                </div>
+                                <div class="form-group">
+                                    <b>
+                                        LinkedIn  &nbsp; <img src="~/Content/images/helpicon.png" title="Enter a valid LinkedIn address to your business, if available?" />
+                                    </b>
+                                    @Html.TextBoxFor(model => model.Website, new { @class = "form-control", placeholder = "http://linkedin.com/mycompany" })<br />
+
+                                </div>
+                                <div class="form-group">
+                                    <b>
+                                        Google+  &nbsp; <img src="~/Content/images/helpicon.png" title="Enter a valid Google+ address to your business, if available?" />
+                                    </b>
+                                    @Html.TextBoxFor(model => model.Google_Plus, new { @class = "form-control", placeholder = "http://plus.google.com/mycompany" })<br />
+
+                                </div>
+                            </div>
+                        </div>
+                       
+                             <label><input type="checkbox" name="chkAccept" id="chkAccept" required> I have read and accept <a href="#">terms and condition</a>  of using this service</label>
+                            <span class="text-danger" id="chkText"></span>
+                            <br />
+                        <input type="submit" class="btn btn-warning btn-large" value="Register" />
+                      
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+@section Scripts {
+    <script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+    <script src="~/Scripts/Plugins/fileinput.js"></script>
+    <script src="~/Scripts/Plugins/canvas-to-blob.min.js"></script>
+    <script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+    <script src="~/Scripts/Plugins/summernote.min.js"></script>
+    <script src="~/Scripts/CustomScript/myBusinesCust.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,168 @@
+﻿@using iHealth2.Models
+@using IhealthPaging;
+@model IhealthPaging.IPagedList<iHealth2.Models.ProductsInfo>
+@{
+    ViewBag.Title = "Search_Drugs";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext();
+    }
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="page-content" id="pagecontent">
+            <div class="breadcrumbs">
+                <a href="/">Home</a> &nbsp;&raquo;&nbsp;<a href="@Request.UrlReferrer.ToString()" style="color:red">Back</a> &nbsp;&raquo;&nbsp;<span>Medicines</span>
+            </div>
+            <div class="container">
+                <div class="row-fluid">                 
+                    <div class="span3 bs-docs-sidebar">
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                            Category <i class="icon icon-double-angle-down pull-right"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        <ul class="nav nav-list bs-docs-sidenav">
+                                            <li><a href="/pharmacy/search_drugs"><i class="icon icon-chevron-right"></i>All Categories</a></li>
+                                            @foreach (var item in new SelectList(new iHealth2.Models.drugsCategoriesModel().get_Drug_Categories(), "Drug_Category_Id", "Drug_Category_Name"))
+                                            {
+                                                <li><a href="/Pharmacy/Search_Drugs_By_Category/?ctgry=@item.Value"><i class="icon-chevron-right"></i> @item.Text</a></li>
+                                            }
+                                           
+                                        </ul>
+                                   </div>
+                                </div>
+
+                            </div>
+                            <div class="panel panel-success">
+                                <div class="panel-heading">
+                                    <span class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Manufacturer<i class="icon icon-double-angle-down pull-right"></i></a>
+                                    </span>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <ul class="nav nav-list bs-docs-sidenav">
+                                            @foreach (var item in db.ProductTb.Where(p => p.ProductCategory == "pharmaceutical drug").GroupBy(p => p.Manufacturer).Select(p => new { Manufacturer = p.Key, Values = p.Distinct().Count() }))
+                                            {
+                                                <li><a href="/Pharmacy/Search_Drugs_By_Manufacturer/?ctgry=@item.Manufacturer"><i class="icon-chevron-right"></i> @item.Manufacturer <span class="badge badge-info pull-right">@item.Values</span></a></li>
+                                            }
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-warning">
+                                <div class="panel-heading">
+                                    <span class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Price<i class="icon icon-double-angle-down pull-right"></i></a>
+                                    </span>
+                                </div>
+                                <div id="collapseThree" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        <form id="rdPrice" action="/pharmacy/Search_Drugs_By_Price"method="get">
+                                            <ul class="nav nav-list bs-docs-sidenav">
+                                                <li><input id="p1" type="radio" name="price" value="0-5000" />&nbsp;<span> &#8358 5,000 and Below </span><br /></li>
+                                                <li><input id="p2" type="radio" name="price" value="5000-10000" />&nbsp;<span> &#8358 5,000  to &#8358 10,000</span><br /> </li>
+                                                <li><input id="p3" type="radio" name="price" value="10000-20000" />&nbsp;<span> &#8358 10,000 to &#8358 20,000</span><br /></li>
+                                                <li><input id="p4" type="radio" name="price" value="20000-40000" />&nbsp;<span> &#8358 20,000 to &#8358 40,000</span><br /></li>
+                                                <li><input id="p5" type="radio" name="price" value="40000-above" />&nbsp;<span> &#8358 40,000 and Above </span></li>
+                                            </ul>
+                                        </form>                             
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="span6">
+                        @if (Model.Count() > 0)
+                        {
+                            <div id="gridArea">
+                                <ul id="tiles">
+
+                                    @foreach (var item in Model)
+                                    {                                     
+
+                                        string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+                                        String did = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(item.Id.ToString(), s);
+                                        did = did.Replace("/", "$25");
+                                        did = did.Replace("+", "$24");
+                                    
+
+                                        <li>
+                                            @if (item.ProductImage != null)
+                                            {
+                                                var img = "data:image/png;base64," + Convert.ToBase64String(item.ProductImage);
+                                                <a href="/Pharmacy/Drug_Detail/?did=@did" title="@item.ProductName"><img src="@img" alt="@item.ProductName" title="@item.ProductName" /></a>
+                                            }
+                                            <div class="meta"><span class="pull-right">By @item.OwnerInfo.FirstName</span></div>
+                                            <h4><a href="#">
+                                                @{var productname = item.ProductName.Substring(0, Math.Min(10, item.ProductName.Length));}
+                                                @productname</a></h4>
+                                            <p>
+                                                <br /><a href="/Pharmacy/Drug_Detail/?did=@did" class="btn btn-success">View</a>
+                                                <b style="float:right; font-size:large">&#8358;@item.price</b>
+                                            </p>
+
+                                        </li>
+
+                                    }
+                                </ul>
+                            </div>
+                            <div class="pager">
+                                @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount)
+                            </div>
+
+                        }
+                        else
+                        {
+                            <div class="alert alert-danger span11">
+                                <h4>Unfortunately there was no match found for the item you requested, Please try again.</h4>
+                                <a href="@Request.UrlReferrer.ToString()" class="btn btn-success">Go Back</a>
+                            </div>
+                            
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@section scripts{
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/siteScripts/jquery.wookmark.js"></script>
+<script type="text/javascript">
+    $(window).load(function () { var options = { autoResize: true, container: $('#gridArea'), offset: 10 }; var handler = $('#tiles li'); handler.wookmark(options); $('#tiles li').each(function () { var imgm = 0; if ($(this).find('img').length > 0) imgm = parseInt($(this).find('img').not('p img').css('margin-bottom')); var newHeight = $(this).find('img').height() + imgm + $(this).find('div').height() + $(this).find('h4').height() + $(this).find('p').not('blockquote p').height() + $(this).find('iframe').height() + $(this).find('blockquote').height() + 5; if ($(this).find('iframe').height()) newHeight = newHeight + 15; $(this).css('height', newHeight + 'px'); }); handler.wookmark(options); handler.wookmark(options); });
+    </script>
+<script src="~/Scripts/siteScripts/jquery.prettyPhoto.js"></script>
+<script type="text/javascript">$("a[rel^='prettyPhoto']").prettyPhoto({ social_tools: false }); $("a[rel^='prettyPhoto'] img").hover(function () { $(this).animate({ opacity: 0.7 }, 300) }, function () { $(this).animate({ opacity: 1 }, 300) });</script>
+<script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+<script>
+    $('input[type="radio"]').iCheck({
+        checkboxClass: 'icheckbox_flat-green',
+        radioClass: 'iradio_flat-green'
+    })
+ 
+    $('input[type="radio"]').on("ifChanged", function (e) {
+       
+        $('#rdPrice').submit()
+     
+    });
+   
+    </script>
+}
+
+
+

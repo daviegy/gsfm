@@ -1,0 +1,196 @@
+﻿@model iHealth2.Models.ProductsInfo
+@using iHealth2.CustomClasses;
+@using iHealth2.Models
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Product's Details";
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    switch (user.UserType)
+    {
+
+        case "AD":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            break;
+        case "SA":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+           // Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+            break;
+
+    }
+}
+
+
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h2 class="text-info">Business Information for <span class="text-warning">@Model.OwnerInfo.FullName.ToUpper()</span></h2>
+            <hr />
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <td>
+                        <dl class="dl-horizontal">
+                            <dt>
+                                OWNER'S NAME
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.OwnerInfo.FullName)
+                            </dd>
+                            <br />
+                            <dt>
+                                @Html.DisplayName("Product Name").ToString().ToUpper()
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.ProductName)
+                            </dd>
+                            <br />
+                            <dt>
+                                PRODUCT  CATEGORY
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.ProductCategory)
+                            </dd>
+                            <br />
+                            <dt>
+                                PRICE
+                            </dt>
+
+                            <dd>
+                                &#8358;@Html.DisplayFor(model => model.price)
+                            </dd>
+                            <br />
+                            <dt>PRODUCT'S <br /> DECRIPTION</dt>
+                            <dd>
+                                <p style="text-align:justify">
+                                    @Model.ProductDescription
+                                </p>
+                            </dd>
+                            <br />
+                            <dt>
+                                ADDRESS
+
+                            </dt>
+
+                            <dd>
+                                @Model.Address, @Model.State, @Model.Country
+                            </dd>
+
+                            <br />
+
+
+                            <dt>
+                                CITY
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.location)
+                            </dd>
+                            <br />
+                            <dt>
+                                CONTACT NUMBER
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.OwnerInfo.PhoneNumber)
+                            </dd>
+                            <br />
+
+
+
+                            @*<dt>
+                                    @Html.DisplayNameFor(model => model.logo)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.logo)
+                                </dd>*@
+
+
+
+                            <dt>
+                                REGISTERATION DATE
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.regDate)
+                            </dd>
+                            <br />
+
+                            <dt>
+                                APPROVED STATUS
+                            </dt>
+
+                            <dd>
+                                @if(Model.ApprovedStatus == "P")
+                                {<span>Pending</span>}
+                                else
+                                {<span>Approved</span>}
+                            </dd>
+                            <br />
+                            <dt>
+                                VERIFIED STATUS
+                            </dt>
+
+                            <dd>
+                                @if (Model.VerifiedStatus == "NV")
+                                {<span>Not Verify</span>}
+                                else
+                                {<span>Verified</span>}
+
+                            </dd>
+
+                        </dl>
+
+                    </td>
+                    <td>
+                        <img src="data:image/png;base64,@Convert.ToBase64String(Model.ProductImage)" class="img-polaroid" style="width:111px;height:119px"></td>
+                </tr>
+            </table>
+            <p>
+                @{
+                    string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+                    String EncryptId = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(Model.Id.ToString(), s);
+                    EncryptId = EncryptId.Replace("/", "$25");
+                    EncryptId = EncryptId.Replace("+", "$24");
+                }
+
+                <button class="btn btn-danger" id="btnApprove" onclick="approvebiz('@Model.Id')">Approve</button>
+
+                @*<a href="/" class="btn btn-warning">Send Mail</a>*@
+                @Html.ActionLink("Back to List", "NewlyRegisteredProducts", "Products", null, htmlAttributes: new { @class = "btn btn-success" })
+            </p>
+        </div>
+    </div>
+
+@section scripts{
+    <script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+<script src="~/Scripts/Plugins/dpLoading-2.x.js"></script>
+
+    <script>
+        function approvebiz(id) {
+            var arr = [id]
+            dpUI.loading.start("Approving...");
+            var option = {};
+            option.url = "/products/Approve";
+            option.type = "Post";
+            option.dataType = "json";
+            option.data = { Id: arr };
+            option.success = function () {
+                dpUI.loading.stop();
+                swal("", "Approved", "success");
+                //  $('#mytable').load('_NewlyRegBizParital')
+                $('#btnApprove').prop('disabled', true)
+
+            }
+            option.error = function () {
+                dpUI.loading.stop();
+                swal("", "Error", "error")
+            }
+            $.ajax(option);
+        }
+    </script>
+}

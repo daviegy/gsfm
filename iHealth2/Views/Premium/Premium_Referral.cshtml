@@ -1,0 +1,100 @@
+﻿@model IEnumerable<iHealth2.Models.premium_user>
+
+@{
+    ViewBag.Title = "Premium_Referral";
+    Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+    int counter = 0;
+}
+
+<section class="content">
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="table-responsive mailbox-messages">              
+                    <table id="table" class="">
+                        <thead>
+                            <tr>
+                                <th>
+                                   S/N
+                                </th>                               
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Phone Number
+                                </th>
+                                <th>
+                                    Premium Package
+                                </th>                                                      
+                                <th>
+                                    Registered Date
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+                           
+                            @foreach (var item in Model)
+                            {
+                                counter++;
+                                <tr>
+
+                                    <td>@counter</td>
+                                                                     
+                                    <td>
+                                        @item.First_Name @item.Last_Name
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Phone)
+                                    </td>
+                                    <td>
+                                        @item.Hospital_List.ToString().Replace("_", " ") <span>, Plan </span>@item.plan
+                                    </td>                                
+                                   
+                                    <td>
+                                        @{var rdate = Convert.ToDateTime(item.Register_Date).Date.ToString("dd MMM,yyy");} @rdate
+                                    </td>
+
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>              
+            </div>
+        </div>
+    </div>
+
+</section>
+
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script>
+        $('#table').bootstrapTable({
+
+            striped: true,
+            // cardView: true,
+            pagination: true,
+            pageSize: 15,
+            pageList: [15, 30, 50, 100, 200],
+            smartDisplay: false,
+            showToggle: false,
+            search: true,
+            showColumns: true,
+            showRefresh: true,
+            //    border : true
+            //align: 'center',
+            //valign: 'bottom'
+
+        });
+    </script>
+}
+

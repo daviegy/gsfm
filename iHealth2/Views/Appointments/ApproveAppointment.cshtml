@@ -1,0 +1,132 @@
+﻿@model iHealth2.Models.ApproveApptViewModel
+
+@{
+    ViewBag.Title = "Approve Appointment";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="content">
+
+    <div class="row">
+        <div class="col-md-3">
+
+            <!-- Profile Image -->
+            <div class="box box-success">
+                <div class="box-body box-profile">
+                <h3 class="profile-username text-center">@Model.Name</h3>
+                    
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <b>Ticket ID</b> <a class="pull-right">@Model.appid</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Emails</b> <a class="pull-right">@Model.email</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Phone</b> <a class="pull-right">@Model.phone</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Location</b> <a class="pull-right">@Model.city, @Model.state</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Appointment Date</b> <a class="pull-right">@{
+                                
+                                var dt = Convert.ToDateTime(Model.appointmentDate).ToString("dd MMM, yyyy");
+                            }@dt</a>
+                        </li>
+                        
+                    </ul>
+                   
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+            <!-- About Me Box -->
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Message</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <strong><i class="fa fa-book margin-r-5"></i> Summary</strong>
+
+                    <p class="text-muted">
+                        @Model.message
+                    </p>                   
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#settings" data-toggle="tab">Approve Appointment</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="active tab-pane" id="settings">
+                        <form id="" class="form-horizontal" action="/Appointments/ApproveAppointment/?ids=@Model.id" method="post">
+                            @Html.AntiForgeryToken()
+                        <b class="text-danger"> Note: you can choose to reschedule the appointment</b>
+                        <hr />
+                        @Html.HiddenFor(m => m.email)
+                        <div class="form-group">
+
+                            <label for="inputName" class="col-sm-2 control-label">Reschedule</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="appdate" placeholder="Reschedule date (dd/mm/yyyy)*" style="height:30px" id="dtp" class="form-control" data-date-format="dd/mm/yyyy"/>
+                            </div>
+                        </div>
+                        <hr />
+                        <b class="text-danger">Please, compose an email message notifying the requester that appointment has been approved.</b>
+                        <hr />
+
+
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="form-group">
+
+                                    <div class="col-md-12">
+                                        <textarea id="Message" name="Message" placeholder="message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                <input type="submit" class="btn btn-success" value="Approve Appointment">
+                                <a href="@Request.UrlReferrer.ToString()" class="btn btn-danger">Go Back <i class="fa fa-forward"></i></a>
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                    <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+            </div>
+            <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+</section>
+@section scripts{
+<script src="~/Scripts/AdminScripts/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/Plugins/summernote.min.js"></script>
+
+<script>
+    $(function () {
+        $('#Message').summernote()
+    });
+    $('#dtp').datepicker({
+          
+    });
+</script>
+
+}
+
+

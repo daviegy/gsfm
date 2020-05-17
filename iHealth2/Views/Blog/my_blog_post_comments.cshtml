@@ -1,0 +1,88 @@
+﻿@using iHealth2.Models
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "my_blog_post_comments";
+   
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    var bp = db.blog_posts.Where(ps => ps.published_by_Id == user.Id).ToList();
+    switch (user.UserType)
+    {
+        case "BusinessUser":
+            Layout = "~/Views/Shared/_UserPanelLayout.cshtml";
+            break;
+        case "INISubcriber":
+            Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+            break;
+        case "AD":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            break;
+        case "SA":
+            Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+            break;
+
+    }                  
+}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="table-responsive mailbox-messages">
+            <p>
+               <button onclick="delete_blog_comment()" id="btndel1" disabled title="Delete" class="btn btn-danger">Delete &nbsp;<i class="glyphicon glyphicon-trash "></i></button>
+            </p>
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th><button type="button" class="btn btn-default btn-sm checkbox-toggle">
+    <i class="fa fa-square-o"></i>
+</button></th>
+                        <th>SN</th>
+                        <th>Blog Post</th>
+                        <th>Comment By</th>
+                        <th>Email</th>
+                        <th>Comment</th>
+                        <th>Created on</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{int c = 0;}
+                    @foreach (var item in bp)
+                    {
+                        var bc = db.blog_post_comments.Where(co => co.post_id == item.post_id).ToList().OrderBy(co=>co.publish_date);
+                        foreach (var comments in bc)
+                        {
+                            c++;
+                              <tr>
+                                <td><input type="checkbox" name="delid" id="delid" value="@comments.comment_id"></td>
+                                <td>@c</td>
+                                <td>@comments.blog_post.post_Title</td>
+                                <td>@comments.publish_by_name</td>
+                                <td>@comments.publish_by_email</td>
+                                <td>@comments.content</td>
+                                <td>@{var dt = Convert.ToDateTime(comments.publish_date).ToString("dd MMM, yyy");}@dt</td>
+                                <td><a href="/blog/reply_comment/?id=@comments.comment_id" class="btn btn-warning">Reply</a></td>
+                            </tr>
+
+                        }
+                        
+                    }                   
+                </tbody>
+            </table>
+            <p>
+               <button onclick="delete_blog_comment()" id="btndel2" disabled title="Delete" class="btn btn-danger">Delete &nbsp;<i class="glyphicon glyphicon-trash "></i></button>
+            </p>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+    <script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+    <script src="~/Scripts/Plugins/dpLoading-2.x.js"></script>
+    <script src="~/Scripts/CustomScript/blogpost.js"></script>
+}
+
+

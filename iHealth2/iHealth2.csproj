@@ -1,0 +1,1338 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F5A38DC3-B489-4EC0-9B57-582E74B20C3D}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>iHealth2</RootNamespace>
+    <AssemblyName>iHealth2</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort>44301</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PublishDatabaseSettings>
+      <Objects>
+        <ObjectGroup Name="ihealthCon-Deployment" Order="1">
+          <Destination Path="Data Source=184.168.194.68%3bIntegrated Security=False%3bUser ID=Daviegy%3bConnect Timeout=15%3bEncrypt=False%3bPacket Size=4096" />
+          <Object Type="DbFullSql" Enabled="True">
+            <PreSource Path="Data Source=%28LocalDb%29\v11.0%3bAttachDbFilename=|DataDirectory|\iHealthDB.mdf%3bInitial Catalog=iHealthDB%3bIntegrated Security=True" ScriptSchema="True" ScriptData="True" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+            <Source Path="obj\Debug\AutoScripts\ihealthCon-Deployment_SchemaAndData.sql" Transacted="True" />
+          </Object>
+        </ObjectGroup>
+      </Objects>
+    </PublishDatabaseSettings>
+    <FilesToIncludeForPublish>AllFilesInTheProject</FilesToIncludeForPublish>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AngleSharp">
+      <HintPath>..\packages\AngleSharp.0.9.9\lib\net45\AngleSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="ClosedXML, Version=0.89.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.89.0\lib\net452\ClosedXML.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Elmah, Version=1.2.13605.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\elmah.corelibrary.1.2\lib\Elmah.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Elmah.Mvc, Version=2.1.2.1389, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elmah.Mvc.2.1.2\lib\net40\Elmah.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FastMember.Signed, Version=1.0.0.9, Culture=neutral, PublicKeyToken=9e8f22703bef9a29, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastMember.Signed.1.1.0\lib\net40\FastMember.Signed.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Hangfire.Core">
+      <HintPath>..\packages\Hangfire.Core.1.4.2\lib\net45\Hangfire.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.Dashboard.Authorization">
+      <HintPath>..\packages\Hangfire.Dashboard.Authorization.2.1.0\lib\net45\Hangfire.Dashboard.Authorization.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.SqlServer">
+      <HintPath>..\packages\Hangfire.SqlServer.1.4.2\lib\net45\Hangfire.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlSanitizer">
+      <HintPath>..\packages\HtmlSanitizer.3.4.156\lib\net45\HtmlSanitizer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.1016.290\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RazorEngine, Version=3.9.3.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorEngine.3.9.3\lib\net45\RazorEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Recaptcha">
+      <HintPath>..\packages\recaptcha.1.0.5.0\lib\.NetFramework 4.0\Recaptcha.dll</HintPath>
+    </Reference>
+    <Reference Include="Recaptcha.MvcModel">
+      <HintPath>..\packages\reCaptchaMvcExtensions.1.0.1\lib\Recaptcha.MvcModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Recaptcha.Web">
+      <HintPath>..\packages\RecaptchaNet.1.7.0\lib\net451\Recaptcha.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.1.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.1.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.2.1.0\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.2.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.2.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.2.1.0\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.2.1.0\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.2.1.0\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Admin\AdminController.cs" />
+    <Compile Include="Controllers\AppointmentsController.cs" />
+    <Compile Include="Controllers\BlogController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\Advert\AdvertController.cs" />
+    <Compile Include="Controllers\CareersController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LatestNews\LatextNewsController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\Menu\HerbalController.cs" />
+    <Compile Include="Controllers\Menu\HospitalController.cs" />
+    <Compile Include="Controllers\Menu\InsuranceController.cs" />
+    <Compile Include="Controllers\Menu\LabController.cs" />
+    <Compile Include="Controllers\Menu\Med_EquipmentsController.cs" />
+    <Compile Include="Controllers\Menu\PharmacyController.cs" />
+    <Compile Include="Controllers\Menu\VetController.cs" />
+    <Compile Include="Controllers\PaymentGatewaysController.cs" />
+    <Compile Include="Controllers\PremiumController.cs" />
+    <Compile Include="Controllers\Products\ProductsController.cs" />
+    <Compile Include="Controllers\profileController.cs" />
+    <Compile Include="Controllers\ReferralController.cs" />
+    <Compile Include="Controllers\SearchEngine\SearchController.cs" />
+    <Compile Include="Controllers\Shop_for_health_productsController.cs" />
+    <Compile Include="Controllers\StoreController.cs" />
+    <Compile Include="Controllers\SuperAdmin\SuperAdmController.cs" />
+    <Compile Include="Controllers\SupportController.cs" />
+    <Compile Include="Controllers\TransactionController.cs" />
+    <Compile Include="Controllers\Users\BusinessController.cs" />
+    <Compile Include="Controllers\Users\INGController.cs" />
+    <Compile Include="Controllers\Users\UsersController.cs" />
+    <Compile Include="CustomClasses\ActionLinkExtensions.cs" />
+    <Compile Include="CustomClasses\AlphaNumGen.cs" />
+    <Compile Include="CustomClasses\ihealth_constants.cs" />
+    <Compile Include="CustomClasses\Cryptoclass.cs" />
+    <Compile Include="CustomClasses\Elmah.cs" />
+    <Compile Include="CustomClasses\Emails.cs" />
+    <Compile Include="CustomClasses\EmailTemplateService.cs" />
+    <Compile Include="CustomClasses\HtmlRemover.cs" />
+    <Compile Include="CustomClasses\ImgResize.cs" />
+    <Compile Include="CustomClasses\PaymentResponse.cs" />
+    <Compile Include="CustomClasses\reCaptchaClass.cs" />
+    <Compile Include="CustomClasses\SEO_Friendly_URL.cs" />
+    <Compile Include="CustomClasses\StringExtensions .cs" />
+    <Compile Include="CustomClasses\ValidationClass.cs" />
+    <Compile Include="EmailSender.asmx.cs">
+      <DependentUpon>EmailSender.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005021458418_xxx.cs" />
+    <Compile Include="Migrations\202005021458418_xxx.Designer.cs">
+      <DependentUpon>202005021458418_xxx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CustomModel.cs" />
+    <Compile Include="Models\EmailModel.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\SuperAdmViewModel.cs" />
+    <Compile Include="Models\ViewModel.cs" />
+    <Compile Include="MyRestrictiveAuthorizationFilter.cs" />
+    <Compile Include="pager\IPagedList.cs" />
+    <Compile Include="pager\PagedList.cs" />
+    <Compile Include="pager\Pager.cs" />
+    <Compile Include="pager\PagerOptions.cs" />
+    <Compile Include="pager\PagerOptionsBuilder.cs" />
+    <Compile Include="pager\PaginationModel.cs" />
+    <Compile Include="pager\PagingExtensions.cs" />
+    <Compile Include="pager\RouteValueDictionaryExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Abbreviations.txt" />
+    <Content Include="Content\AdminContent\css\AdminLTE.css" />
+    <Content Include="Content\AdminContent\css\bootstrap.css" />
+    <Content Include="Content\AdminContent\css\iCheck\blue.css" />
+    <Content Include="Content\AdminContent\css\iCheck\blue%402x.png" />
+    <Content Include="Content\AdminContent\css\bootstrap.min.css" />
+    <Content Include="Content\AdminContent\css\iCheck\flat.css" />
+    <Content Include="Content\AdminContent\css\font-awesome.min.css" />
+    <Content Include="Content\AdminContent\css\iCheck\green%402x.png" />
+    <Content Include="Content\AdminContent\css\iCheck\green.css" />
+    <Content Include="Content\AdminContent\css\iCheck\green.png" />
+    <Content Include="Content\AdminContent\css\images\animated-overlay.gif" />
+    <Content Include="Content\AdminContent\css\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\AdminContent\css\images\ui-bg_flat_55_fbec88_40x100.png" />
+    <Content Include="Content\AdminContent\css\images\ui-bg_glass_75_d0e5f5_1x400.png" />
+    <Content Include="Content\AdminContent\css\images\ui-bg_glass_85_dfeffc_1x400.png" />
+    <Content Include="Content\AdminContent\css\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\AdminContent\css\images\ui-bg_gloss-wave_55_5c9ccc_500x100.png" />
+    <Content Include="Content\AdminContent\css\images\ui-bg_inset-hard_100_f5f8f9_1x100.png" />
+    <Content Include="Content\AdminContent\css\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="Content\AdminContent\css\images\ui-icons_217bc0_256x240.png" />
+    <Content Include="Content\AdminContent\css\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\AdminContent\css\images\ui-icons_469bdd_256x240.png" />
+    <Content Include="Content\AdminContent\css\images\ui-icons_6da8d5_256x240.png" />
+    <Content Include="Content\AdminContent\css\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\AdminContent\css\images\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="Content\AdminContent\css\images\ui-icons_f9bd01_256x240.png" />
+    <Content Include="Content\AdminContent\css\ionicons.min.css" />
+    <Content Include="Content\AdminContent\css\ionslider\ion.rangeSlider.css" />
+    <Content Include="Content\AdminContent\css\ionslider\ion.rangeSlider.skinFlat.css" />
+    <Content Include="Content\AdminContent\css\ionslider\ion.rangeSlider.skinNice.css" />
+    <Content Include="Content\AdminContent\css\_all-skins.css" />
+    <Content Include="Content\AdminContent\css\_all-skins.min.css" />
+    <Content Include="Content\AdminContent\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\AdminContent\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\AdminContent\fonts\ionicons.svg" />
+    <Content Include="Content\AdminContent\img\ajax-loader.gif" />
+    <Content Include="Content\AdminContent\img\ajax-loader1.gif" />
+    <Content Include="Content\AdminContent\img\avatar.png" />
+    <Content Include="Content\AdminContent\img\avatar04.png" />
+    <Content Include="Content\AdminContent\img\avatar2.png" />
+    <Content Include="Content\AdminContent\img\avatar3.png" />
+    <Content Include="Content\AdminContent\img\avatar5.png" />
+    <Content Include="Content\AdminContent\css\iCheck\blue.png" />
+    <Content Include="Content\AdminContent\img\blur-background04.jpg" />
+    <Content Include="Content\AdminContent\img\blur-background08.jpg" />
+    <Content Include="Content\AdminContent\img\blur-background09.jpg" />
+    <Content Include="Content\AdminContent\img\bootstrap-colorpicker\alpha-horizontal.png" />
+    <Content Include="Content\AdminContent\img\bootstrap-colorpicker\alpha.png" />
+    <Content Include="Content\AdminContent\img\bootstrap-colorpicker\hue-horizontal.png" />
+    <Content Include="Content\AdminContent\img\bootstrap-colorpicker\hue.png" />
+    <Content Include="Content\AdminContent\img\bootstrap-colorpicker\saturation.png" />
+    <Content Include="Content\AdminContent\img\credit\american-express.png" />
+    <Content Include="Content\AdminContent\img\credit\cirrus.png" />
+    <Content Include="Content\AdminContent\img\credit\mastercard.png" />
+    <Content Include="Content\AdminContent\img\credit\mestro.png" />
+    <Content Include="Content\AdminContent\img\credit\paypal.png" />
+    <Content Include="Content\AdminContent\img\credit\paypal2.png" />
+    <Content Include="Content\AdminContent\img\credit\visa.png" />
+    <Content Include="Content\AdminContent\img\icons.png" />
+    <Content Include="Content\AdminContent\img\sprite-skin-flat.png" />
+    <Content Include="Content\AdminContent\img\sprite-skin-nice.png" />
+    <Content Include="Content\AdminContent\img\user-bg.png" />
+    <Content Include="Content\AdminContent\img\user.jpg" />
+    <Content Include="Content\AdminContent\img\user2.jpg" />
+    <Content Include="Content\comingsoon\images\bg.png" />
+    <Content Include="Content\comingsoon\images\watch.png" />
+    <Content Include="Content\comingsoon\tools\cufon-yui.js" />
+    <Content Include="Content\comingsoon\tools\jquery.countdown.min.js" />
+    <Content Include="Content\comingsoon\tools\jquery.min.js" />
+    <Content Include="Content\comingsoon\tools\socicon\font\socicon-webfont.svg" />
+    <Content Include="Content\comingsoon\tools\socicon\generate.js" />
+    <Content Include="Content\comingsoon\tools\socicon\socicon.css" />
+    <Content Include="Content\comingsoon\tools\style.css" />
+    <Content Include="Content\dataTables.bootstrap.css" />
+    <Content Include="Content\datepicker3.css" />
+    <Content Include="Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\fonts\ionicons.svg" />
+    <Content Include="Content\froala_editor.pkgd.min.css" />
+    <Content Include="Content\froala_style.min.css" />
+    <Content Include="Content\bootstrap-datepicker.css" />
+    <Content Include="Content\bootstrap-table.css" />
+    <Content Include="Content\images\App.jpg" />
+    <Content Include="Content\images\arrows.png" />
+    <Content Include="Content\images\avatar.jpg" />
+    <Content Include="Content\images\banner.jpg" />
+    <Content Include="Content\images\banner\ads 300.png" />
+    <Content Include="Content\images\banner\Airplane Retirement Medium Rectangle Ad.jpg" />
+    <Content Include="Content\images\banner\animation.gif" />
+    <Content Include="Content\images\banner\placeurAdshere.png" />
+    <Content Include="Content\images\benefit\01.png" />
+    <Content Include="Content\images\benefit\bg-01.png" />
+    <Content Include="Content\images\controls.png" />
+    <Content Include="Content\images\delete.gif" />
+    <Content Include="Content\images\helpicon.png" />
+    <Content Include="Content\images\icon-arrow-select.png" />
+    <Content Include="Content\images\iHealth_logo.png" />
+    <Content Include="Content\images\map\map-1.png" />
+    <Content Include="Content\images\PremiumPlanImage\FHLPA.png" />
+    <Content Include="Content\images\PremiumPlanImage\FHLPB.png" />
+    <Content Include="Content\images\PremiumPlanImage\HCN.png" />
+    <Content Include="Content\images\PremiumPlanImage\HCN1.png" />
+    <Content Include="Content\images\PremiumPlanImage\HCN2.png" />
+    <Content Include="Content\images\PremiumPlanImage\SHLPA.png" />
+    <Content Include="Content\images\PremiumPlanImage\SHLPB.png" />
+    <Content Include="Content\images\recommedIcon.fw.png" />
+    <Content Include="Content\images\slides\Slider_ihealth.jpg" />
+    <Content Include="Content\images\slides\Slider_ihealth3.jpg" />
+    <Content Include="Content\images\slides\Slider_ihealth4.jpg" />
+    <Content Include="Content\images\slides\sv1.jpg" />
+    <Content Include="Content\images\social-buttons.png" />
+    <Content Include="Content\images\social-icons-sprite.png" />
+    <Content Include="Content\images\social-icons.png" />
+    <Content Include="Content\images\star.gif" />
+    <Content Include="Content\images\UserImagePlaceholder.png" />
+    <Content Include="Content\images\verifiedicon.fw.png" />
+    <Content Include="Content\jquery-comments.css" />
+    <Content Include="Content\jquery.rateyo.min.css" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Content\select2.min.css" />
+    <Content Include="Scripts\CustomScript\SearchHealthProviders.js" />
+    <Content Include="Scripts\Plugins\jquery.rateyo.min.js" />
+    <Content Include="Content\Logo\isw_logo_new_combined_2.png" />
+    <Content Include="Content\Logo\ubalogo.fw.png" />
+    <Content Include="Content\plugins\gallery\darkbox.css" />
+    <Content Include="Content\starrr.css" />
+    <Content Include="Content\stylesheet\animate.css" />
+    <Content Include="Content\stylesheet\animate.min.css" />
+    <Content Include="Content\stylesheet\bootstrap.css" />
+    <Content Include="Content\stylesheet\bootstrap.min.css" />
+    <Content Include="Content\stylesheet\flexslider.css" />
+    <Content Include="Content\stylesheet\font-awesome.css" />
+    <Content Include="Content\stylesheet\font-awesome.min.css" />
+    <Content Include="Content\stylesheet\images\bx_loader.gif" />
+    <Content Include="Content\stylesheet\images\controls.png" />
+    <Content Include="Content\stylesheet\ionicons.css" />
+    <Content Include="Content\stylesheet\jquery.bxslider.css" />
+    <Content Include="Content\stylesheet\owl.carousel.css" />
+    <Content Include="Content\stylesheet\responsive.css" />
+    <Content Include="Content\revolution\css\layers.min.css" />
+    <Content Include="Content\revolution\css\settings.css" />
+    <Content Include="Content\revolution\fonts\revicons\revicons.svg" />
+    <Content Include="Content\revolution\js\extensions\revolution.extension.actions.min.js" />
+    <Content Include="Content\revolution\js\extensions\revolution.extension.carousel.min.js" />
+    <Content Include="Content\revolution\js\extensions\revolution.extension.kenburn.min.js" />
+    <Content Include="Content\revolution\js\extensions\revolution.extension.layeranimation.min.js" />
+    <Content Include="Content\revolution\js\extensions\revolution.extension.migration.min.js" />
+    <Content Include="Content\revolution\js\extensions\revolution.extension.navigation.min.js" />
+    <Content Include="Content\revolution\js\extensions\revolution.extension.parallax.min.js" />
+    <Content Include="Content\revolution\js\extensions\revolution.extension.slideanims.min.js" />
+    <Content Include="Content\revolution\js\extensions\revolution.extension.video.min.js" />
+    <Content Include="Content\revolution\js\jquery.themepunch.revolution.min.js" />
+    <Content Include="Content\revolution\js\jquery.themepunch.tools.min.js" />
+    <Content Include="Content\revolution\js\slider_v1.js" />
+    <Content Include="Content\revolution\js\slider_v2.js" />
+    <Content Include="Content\stylesheet\shortcodes.css" />
+    <Content Include="Content\stylesheet\style.css" />
+    <Content Include="Content\stylesheet\style.min.css" />
+    <Content Include="EmailTemplates\images\facebook-icon.png" />
+    <Content Include="EmailTemplates\images\fax-icon.png" />
+    <Content Include="EmailTemplates\images\googleplus-icon.png" />
+    <Content Include="EmailTemplates\images\ihealthlogo.png" />
+    <Content Include="EmailTemplates\images\iHealth_logo.png" />
+    <Content Include="EmailTemplates\images\linkedin-icon.png" />
+    <Content Include="EmailTemplates\images\mail-icon.png" />
+    <Content Include="EmailTemplates\images\marker-icon.png" />
+    <Content Include="EmailTemplates\images\phone-icon.png" />
+    <Content Include="EmailTemplates\images\twitter-icon.png" />
+    <Content Include="Scripts\CustomScript\Ap_paymentscript.js" />
+    <Content Include="Scripts\CustomScript\BizProfileScript.js" />
+    <Content Include="Scripts\CustomScript\interswitchTRSLogQuery.js" />
+    <Content Include="Scripts\CustomScript\premiumPackageFormScrpt.js" />
+    <Content Include="Scripts\javascript\bootstrap.min.js" />
+    <Content Include="Scripts\javascript\gmap3.min.js" />
+    <Content Include="Scripts\javascript\imagesloaded.min.js" />
+    <Content Include="Scripts\javascript\jquery-countTo.js" />
+    <Content Include="Scripts\javascript\jquery-waypoints.js" />
+    <Content Include="Scripts\javascript\jquery.bxslider.min.js" />
+    <Content Include="Scripts\javascript\jquery.cookie.js" />
+    <Content Include="Scripts\javascript\jquery.easing.js" />
+    <Content Include="Scripts\javascript\jquery.flexslider-min.js" />
+    <Content Include="Scripts\javascript\jquery.isotope.min.js" />
+    <Content Include="Scripts\javascript\jquery.min.js" />
+    <Content Include="Scripts\javascript\main.js" />
+    <Content Include="Scripts\javascript\noframework.waypoints.min.js" />
+    <Content Include="Scripts\javascript\owl.carousel.js" />
+    <Content Include="Scripts\javascript\parallax.js" />
+    <Content Include="Scripts\javascript\shortcodes.js" />
+    <Content Include="Scripts\javascript\switcher.js" />
+    <Content Include="Scripts\javascript\waypoints.min.js" />
+    <Content Include="Scripts\javascript\wow.min.js" />
+    <Content Include="Scripts\Plugins\darkbox.js" />
+    <Content Include="Content\rm-menu.css" />
+    <Content Include="Content\slider.css" />
+    <Content Include="Content\summernote.css" />
+    <Content Include="Scripts\AdminScripts\bootstrap-datepicker.js" />
+    <Content Include="Scripts\CustomScript\appscript.js" />
+    <Content Include="Scripts\CustomScript\blogpost.js" />
+    <Content Include="Scripts\Plugins\dataTables.bootstrap.min.js" />
+    <Content Include="Scripts\Plugins\jquery-comments.min.js" />
+    <Content Include="Scripts\Plugins\jquery.dataTables.min.js" />
+    <Content Include="Scripts\Plugins\jquery.easy-ticker.min.js" />
+    <Content Include="Scripts\Plugins\paginathing.js" />
+    <Content Include="Scripts\Plugins\select2.full.min.js" />
+    <Content Include="Scripts\Plugins\starrr.js" />
+    <Content Include="Scripts\Plugins\summernote.min.js" />
+    <Content Include="Scripts\Plugins\froala_editor.pkgd.min.js" />
+    <Content Include="Scripts\Plugins\ckeditor.js" />
+    <Content Include="Scripts\CustomScript\Adminscript.js" />
+    <Content Include="Scripts\CustomScript\fbcScript.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\Plugins\AjaxZoom\easing.js" />
+    <Content Include="Scripts\Plugins\AjaxZoom\imagezoom.js" />
+    <Content Include="Scripts\Plugins\AjaxZoom\jquery.flexslider.js" />
+    <Content Include="Scripts\Plugins\canvas-to-blob.min.js" />
+    <Content Include="Scripts\Plugins\jquery.gdocsviewer.min.js" />
+    <Content Include="Scripts\Plugins\jquery.twbsPagination.js" />
+    <Content Include="Scripts\Plugins\slider.js" />
+    <Content Include="Content\jquery.share.css" />
+    <Content Include="EmailSender.asmx" />
+    <Content Include="PDF.JS\build\pdf.js" />
+    <Content Include="PDF.JS\build\pdf.worker.js" />
+    <Content Include="PDF.JS\web\compatibility.js" />
+    <Content Include="PDF.JS\web\debugger.js" />
+    <Content Include="PDF.JS\web\images\annotation-check.svg" />
+    <Content Include="PDF.JS\web\images\annotation-comment.svg" />
+    <Content Include="PDF.JS\web\images\annotation-help.svg" />
+    <Content Include="PDF.JS\web\images\annotation-insert.svg" />
+    <Content Include="PDF.JS\web\images\annotation-key.svg" />
+    <Content Include="PDF.JS\web\images\annotation-newparagraph.svg" />
+    <Content Include="PDF.JS\web\images\annotation-noicon.svg" />
+    <Content Include="PDF.JS\web\images\annotation-note.svg" />
+    <Content Include="PDF.JS\web\images\annotation-paragraph.svg" />
+    <Content Include="PDF.JS\web\images\findbarButton-next%402x.png" />
+    <Content Include="PDF.JS\web\images\findbarButton-next-rtl%402x.png" />
+    <Content Include="PDF.JS\web\images\findbarButton-next-rtl.png" />
+    <Content Include="PDF.JS\web\images\findbarButton-next.png" />
+    <Content Include="PDF.JS\web\images\findbarButton-previous%402x.png" />
+    <Content Include="PDF.JS\web\images\findbarButton-previous-rtl%402x.png" />
+    <Content Include="PDF.JS\web\images\findbarButton-previous-rtl.png" />
+    <Content Include="PDF.JS\web\images\findbarButton-previous.png" />
+    <Content Include="PDF.JS\web\images\grab.cur" />
+    <Content Include="PDF.JS\web\images\grabbing.cur" />
+    <Content Include="PDF.JS\web\images\loading-icon.gif" />
+    <Content Include="PDF.JS\web\images\loading-small%402x.png" />
+    <Content Include="PDF.JS\web\images\loading-small.png" />
+    <Content Include="PDF.JS\web\images\secondaryToolbarButton-documentProperties%402x.png" />
+    <Content Include="PDF.JS\web\images\secondaryToolbarButton-documentProperties.png" />
+    <Content Include="PDF.JS\web\images\secondaryToolbarButton-firstPage%402x.png" />
+    <Content Include="PDF.JS\web\images\secondaryToolbarButton-firstPage.png" />
+    <Content Include="PDF.JS\web\images\secondaryToolbarButton-handTool%402x.png" />
+    <Content Include="PDF.JS\web\images\secondaryToolbarButton-handTool.png" />
+    <Content Include="PDF.JS\web\images\secondaryToolbarButton-lastPage%402x.png" />
+    <Content Include="PDF.JS\web\images\secondaryToolbarButton-lastPage.png" />
+    <Content Include="PDF.JS\web\images\secondaryToolbarButton-rotateCcw%402x.png" />
+    <Content Include="PDF.JS\web\images\secondaryToolbarButton-rotateCcw.png" />
+    <Content Include="PDF.JS\web\images\secondaryToolbarButton-rotateCw%402x.png" />
+    <Content Include="PDF.JS\web\images\secondaryToolbarButton-rotateCw.png" />
+    <Content Include="PDF.JS\web\images\shadow.png" />
+    <Content Include="PDF.JS\web\images\texture.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-bookmark%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-bookmark.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-download%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-download.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-menuArrows%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-menuArrows.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-openFile%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-openFile.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-pageDown%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-pageDown-rtl%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-pageDown-rtl.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-pageDown.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-pageUp%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-pageUp-rtl%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-pageUp-rtl.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-pageUp.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-presentationMode%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-presentationMode.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-print%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-print.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-search%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-search.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-secondaryToolbarToggle%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-secondaryToolbarToggle-rtl%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-secondaryToolbarToggle-rtl.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-secondaryToolbarToggle.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-sidebarToggle%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-sidebarToggle-rtl%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-sidebarToggle-rtl.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-sidebarToggle.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-viewAttachments%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-viewAttachments.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-viewOutline%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-viewOutline-rtl%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-viewOutline-rtl.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-viewOutline.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-viewThumbnail%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-viewThumbnail.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-zoomIn%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-zoomIn.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-zoomOut%402x.png" />
+    <Content Include="PDF.JS\web\images\toolbarButton-zoomOut.png" />
+    <Content Include="PDF.JS\web\images\treeitem-collapsed%402x.png" />
+    <Content Include="PDF.JS\web\images\treeitem-collapsed-rtl%402x.png" />
+    <Content Include="PDF.JS\web\images\treeitem-collapsed-rtl.png" />
+    <Content Include="PDF.JS\web\images\treeitem-collapsed.png" />
+    <Content Include="PDF.JS\web\images\treeitem-expanded%402x.png" />
+    <Content Include="PDF.JS\web\images\treeitem-expanded.png" />
+    <Content Include="PDF.JS\web\l10n.js" />
+    <Content Include="PDF.JS\web\viewer.css" />
+    <Content Include="PDF.JS\web\viewer.html" />
+    <Content Include="PDF.JS\web\viewer.js" />
+    <Content Include="Scripts\AdminScripts\adminNotScripts.js" />
+    <Content Include="Scripts\AdminScripts\iCheck\icheck.js" />
+    <Content Include="Scripts\AdminScripts\js\AdminLTE\app.min.js" />
+    <Content Include="Scripts\AdminScripts\js\jQuery-2.2.0.min.js" />
+    <Content Include="Scripts\AdminScripts\js\jquery-ui.min.js" />
+    <Content Include="Scripts\CustomScript\AdsScript.js" />
+    <Content Include="Scripts\CustomScript\FIndMenuLink.js" />
+    <Content Include="Scripts\CustomScript\INIRegFormScrpt.js" />
+    <Content Include="Scripts\Plugins\jquery.share.js" />
+    <Content Include="Content\dpLoading-2.x-skin-grey.css" />
+    <Content Include="Content\dpLoading-2.x.css" />
+    <Content Include="Content\fileinput.css" />
+    <Content Include="Content\images\back_disabled.jpg" />
+    <Content Include="Content\images\back_enabled.jpg" />
+    <Content Include="Content\images\blank.gif" />
+    <Content Include="Content\images\camera-loader.gif" />
+    <Content Include="Content\images\camera_skins.png" />
+    <Content Include="Content\images\dpLoading-2.x-skin-grey.gif" />
+    <Content Include="Content\images\forward_disabled.jpg" />
+    <Content Include="Content\images\forward_enabled.jpg" />
+    <Content Include="Content\images\jquery-te.png" />
+    <Content Include="Content\images\loading.gif" />
+    <Content Include="Content\images\placeholder3.jpg" />
+    <Content Include="Content\images\sort_asc.png" />
+    <Content Include="Content\images\sort_asc_disabled.png" />
+    <Content Include="Content\images\sort_both.png" />
+    <Content Include="Content\images\sort_desc.png" />
+    <Content Include="Content\images\sort_desc_disabled.png" />
+    <Content Include="Content\images\sprites-sfa68604977.png" />
+    <Content Include="Content\jquery-te-1.4.0.css" />
+    <Content Include="Content\jquery.auto-complete.css" />
+    <Content Include="Content\prettyCheckable.css" />
+    <Content Include="Content\sweetalert.min.css" />
+    <Content Include="Content\toastr.min.css" />
+    <Content Include="iHealthIcon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="RecaptchaNet.Readme.txt" />
+    <Content Include="Scripts\AdminScripts\js\AdminLTE\dashboard.js" />
+    <Content Include="Scripts\AdminScripts\js\AdminLTE\demo.js" />
+    <Content Include="Scripts\AdminScripts\js\bootstrap.js" />
+    <Content Include="Scripts\AdminScripts\js\bootstrap.min.js" />
+    <Content Include="Scripts\AdminScripts\js\plugins\ionslider\ion.rangeSlider.min.js" />
+    <Content Include="Scripts\Plugins\bootstrap-datepicker.js" />
+    <Content Include="Scripts\Plugins\bootstrap-table.js" />
+    <Content Include="Scripts\AdminScripts\js\.DS_Store" />
+    <Content Include="Content\AdminContent\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\AdminContent\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\AdminContent\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\AdminContent\fonts\FontAwesome.otf" />
+    <Content Include="Content\AdminContent\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\AdminContent\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\AdminContent\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\AdminContent\fonts\ionicons.eot" />
+    <Content Include="Content\AdminContent\fonts\ionicons.ttf" />
+    <Content Include="Content\AdminContent\fonts\ionicons.woff" />
+    <Content Include="PDF.JS\web\cmaps\78-EUC-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\78-EUC-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\78-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\78-RKSJ-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\78-RKSJ-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\78-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\78ms-RKSJ-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\78ms-RKSJ-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\83pv-RKSJ-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\90ms-RKSJ-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\90ms-RKSJ-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\90msp-RKSJ-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\90msp-RKSJ-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\90pv-RKSJ-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\90pv-RKSJ-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Add-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Add-RKSJ-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Add-RKSJ-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Add-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-CNS1-0.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-CNS1-1.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-CNS1-2.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-CNS1-3.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-CNS1-4.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-CNS1-5.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-CNS1-6.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-CNS1-UCS2.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-GB1-0.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-GB1-1.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-GB1-2.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-GB1-3.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-GB1-4.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-GB1-5.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-GB1-UCS2.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-Japan1-0.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-Japan1-1.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-Japan1-2.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-Japan1-3.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-Japan1-4.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-Japan1-5.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-Japan1-6.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-Japan1-UCS2.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-Korea1-0.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-Korea1-1.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-Korea1-2.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Adobe-Korea1-UCS2.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\B5-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\B5-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\B5pc-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\B5pc-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\CNS-EUC-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\CNS-EUC-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\CNS1-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\CNS1-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\CNS2-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\CNS2-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\ETen-B5-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\ETen-B5-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\ETenms-B5-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\ETenms-B5-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\ETHK-B5-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\ETHK-B5-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\EUC-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\EUC-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Ext-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Ext-RKSJ-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Ext-RKSJ-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Ext-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GB-EUC-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GB-EUC-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GB-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GB-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GBK-EUC-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GBK-EUC-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GBK2K-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GBK2K-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GBKp-EUC-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GBKp-EUC-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GBpc-EUC-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GBpc-EUC-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GBT-EUC-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GBT-EUC-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GBT-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GBT-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GBTpc-EUC-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\GBTpc-EUC-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Hankaku.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Hiragana.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\HKdla-B5-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\HKdla-B5-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\HKdlb-B5-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\HKdlb-B5-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\HKgccs-B5-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\HKgccs-B5-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\HKm314-B5-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\HKm314-B5-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\HKm471-B5-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\HKm471-B5-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\HKscs-B5-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\HKscs-B5-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Katakana.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\KSC-EUC-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\KSC-EUC-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\KSC-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\KSC-Johab-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\KSC-Johab-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\KSC-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\KSCms-UHC-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\KSCms-UHC-HW-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\KSCms-UHC-HW-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\KSCms-UHC-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\KSCpc-EUC-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\KSCpc-EUC-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\LICENSE" />
+    <Content Include="PDF.JS\web\cmaps\NWP-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\NWP-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\RKSJ-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\RKSJ-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\Roman.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniCNS-UCS2-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniCNS-UCS2-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniCNS-UTF16-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniCNS-UTF16-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniCNS-UTF32-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniCNS-UTF32-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniCNS-UTF8-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniCNS-UTF8-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniGB-UCS2-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniGB-UCS2-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniGB-UTF16-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniGB-UTF16-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniGB-UTF32-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniGB-UTF32-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniGB-UTF8-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniGB-UTF8-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJIS-UCS2-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJIS-UCS2-HW-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJIS-UCS2-HW-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJIS-UCS2-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJIS-UTF16-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJIS-UTF16-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJIS-UTF32-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJIS-UTF32-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJIS-UTF8-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJIS-UTF8-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJIS2004-UTF16-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJIS2004-UTF16-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJIS2004-UTF32-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJIS2004-UTF32-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJIS2004-UTF8-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJIS2004-UTF8-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJISPro-UCS2-HW-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJISPro-UCS2-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJISPro-UTF8-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJISX0213-UTF32-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJISX0213-UTF32-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJISX02132004-UTF32-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniJISX02132004-UTF32-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniKS-UCS2-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniKS-UCS2-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniKS-UTF16-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniKS-UTF16-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniKS-UTF32-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniKS-UTF32-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniKS-UTF8-H.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\UniKS-UTF8-V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\V.bcmap" />
+    <Content Include="PDF.JS\web\cmaps\WP-Symbol.bcmap" />
+    <Content Include="PDF.JS\web\locale\ach\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\af\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ak\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\an\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ar\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ast\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\as\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\az\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\be\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\bg\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\bn-BD\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\bn-IN\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\br\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\bs\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ca\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\csb\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\cs\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\cy\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\da\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\de\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\el\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\en-GB\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\en-US\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\en-ZA\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\eo\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\es-AR\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\es-CL\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\es-ES\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\es-MX\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\et\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\eu\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\fa\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ff\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\fi\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\fr\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\fy-NL\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ga-IE\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\gd\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\gl\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\gu-IN\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\he\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\hi-IN\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\hr\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\hu\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\hy-AM\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\id\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\is\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\it\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ja\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ka\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\kk\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\km\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\kn\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ko\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ku\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\lg\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\lij\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\locale.properties" />
+    <Content Include="PDF.JS\web\locale\lt\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\lv\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\mai\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\mk\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ml\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\mn\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\mr\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ms\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\my\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\nb-NO\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\nl\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\nn-NO\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\nso\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\oc\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\or\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\pa-IN\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\pl\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\pt-BR\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\pt-PT\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\rm\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ro\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ru\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\rw\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\sah\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\si\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\sk\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\sl\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\son\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\sq\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\sr\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\sv-SE\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\sw\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ta-LK\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ta\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\te\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\th\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\tl\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\tn\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\tr\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\uk\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\ur\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\vi\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\wo\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\xh\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\zh-CN\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\zh-TW\viewer.properties" />
+    <Content Include="PDF.JS\web\locale\zu\viewer.properties" />
+    <Content Include="Content\AdminContent\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Scripts\CustomScript\UrgentDrugNeedScript.js" />
+    <Content Include="EmailTemplates\NotificationTemp.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\fonts\summernote.eot" />
+    <Content Include="Content\fonts\summernote.ttf" />
+    <Content Include="Content\fonts\summernote.woff" />
+    <Content Include="Hospital list for iHealth Networking Members .pdf" />
+    <Content Include="High Networking Hospital list.pdf" />
+    <Content Include="HealthInsuranceBenefits4ING.pdf" />
+    <Content Include="Content\revolution\fonts\revicons\index.php" />
+    <Content Include="Content\revolution\fonts\revicons\revicons.eot" />
+    <Content Include="Content\revolution\fonts\revicons\revicons.ttf" />
+    <Content Include="Content\revolution\fonts\revicons\revicons.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
+    <Content Include="Content\fonts\ionicons.eot" />
+    <Content Include="Content\fonts\ionicons.ttf" />
+    <Content Include="Content\fonts\ionicons.woff" />
+    <Content Include="Content\comingsoon\images\.DS_Store" />
+    <Content Include="Content\comingsoon\tools\.DS_Store" />
+    <Content Include="Content\comingsoon\tools\socicon\.DS_Store" />
+    <Content Include="Content\comingsoon\tools\socicon\font\.empty" />
+    <Content Include="Content\comingsoon\tools\socicon\font\socicon-webfont.eot" />
+    <Content Include="Content\comingsoon\tools\socicon\font\socicon-webfont.ttf" />
+    <Content Include="Content\comingsoon\tools\socicon\font\socicon-webfont.woff" />
+    <Content Include="Content\comingsoon\tools\socicon\font\socicon-webfont.woff2" />
+    <Content Include="Content\comingsoon\tools\socicon\icons.json" />
+    <Content Include="Content\comingsoon\tools\socicon\readme.md" />
+    <None Include="Properties\PublishProfiles\FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\ihealthgsfm.com - Web Deploy %282%29.pubxml" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\CustomScript\CompScript.js" />
+    <Content Include="Scripts\Plugins\dpLoading-2.x.js" />
+    <Content Include="Scripts\Plugins\fileinput.js" />
+    <Content Include="Scripts\gen_validatorv4.js" />
+    <Content Include="Scripts\CustomScript\gmapcust.js" />
+    <Content Include="Scripts\jmelosegui.googlemap.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\Plugins\jquery-te-1.4.0.js" />
+    <Content Include="Scripts\Plugins\jquery.auto-complete.min.js" />
+    <Content Include="Scripts\Plugins\jquery.dataTables.js" />
+    <Content Include="Scripts\Plugins\jquery.picZoomer.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\JqueryPrint\jQuery.print.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\CustomScript\myBusinesCust.js" />
+    <Content Include="Scripts\CustomScript\myHomeCust.js" />
+    <Content Include="Scripts\Plugins\populate_lga.js" />
+    <Content Include="Scripts\Plugins\prettyCheckable.min.js" />
+    <Content Include="Scripts\CustomScript\ProdScripts.js" />
+    <Content Include="Scripts\CustomScript\Product_RegJS.js" />
+    <Content Include="Scripts\CustomScript\RegisterForm.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Plugins\smoothproducts.min.js" />
+    <Content Include="Scripts\Plugins\sweetalert.min.js" />
+    <Content Include="Scripts\Plugins\toastr.js" />
+    <Content Include="Scripts\Plugins\toastr.min.js" />
+    <Content Include="Scripts\Plugins\typewriter.js" />
+    <Content Include="Scripts\Plugins\wavytext.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="SqlServerTypes\readme.htm" />
+    <Content Include="SqlServerTypes\x64\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x64\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Shared\_BlogLayout.cshtml" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
+    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\SendCode.cshtml" />
+    <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\ManageLogins.cshtml" />
+    <Content Include="Views\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Shared\Lockout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_HomeLayout2.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Shared\Info.cshtml" />
+    <Content Include="Views\Home\FAQ.cshtml" />
+    <Content Include="Views\Home\Terms.cshtml" />
+    <Content Include="Views\Shared\_UserPanelLayout.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\SuperAdm\Users\Profiles.cshtml" />
+    <Content Include="Views\SuperAdm\Users\Edit.cshtml" />
+    <Content Include="Views\Shared\Photoupload.cshtml" />
+    <Content Include="Views\SuperAdm\Users\Index.cshtml" />
+    <Content Include="Views\Business\Create_Biz.cshtml" />
+    <Content Include="Views\Company\NewlyRegBusiness.cshtml" />
+    <Content Include="Views\Admin\NewINIsubsciber.cshtml" />
+    <Content Include="Views\Referral\Bonus.cshtml" />
+    <Content Include="Views\Company\BizDetails.cshtml" />
+    <Content Include="Views\Company\_NewlyRegBizPartial.cshtml" />
+    <Content Include="Views\Company\ApprovedComp.cshtml" />
+    <Content Include="Views\Company\VerifiedComp.cshtml" />
+    <Content Include="Views\Search\Searchresults.cshtml" />
+    <Content Include="Views\Search\_SearchResultPartial.cshtml" />
+    <Content Include="Views\Hospital\Find_Hospital.cshtml" />
+    <Content Include="Views\Insurance\Index.cshtml" />
+    <Content Include="Views\LatestNews\ViewNewsbyAdmin.cshtml" />
+    <Content Include="Views\LatestNews\Create_News.cshtml" />
+    <Content Include="Views\Home\_NewsPartial.cshtml" />
+    <Content Include="Views\LatestNews\HealthNews.cshtml" />
+    <Content Include="Views\Products\Register_Product.cshtml" />
+    <Content Include="Views\Pharmacy\Find_Pharmacy.cshtml" />
+    <Content Include="Views\Lab\Find_Lab.cshtml" />
+    <Content Include="Views\Pharmacy\Search_Drugs.cshtml" />
+    <Content Include="Views\Pharmacy\Drug_Detail.cshtml" />
+    <Content Include="Views\Med_Equipments\Find_Equipment.cshtml" />
+    <Content Include="Views\Med_Equipments\Equipment_Detail.cshtml" />
+    <Content Include="Views\Products\NewlyRegisteredProducts.cshtml" />
+    <Content Include="Views\Products\ProductDetails.cshtml" />
+    <Content Include="Views\Products\ApprovedProducts.cshtml" />
+    <Content Include="Views\Products\VerifiedProduct.cshtml" />
+    <Content Include="Views\Admin\All_Busers.cshtml" />
+    <Content Include="Views\Hospital\_listHospitalOrClinic.cshtml" />
+    <Content Include="Views\Advert\How_to_Place_Ads.cshtml" />
+    <Content Include="Views\Pharmacy\_listPharmacy.cshtml" />
+    <Content Include="Views\Lab\_listMedLab.cshtml" />
+    <Content Include="Views\Herbal\_listHerbCenter.cshtml" />
+    <Content Include="Views\Herbal\Find_Herbs_Center.cshtml" />
+    <Content Include="Views\Vet\_listVetCenter.cshtml" />
+    <Content Include="Views\Vet\Find_Vet_Center.cshtml" />
+    <Content Include="Views\Support\ContactUs.cshtml" />
+    <Content Include="Views\Support\ReportFraud.cshtml" />
+    <Content Include="Views\Admin\GetContactUs.cshtml" />
+    <Content Include="Views\Admin\GetFraudReport.cshtml" />
+    <Content Include="Views\Admin\_pvContactUs.cshtml" />
+    <Content Include="Views\Admin\ViewFeedBack.cshtml" />
+    <Content Include="Views\Admin\_pvReportFraud.cshtml" />
+    <Content Include="Views\Admin\TreatedFeedBack.cshtml" />
+    <Content Include="Views\SuperAdm\Users\Userpanel.cshtml" />
+    <Content Include="Views\Referral\BonusBeneficiary.cshtml" />
+    <Content Include="Views\Business\MyBusiness.cshtml" />
+    <Content Include="Views\Products\myProducts.cshtml" />
+    <Content Include="Views\Account\INIRegForm.cshtml" />
+    <Content Include="Views\Shared\_INISubcriberLayout.cshtml" />
+    <Content Include="Views\ING\Userpanel.cshtml" />
+    <Content Include="Views\Shared\ConfirmEmail.cshtml" />
+    <Content Include="Views\ING\Direct_Members.cshtml" />
+    <Content Include="Views\Shared\Profiles.cshtml" />
+    <Content Include="Views\ING\Edit.cshtml" />
+    <Content Include="Views\Admin\NewBUsers.cshtml" />
+    <Content Include="Views\ING\ClaimBenefit.cshtml" />
+    <Content Include="Views\ING\BankInfo.cshtml" />
+    <Content Include="Views\ING\UserpanelCarreer.cshtml" />
+    <Content Include="Views\ING\UserpanelHealth.cshtml" />
+    <Content Include="Views\Admin\PaidSubscriber.cshtml" />
+    <Content Include="Views\Admin\NoPaymentSubscriber.cshtml" />
+    <Content Include="Views\Admin\CSubscriber.cshtml" />
+    <Content Include="Views\Admin\HSubscriber.cshtml" />
+    <Content Include="Views\Admin\FreshBenefitClaims.cshtml" />
+    <Content Include="Views\Admin\BPReport.cshtml" />
+    <Content Include="Views\Admin\BProcesedClaims.cshtml" />
+    <Content Include="Views\Admin\BSReport.cshtml" />
+    <Content Include="Views\Admin\SettledClaims.cshtml" />
+    <Content Include="Views\ING\BenefitHistory.cshtml" />
+    <Content Include="Views\SuperAdm\Users\UgradeForm.cshtml" />
+    <Content Include="Views\Med_Equipments\medEquipCompany.cshtml" />
+    <Content Include="Views\Med_Equipments\_listMedEquipCom.cshtml" />
+    <Content Include="Views\Shared\_SuperAdmLayout.cshtml" />
+    <Content Include="Views\SuperAdm\Index.cshtml" />
+    <Content Include="Views\SuperAdm\Create.cshtml" />
+    <Content Include="Views\SuperAdm\ViewAdmins.cshtml" />
+    <Content Include="Views\SuperAdm\ModifyRole.cshtml" />
+    <Content Include="Views\SuperAdm\All_users.cshtml" />
+    <Content Include="Views\SuperAdm\ViewApprovedComORBiz.cshtml" />
+    <Content Include="Views\SuperAdm\VerifiedComp.cshtml" />
+    <Content Include="Views\SuperAdm\ApprovedProducts.cshtml" />
+    <Content Include="Views\SuperAdm\VerifiedProduct.cshtml" />
+    <Content Include="Views\SuperAdm\SettleClaims.cshtml" />
+    <Content Include="Views\Pharmacy\UrgentNeedForDrugs.cshtml" />
+    <Content Include="Views\Admin\urgentDrugRequest.cshtml" />
+    <Content Include="Views\Admin\TreatedDrugRequest.cshtml" />
+    <Content Include="Views\SuperAdm\CreateAds.cshtml" />
+    <Content Include="Views\SuperAdm\viewAdsList.cshtml" />
+    <Content Include="Views\SuperAdm\ActiveAds.cshtml" />
+    <Content Include="Views\SuperAdm\InactiveAds.cshtml" />
+    <Content Include="Views\LatestNews\AllNews.cshtml" />
+    <Content Include="Views\Herbal\Search_Herbal_Drugs.cshtml" />
+    <Content Include="Views\Herbal\Drug_Detail.cshtml" />
+    <Content Include="Views\Vet\Search_Drugs.cshtml" />
+    <Content Include="Views\Vet\Drug_Detail.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
+    <Content Include="Views\Users\Profiles.cshtml" />
+    <Content Include="Views\Users\UgradeForm.cshtml" />
+    <Content Include="Views\Users\Userpanel.cshtml" />
+    <Content Include="Views\Shared\HelpDesk.cshtml" />
+    <Content Include="Views\Careers\Careers.cshtml" />
+    <Content Include="Views\Careers\create_Job_Ads.cshtml" />
+    <Content Include="Views\Careers\viewJobList.cshtml" />
+    <Content Include="Views\Careers\viewApplicant.cshtml" />
+    <Content Include="Views\Careers\new_applicant.cshtml" />
+    <Content Include="Views\Shared\newsletter.cshtml" />
+    <Content Include="Views\Users\Direct_Members.cshtml" />
+    <Content Include="Views\Shared\NotFound404.cshtml" />
+    <Content Include="Views\Shared\ErrorAlert.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\SuperAdm\ConfirmEmail.cshtml" />
+    <Content Include="Views\Shared\Changepassword.cshtml" />
+    <Content Include="Views\Support\View_Support_Request.cshtml" />
+    <Content Include="Views\Support\Process_Support_Request.cshtml" />
+    <Content Include="Views\Med_Equipments\_MedicalEquipmentList.cshtml" />
+    <Content Include="Views\Blog\Create.cshtml" />
+    <Content Include="Views\Blog\my_blog_posts.cshtml" />
+    <Content Include="Views\Blog\Edit.cshtml" />
+    <Content Include="Views\Blog\blog_list.cshtml" />
+    <Content Include="Views\Blog\post_details.cshtml" />
+    <Content Include="Views\Blog\my_blog_post_comments.cshtml" />
+    <Content Include="Views\Blog\reply_comment.cshtml" />
+    <Content Include="Views\Search\Professionals.cshtml" />
+    <Content Include="Views\Home\_appBookingform.cshtml" />
+    <Content Include="Views\Appointments\newapp.cshtml" />
+    <Content Include="Views\Appointments\approvedapp.cshtml" />
+    <Content Include="Views\Appointments\pendingapp.cshtml" />
+    <Content Include="Views\Appointments\ApproveAppointment.cshtml" />
+    <Content Include="Views\Home\bookappointmentPage.cshtml" />
+    <Content Include="Views\Home\Hmos.cshtml" />
+    <Content Include="Views\Home\NGOs.cshtml" />
+    <Content Include="Views\Home\_hmospv.cshtml" />
+    <Content Include="Views\Home\_ngospv.cshtml" />
+    <Content Include="Views\Company\Recommended_Comp.cshtml" />
+    <Content Include="Views\Business\My_Business_Profile.cshtml" />
+    <Content Include="Views\Business\Details.cshtml" />
+    <Content Include="Views\Business\biz_profile.cshtml" />
+    <Content Include="Views\Business\_viewbizImage.cshtml" />
+    <Content Include="Views\Shared\_BusinessProfileLayout.cshtml" />
+    <Content Include="Views\Shared\_GenericLayout.cshtml" />
+    <Content Include="Views\PaymentGateways\pGateway.cshtml" />
+    <Content Include="Views\PaymentGateways\payment_Status.cshtml" />
+    <Content Include="Views\PaymentGateways\_ing_pgateway.cshtml" />
+    <Content Include="Views\PaymentGateways\_PaymentSuccess.cshtml" />
+    <Content Include="Views\PaymentGateways\_PaymentFail.cshtml" />
+    <Content Include="Views\PaymentGateways\upgradeGateway.cshtml" />
+    <Content Include="Views\Shop_for_health_products\Buy_Health_Insurance.cshtml" />
+    <Content Include="Views\ING\ref_bonus.cshtml" />
+    <Content Include="Views\ING\Membership_benefits.cshtml" />
+    <Content Include="Views\ING\ClientBooster.cshtml" />
+    <Content Include="Views\Home\SLA.cshtml" />
+    <Content Include="Second List of Hospitals but with approval.pdf" />
+    <Content Include="Views\ING\Hospital_list_for_ING.cshtml" />
+    <Content Include="Views\ING\Training_guide.cshtml" />
+    <Content Include="Views\Transaction\All_Transaction.cshtml" />
+    <Content Include="Views\Transaction\success_trs.cshtml" />
+    <Content Include="Views\Transaction\fail_trs.cshtml" />
+    <Content Include="Views\Transaction\pending_trs.cshtml" />
+    <Content Include="Views\Home\PrivacyPolicy.cshtml" />
+    <Content Include="Views\ING\Choose_Benefit.cshtml" />
+    <Content Include="Views\Shared\_HomeLayout.cshtml" />
+    <Content Include="Views\ING\Networking.cshtml" />
+    <Content Include="Views\Account\reg_option.cshtml" />
+    <Content Include="Views\ING\Hospital_list.cshtml" />
+    <Content Include="Views\ING\hosplist.cshtml" />
+    <Content Include="Views\ING\Health_Insurance_Benefits.cshtml" />
+    <Content Include="Views\Home\Comingsoon.cshtml" />
+    <Content Include="Views\Premium\About.cshtml" />
+    <Content Include="Views\ING\SBoosterREGCompanyAlert.cshtml" />
+    <Content Include="Views\ING\Client_Booster_List.cshtml" />
+    <Content Include="Views\ING\_ClientBoosterList.cshtml" />
+    <Content Include="Views\Premium\premium_package_signup.cshtml" />
+    <Content Include="Views\Premium\NewPremiumUser.cshtml" />
+    <Content Include="Views\Premium\passivePremiumUser.cshtml" />
+    <Content Include="Views\Premium\activePremiumUsers.cshtml" />
+    <Content Include="Views\Premium\Premium_Referral.cshtml" />
+    <Content Include="Views\Home\sample_page.cshtml" />
+    <Content Include="Views\ING\Service_Booster_List.cshtml" />
+    <Content Include="Views\ING\sp_Service_Booster_Biz_List.cshtml" />
+    <Content Include="Views\Premium\confirmedPaymentPremiumUsers.cshtml" />
+    <Content Include="Views\Premium\pendingPaymentPremiumUser.cshtml" />
+    <Content Include="Scripts\Plugins\jquery.textcomplete.min.js" />
+    <Content Include="Views\Premium\SHLPA.cshtml" />
+    <Content Include="Views\Premium\FHLPA.cshtml" />
+    <Content Include="Views\Premium\FHLPB.cshtml" />
+    <Content Include="Views\Premium\SHLPB.cshtml" />
+    <Content Include="Views\Premium\HCN1.cshtml" />
+    <Content Include="Views\Premium\HCN2.cshtml" />
+    <Content Include="Views\Premium\HCN.cshtml" />
+    <Content Include="Views\ING\Health_Providers.cshtml" />
+    <Content Include="Views\ING\_HealthProviderList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Content\Blog_post_image\" />
+    <Folder Include="Content\Business_Img_Gallery\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="packages.config" />
+    <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202005021458418_xxx.resx">
+      <DependentUpon>202005021458418_xxx.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>5776</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:44301/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

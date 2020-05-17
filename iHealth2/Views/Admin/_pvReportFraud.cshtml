@@ -1,0 +1,75 @@
+﻿@model IEnumerable<iHealth2.Models.FeedBack>
+
+<div class="table-responsive">
+    <h2>Fraud Report</h2>
+
+    <table id="table">
+        <thead>
+            <tr>
+                <th>
+
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FRName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FREmail)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FRPhone)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FBMessage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FBStatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SentDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReportType)
+                </th>
+
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>
+                        @Html.ActionLink("View Message", "ViewFeedBack", "Admin", new { id = item.ID }, new { @class = "btn btn-danger" })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FRName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FREmail)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FRPhone)
+                    </td>
+                    <td style="word-wrap:break-word; width:100px">
+                        @Html.DisplayFor(modelItem => item.FBMessage)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FBStatus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SentDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReportType)
+                    </td>
+                  
+                </tr>
+
+
+            }
+        </tbody>
+    </table>
+</div>
+
+

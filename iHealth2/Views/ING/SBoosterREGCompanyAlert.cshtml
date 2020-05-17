@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@using iHealth2.Models;
+@{
+    ViewBag.Title = "Register Business";
+    Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+}
+
+@if (user.isClientBooster == true)
+                    {
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="callout callout-info">
+            <h4>As a service booster you must register your business/company profile before anything else,
+                <a class="btn btn-danger" href="/business/create_biz">Click here</a> to proceed.
+            </h4>
+            
+        </div>
+    </div>
+</div>
+}
+else
+{
+    Response.Redirect("/ing/userpanel");
+}
+

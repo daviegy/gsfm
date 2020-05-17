@@ -1,0 +1,286 @@
+﻿@model iHealth2.Models.BusinessInfo
+@using iHealth2.Models;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+
+@if (Session["Name"] == null)
+{
+    Response.Redirect("/Account/login");
+}
+
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+    ViewBag.Title = "MyBusiness";
+    var user = db.Users.Find(User.Identity.GetUserId());
+    if (user.UserType == "BusinessUser")
+    {
+        Layout = "~/Views/Shared/_UserPanelLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+    }
+    object imglist ;
+}
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <!-- Profile Image -->
+            <div class="box box-success">
+                <div class="box-body box-profile">
+                    @if (Model.logo == null)
+                    {
+                        <img class="profile-user-img img-responsive img-circle" src="~/Content/Logo/ihealthlogo.png" alt="User profile picture">
+                        @*<br /><a href="/home/Photoupload" class="btn btn-danger">Add New Profile Photo <i class="icon icon-camera"></i></a>*@
+                    }
+                    else
+                    {
+                        <img class="profile-user-img img-responsive img-circle" src="data:image/png;base64,@Convert.ToBase64String(Model.logo)" alt="User profile picture">
+                        @*<br /><a href="/home/Photoupload" class="btn btn-danger"> Update Profile Photo<i class="icon icon-camera"></i></a>*@
+                    }
+
+                    <h3 class="profile-username text-center">@Model.businessName</h3>
+
+                    <p class="text-muted text-center">
+                        @if (Model.VerifiedStatus == "V")
+                        {
+                            if (Model.Recommended_Status == "R")
+                            {
+
+                                <img src="~/Content/images/recommedIcon.fw.png" />
+                            }
+                            else
+                            {
+
+                                <img src="~/Content/images/verifiedicon.fw.png" style="width:76px;height:66px" />
+                            }
+
+                        }
+                    </p>
+
+                    <ul class="list-group list-group-unbordered">
+                        @*<li class="list-group-item">
+                                <b>ID</b> <a class="pull-right">@Model.tID</a>
+                            </li>*@
+                        <li class="list-group-item">
+                            <b>Emails</b> <a class="pull-right">@Model.Email</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Phone</b> <a class="pull-right">@Model.Phone</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Category</b> <a class="pull-right">@Model.Category</a>
+                        </li>
+                        @if (!string.IsNullOrEmpty(Model.subCategory1))
+                        {
+                            <li class="list-group-item">
+                                <b>Subcategory</b> <a class="pull-right">@Model.subCategory1</a>
+                            </li>
+                        }
+                        <li class="list-group-item">
+                            <b>Website</b>
+                            @if (!string.IsNullOrEmpty(Model.Website))
+                            {
+                                <a href="@Model.Website" class="pull-right">
+                                    @Model.Website
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="/business/"></a>
+                            }
+                        </li>
+                        <li class="list-group-item">
+                            <b>Social Media</b> <a href="@Model.Facebook" class=""><i class="fa fa-facebook-square fa-2x"></i></a>
+                            <a href="@Model.Twitter" class=""><i class="fa fa-twitter-square fa-2x"></i></a>
+                            <a href="@Model.LinkedIn" class=""><i class="fa fa-linkedin-square fa-2x"></i></a>
+                            <a href="@Model.Google_Plus" class=""><i class="fa fa-google-plus-square fa-2x"></i></a>
+                        </li>
+
+                    </ul>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+            <!-- About Me Box -->
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title">More Info </h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+
+                    <p class="text-muted">@Model.Address</p>
+                   
+
+                    
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#desc" data-toggle="tab">Business Overview</a></li>
+                    <li ><a href="#settings" data-toggle="tab">Update Info</a></li>
+                    <li><a href="#image" data-toggle="tab">Upload Image</a></li>
+                    <li><a href="#viewimage" data-toggle="tab">View Image</a></li>
+                    @*<li><a href="#Featuredimage" data-toggle="tab">Featured Image</a></li>*@
+                </ul>
+                <div class="tab-content">
+                    <div class="active tab-pane" id="desc">
+                        <p class="text-muted">
+                            @Html.Raw(Server.HtmlDecode(Model.Description)) 
+                        </p>
+                    </div>
+                    <div  id="settings" class="tab-pane">
+                        <form id="edit_service_info" class="form-horizontal" action="/Business/edit_business_info/?id=@Model.ID" method="post">
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Phone</label>
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Description</label>
+                                <div class="col-sm-10">
+                                    <textarea id="summary" name="summary" class="form-control" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">@Html.Raw(Server.HtmlDecode(Model.Description))</textarea>
+                                  
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Website</label>
+                                <div class="col-sm-10">
+                                   @Html.TextBoxFor(m => m.Website, new {@class = "form-control", placeholder="http://mywebsite.com" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Facebook</label>
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(m => m.Facebook, new { @class = "form-control", placeholder = "http://mywebsite.com" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Twitter</label>
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(m => m.Twitter, new { @class = "form-control", placeholder = "http://mywebsite.com" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">LinkedIn</label>
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(m => m.LinkedIn, new { @class = "form-control", placeholder = "http://mywebsite.com" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Google Plus</label>
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(m => m.Google_Plus, new { @class = "form-control", placeholder = "http://mywebsite.com" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail" class="col-sm-2 control-label">Nationality</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" required name="Country" id="Country">
+                                        <option value="">Select Country</option>
+                                        @{
+                                            var contry = db.country.ToList();
+                                            foreach (var con3 in contry)
+                                            {
+
+                                        <option value="@con3.ID">@con3.CountryName</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">State</label>
+                                <div class="col-sm-10">
+                                    @Html.DropDownList("state", new List<SelectListItem> { new SelectListItem { Value = "", Text = "" } }, "Select State", new { id = "state", @class = "form-control", reqiured=true })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputExperience" class="col-sm-2 control-label">City</label>
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(m => m.City, new { @class = "form-control", placeholder = "Type City" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputSkills" class="col-sm-2 control-label">Address</label>
+
+                                <div class="col-sm-10">
+                                    @Html.TextAreaFor(m => m.Address, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-10">
+                                    <input type="submit" class="btn btn-success" value="Save changes">
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="image">
+                        <!-- /.tab-pane -->
+                        <form id="uploadInfo" class="form-horizontal" enctype="multipart/form-data" action="/Business/biz_gallery_Img/?id=@Model.ID" method="post">
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+                                    <label>Add Images to Gallery</label><label class="text-danger">(You can upload multiple Images. )</label>
+                                    <input id="galleryImg" name="galleryImg" type="file" multiple class="file-loading" accept="image/*">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-10">
+                                    <input type="submit" class="btn btn-success" value="Upload Image">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="viewimage">
+                        @{
+                            
+                            imglist = db.businessImage.Where(img => img.BizId == Model.ID).ToList().OrderByDescending(img=>img.isSliderImage);
+                        }
+                        @Html.Partial("_viewbizImage", imglist)
+                    </div>
+                    @*<div class="tab-pane" id="Featuredimage">
+                        @{
+                             imglist = db.businessImage.Where(img => img.BizId == Model.ID && img.isSliderImage == "true").ToList();
+                        }
+                        @Html.Partial("_viewbizImage", imglist)
+                    </div>*@
+                    <!-- /.tab-content -->
+                </div>
+                <!-- /.nav-tabs-custom -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+</section>
+@section scripts{
+    <script src="~/Scripts/Plugins/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/Plugins/dataTables.bootstrap.min.js"></script>
+ 
+    <script src="~/Scripts/Plugins/fileinput.js"></script>
+    <script src="~/Scripts/Plugins/darkbox.js"></script>
+    <script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+    @*<script src="~/Scripts/Plugins/bootstrap-table.js"></script>*@
+    <script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+    <script src="~/Scripts/Plugins/dpLoading-2.x.js"></script>
+<script src="~/Scripts/Plugins/summernote.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#summary').summernote();
+    });
+</script>
+    <script src="~/Scripts/CustomScript/BizProfileScript.js"></script>
+}

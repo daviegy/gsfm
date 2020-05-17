@@ -1,0 +1,195 @@
+﻿@model IEnumerable<iHealth2.Models.ING_Hospital_List>
+@using iHealth2.Models
+@using iHealth2.CustomClasses;
+
+@{
+    ViewBag.Title = "Health_Providers";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext();
+    SEO_Friendly_URL seo = new SEO_Friendly_URL();
+}
+@*<div class="tp-banner-container">
+        <div class="tp-banner">
+            <div class="flexslider" style="margin-bottom:0px;border:none">
+                <div class="flat-slides">
+                    <ul class="slides">
+                        <li>
+                            <img src="~/Content/images/slides/Slider_ihealth3.jpg" />
+                        </li>
+
+                        <li>
+                            <img src="~/Content/images/slides/Slider_ihealth4.jpg" />
+                        </li>
+                    </ul>
+                </div> <!-- /.flat-slides -->
+            </div><!-- /.wrar-slides -->
+        </div>
+    </div>*@
+<div class="page-title">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title-heading">
+                    <h1 class="h1-title">Health Providers</h1>
+                </div><!-- /.page-title-heading -->
+                <ul class="breadcrumbs">
+                    <li><a href="/" title="">Home<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    <li><a href="#" title="">Health Providers</a></li>
+                </ul><!-- /.breadcrumbs -->
+                <div class="clearfix"></div><!-- /.clearfix -->
+            </div>
+        </div>
+    </div>
+</div><!-- /.page-title -->
+<section class="flat-row pd-aboutv3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="wrap-main-post about-v3">
+                    <div class="col-md-8">
+                        <div class="widget widget-brochure" style="background-color:#f5f5f5">
+                            <div class="select2-search--inline">   
+                                <form action="/ing/Search_Health_Providers" method="get">
+                                    <div div class="col-sm-10">
+                                        <input type="hidden" name="ct" value="@ViewBag.HList" />
+                                        <input type="text" name="searchTerm" id="searchvalue" class="sss" style="background-color:#f6faf9" placeholder="Search by Hospital, State, City  or Speciality... ">
+                                    </div>
+                                   @* <button id="btnSearch" onkeypress="search_Health_Providers(@ViewBag.searchTerm)" onclick="search_Health_Providers(@ViewBag.searchTerm)"><i class="fa fa-search"></i></button>*@                               
+                                    <button id="btnSearch" type="submit"><i class="fa fa-search"></i></button>
+                                    
+                                </form>                          
+                                    
+                            </div>
+
+                        </div>
+                        <br />
+
+                        <img src="~/Content/images/banner/animation.gif" />
+                        <br /><br />
+                        <div class="">
+                            <div id="partialView">
+                                @{
+                                    Html.RenderPartial("_Healthproviderlist", Model);
+                                }
+                            </div>
+
+                        </div>  
+                    </div>
+                    <div class="col-md-4 bg-theme">
+                        <div class="sidebar">
+                            <div class="flexslider">
+                                <div class="flat-slides">
+                                    <ul class="slides">
+                                        <li class="item">
+                                            <img src="~/Content/images/banner/placeurAdshere.png" alt="" />
+                                        </li>
+                                        @*<li class="item">
+                                                <img src="~/Content/images/banner/Airplane Retirement Medium Rectangle Ad.jpg" alt="" />
+                                            </li>*@
+                                    </ul>
+                                </div> <!-- /.flat-slides -->
+                            </div> <!-- /.wrar-slides -->
+                            <div class="flexslider">
+                                <div class="flat-slides">
+                                    <ul class="slides">
+                                        <li class="item">
+                                            <img src="~/Content/images/banner/ads 300.png" alt="" />
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="flexslider">
+                                <div class="flat-slides">
+                                    <ul class="slides">
+                                        <li class="item">
+                                            <img src="~/Content/images/banner/placeurAdshere.png" alt="" />
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="flexslider">
+                                <div class="flat-slides">
+                                    <ul class="slides">
+                                        <li class="item">
+                                            <img src="~/Content/images/banner/ads 300.png" alt="" />
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="flexslider">
+                                <div class="flat-slides">
+                                    <ul class="slides">
+                                        <li class="item">
+                                            <img src="~/Content/images/banner/placeurAdshere.png" alt="" />
+                                        </li>
+                                        @*<li class="item">
+                                                <img src="~/Content/images/banner/Airplane Retirement Medium Rectangle Ad.jpg" alt="" />
+                                            </li>*@
+                                    </ul>
+                                </div> <!-- /.flat-slides -->
+                            </div> <!-- /.wrar-slides -->
+                            <div class="flexslider">
+                                <div class="flat-slides">
+                                    <ul class="slides">
+                                        <li class="item">
+                                            <img src="~/Content/images/banner/ads 300.png" alt="" />
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.col-md-4 -->
+                    <div class="col-md-4">
+                        <div class="sidebar right">
+                            <aside id="recent-post" class=" widget widget-recent">
+                                <h3 class="widget-title">RECENT POSTs</h3>
+                                <ul>
+                                    <li>
+                                        <a href="#" title="">Why Do I Need To Use Financial ?</a>
+                                        <span>January 11, 2017</span>
+                                    </li>
+                                    <li>
+                                        <a href="#" title="">Why your sales forecast is off</a>
+                                        <span>January 11, 2017</span>
+                                    </li>
+                                    <li>
+                                        <a href="#" title="">6 tips to retain your top sales talent</a>
+                                        <span>January 11, 2017</span>
+                                    </li>
+                                    <li>
+                                        <a href="#" title="">What the martian can teach sales</a>
+                                        <span>January 11, 2017</span>
+                                    </li>
+                                </ul>
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script src="~/Scripts/Plugins/jquery.simplePagination.js"></script>
+    <script src="~/Scripts/Plugins/dpLoading-2.x.js"></script>
+   @* <script src="~/Scripts/customscript/SearchHealthProviders.js"></script>*@
+    @*<script>
+        $(document).keypress(function(e){
+            var keycode = (e.keyCode ? e.keyCode : e.which);
+            if (keycode == '13') {
+                var input = document.getElementById("searchvalue");
+                alert(input.value)
+            }
+        })
+        function search_Health_Providers(e) {
+            var input = document.getElementById("searchvalue");
+            alert(input.value)
+        }
+    </script>*@
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+
+
+

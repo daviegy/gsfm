@@ -1,0 +1,41 @@
+﻿1. INI means Ihealth Network Group
+
+2. MLM means Multi level Marketting
+
+3. MyDownlineCount this simply represent the total number of downline a client  has
+
+4. Nomenclature simply mean Name
+
+5. MaxDT2MtTarget (Maximum Date 2 Meet Target) this simply means the dateline  required for 
+   a Network Insurance Subscriber to meet the required target before He/She can qualify for the Benefit
+   if (target is met){He/she will be process by admin for INI benefit }
+   else{His/Her payment subscriptions Expires and all of INI details is set to deactivated. 
+   BUT this can be reactivated by Him/Her paying another Money and a reactivation code is giving Him/Her}
+
+6. BEstatus (Benefit Eligiblity Status) this is set to Active By default once a subscriber register on INI.
+   this will only be deactivated once a subscriber fail to meet the required Target set by the system after 
+   the MaxDT2MtTarget expires. The main aim of this is just ensure that the subscriber
+   MaxDT2MtTarget has not expire.
+
+7. SDowlineSize (Subscriber's Downline Size) this is equivalent to myDownlineCount in IhealthMLM with 
+   the main aim of helping subscriber keep track of those who register using their link or refferalcode
+
+8. SSponsorCode (Subscribers' SponsorCode) this equivalent to mySponsorCode in IhealthMLM with the main
+   aim of giving access to subscriber's sponsor (incase subscriber registered using someone else referral code).
+
+9. BenefitStartDate and  BenefitEndDate this provide information about when eligible subscribers benefits starts
+   and ends
+
+10. BenefitStatus this provide info about the activeness of eligble subscribers' benefits. This is set to
+    "ACTIVE" when a eligible subscriber benefit starts and set to "EXPIRED" when the BenefitEndDate is reached
+
+11. INIStatus (Ihealth Networking Group Status) this will be use to check all active subscribers. it is automatically
+	set to "ACTIVE" once a new subscriber makes payment upon signing up for Ihealth Networking Group.
+
+12. BenefitProcessStatus: "Fresh: this is for newly submited claims", "Processing: this is for currently processing claims", "Settled: this is for settled claims"
+
+13. GLA - means - Group Life Assurance
+
+14. CS1 - Means - Compensation Stage 1
+
+15. CS2 - means - Compensation Stage 2

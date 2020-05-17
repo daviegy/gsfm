@@ -1,0 +1,136 @@
+﻿@model IEnumerable<iHealth2.Models.BusinessInfo>
+@using iHealth2.Models
+@using Microsoft.AspNet.Identity.Owin;
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Find_Herbs_Center";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ApplicationDbContext db = new ApplicationDbContext();
+}
+
+
+<div id="decorative1">
+    <div class="container">
+        <div class="divPanel headerArea">
+            <div class="row-fluid">
+                <div class="span12">
+                        <div class="span3">    
+                            <div class="panel panel-default" style="height:300px;width:280px">
+                                @{
+                                    try
+                                    {
+                                        var SB = db.AdvertManagerTb.SingleOrDefault(a => a.AdsLocOnPage == "SquareBoard" && a.AdsStatus == "Active" && a.Adspage == "SearchHerbalCentrePage");
+                                        var img = "data:image/png;base64," + Convert.ToBase64String(SB.AdsImage);
+                                        if (img != null)
+                                        {
+                                            <a href="@SB.AdsURL"><img src="@img" /></a>
+                                        }
+                                        else
+                                        {
+                                            <a href="/advert/How_to_Place_Ads" target="_blank" title="Click here to place Ads"> <img src="~/Content/images/AdsBanner/ad280.fw.png" style="width:inherit;height:inherit" alt="ihealth  advertisement Banner" /></a>
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        <a href="/advert/How_to_Place_Ads" target="_blank" title="Click here to place Ads"> <img src="~/Content/images/AdsBanner/ad280.fw.png" style="width:inherit;height:inherit" alt="ihealth  advertisement Banner" /></a>
+
+                                    }
+
+
+                                }
+                            </div>
+                    
+                    </div>
+                    <div class="span6">
+                        
+                        <!--Edit Camera Slider here-->
+                        <div class="slider-container" id="slider-container">
+                            <div class="slider">
+                                @{
+                                    var Fhosp = db.AdvertManagerTb.Where(adv => adv.AdsStatus == "Active" && adv.Adspage == "SearchHerbalCentrePage" && adv.AdsLocOnPage == "Slider").ToList();
+                                    if (Fhosp.Count > 0)
+                                    {
+                                        foreach (var image in Fhosp)
+                                        {
+                                            var img = "data:image/png;base64," + Convert.ToBase64String(image.AdsImage);
+                                            <div class="slide">
+                                                <a href="@image.AdsURL">  <img src="@img" alt=""></a>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="slide"><img src="/content/images/herbs/herbs1.jpg" /></div>
+                                        <div class="slide"><img src="/content/images/herbs/herbs2.jpg" /></div>
+                                        <div class="slide"><img src="/content/images/herbs/herbs3.jpg" /></div>
+                                        <div class="slide"><img src="/content/images/herbs/herbs4.jpg" /></div>
+                                    }
+
+}
+                                <div class="switch" id="prev"><span></span></div>
+                                <div class="switch" id="next"><span></span></div>                           
+                            </div>
+                           
+                        </div>
+                        <!--End Camera Slider here-->
+                       
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<br />
+
+<div class="page-content">
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span3 bs-docs-sidebar">
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <span class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">State/City<i class="icon icon-double-angle-down pull-right"></i></a>
+                            </span>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <ul class="nav nav-list bs-docs-sidenav">
+                                    @foreach (var item in db.BusinessInfoes.Where(b => b.Category == "Herbal Center").GroupBy(p => p.State).Select(p => new { State = p.Key, Values = p.Distinct().Count() }))
+                                    {
+                                        <li><a href="javascript:void(0);" onclick="Search_Herbal_by_State('@item.State')"><i class="icon-chevron-right"></i> @item.State <span class="badge badge-important pull-right">@item.Values</span></a></li>
+                                    }
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="span6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div id="partialView">
+                            @{
+                                Html.RenderPartial("_listHerbCenter", Model);
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/Plugins/dpLoading-2.x.js"></script>
+<script src="~/Scripts/CustomScript/FIndMenuLink.js"></script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+

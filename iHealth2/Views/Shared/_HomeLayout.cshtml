@@ -1,0 +1,548 @@
+﻿@using iHealth2.Models
+@using Microsoft.AspNet.Identity.Owin;
+@using Microsoft.AspNet.Identity
+@using iHealth2.CustomClasses;
+@*@model iHealth2.Models.LoginViewModel*@
+@{
+    ApplicationDbContext dbs = new ApplicationDbContext();
+    SEO_Friendly_URL seo = new SEO_Friendly_URL();
+    var news = dbs.News.OrderByDescending(n => n.EntryDate).ToList().Take(5);
+    var blogpost = dbs.blog_posts.OrderByDescending(n => n.publish_date).ToList().Take(5);
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <!-- Basic Page Needs -->
+    <meta charset="UTF-8">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+    <title>iHealthGSFM|@ViewBag.Title</title>
+    <meta name="description" content="iHealth Nigeria is an online health care product of Guarantee Structure and Facility Management (GSFM) Ltd. At iHealth Nigeria GSFM, we are challenged to ensure that every person and organization that we serve received the greatest possible value for their health investment." />
+    <meta name="keywords" content="Nigeria Health,iHealth,Health Nigeria, Health News, Nigeria Health News,ihealth gsfm,Idris Gbenga Oyesiku, health deal in Nigeria" />
+    <meta name="author" content="ihealthgsfm.com">
+
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta property="og:title" content="Ihealth GSFM|@ViewBag.Title" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="iHealth Nigeria is an online health care product of Guarantee Structure and Facility Management (GSFM) Ltd. At iHealth Nigeria GSFM, we are challenged to ensure that every person and organization that we serve received the greatest possible value for their health investment." />
+    <meta property="og:image" content="http://ihealthgsfm.com/content/images/slides/Slider_ihealth4.jpg" />
+    <meta property="og:image:url" content="http://ihealthgsfm.com/content/images/slides/Slider_ihealth4-fb.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="761" />
+    <meta property="og:image:height" content="364" />
+    <meta property="og:url" content="http://ihealthgsfm.com/" />
+    <meta property="og:site_name" content="iHealth Nigeria Gsfm" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@("@")ihealthgsfm">
+    <meta name="twitter:creator" content="@("@")ihealthgsfm">
+    <meta name="twitter:title" content="Ihealth GSFM|@ViewBag.Title">
+    <meta name="twitter:description" content="iHealth Nigeria is an online health care product of Guarantee Structure and Facility Management (GSFM) Ltd. At iHealth Nigeria GSFM, we are challenged to ensure that every person and organization that we serve received the greatest possible value for their health investment..">
+    <meta name="twitter:image" content="http://ihealthgsfm.com/content/images/slides/Slider_ihealth4.jpg">
+    <meta name="twitter:url" content="http://ihealthgsfm.com/" />
+    <meta name="google-site-verification" content="tFZGyv4o4Kq_29z9bAK7CMs3Zh0kUIH_fMBT_WUSqe0" />
+    <!-- Boostrap style -->
+    <link rel="stylesheet" type="text/css" href="~/Content/stylesheet/bootstrap.min.css">
+
+    <!-- REVOLUTION LAYERS STYLES -->
+    <link rel="stylesheet" type="text/css" href="~/Content/revolution/css/layers.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/revolution/css/settings.css">
+
+    <!-- Theme style -->
+    <link rel="stylesheet" type="text/css" href="~/Content/stylesheet/style.css">
+
+    <!-- Colors -->
+    <link rel="stylesheet" type="text/css" href="~/Content/stylesheet/colors/color1.css" id="colors">
+
+    <!-- Reponsive -->
+    <link rel="stylesheet" type="text/css" href="~/Content/stylesheet/responsive.css">
+
+    <!-- Animation Style -->
+    <link rel="stylesheet" type="text/css" href="~/Content/stylesheet/animate.min.css">
+
+    <!-- Favicon and touch icons  -->
+    <link href="/iHealthIcon.ico" rel="apple-touch-icon-precomposed">
+    <link href="/iHealthIcon.ico" rel="apple-touch-icon-precomposed">
+    <link href="/iHealthIcon.ico" rel="shortcut icon">
+    <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="~/Content/fileinput.css" rel="stylesheet" />
+    @*<link href="~/Content/bootstrap-table.css" rel="stylesheet" />*@
+
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/prettyCheckable.css" rel="stylesheet" />
+    <link href="~/Content/sweetalert.min.css" rel="stylesheet" />
+
+
+    <link href="~/Content/dpLoading-2.x.css" rel="stylesheet" />
+    <link href="~/Content/dpLoading-2.x-skin-grey.css" rel="stylesheet" />
+
+    <link href="~/Content/jquery.auto-complete.css" rel="stylesheet" />
+    <link href="~/Content/jquery-te-1.4.0.css" rel="stylesheet" />
+    <link href="~/Content/editor.css" rel="stylesheet" />
+
+    <link href="~/Content/JqZoom/jquery-picZoomer.css" rel="stylesheet" />
+
+    <link href="~/Content/AdminContent/css/iCheck/blue.css" rel="stylesheet" />
+
+    <link href="~/Content/AdminContent/css/iCheck/green.css" rel="stylesheet" />
+
+    <link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+
+    <link href="~/Content/jquery.share.css" rel="stylesheet" />
+    <link href="~/Content/AjaxZoom/flexslider.css" rel="stylesheet" />
+    <link href="~/Content/jquery.share.css" rel="stylesheet" />
+  
+    <link href="~/Content/jquery-comments.css" rel="stylesheet" />
+
+    <link href="~/Content/starrr.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/select2.min.css" />
+</head>
+
+<body>
+    <input type="hidden" id="success" value="@TempData["success"]" />
+    <input type="hidden" id="info" value="@TempData["info"]" />
+    <input type="hidden" id="warning" value="@TempData["warning"]" />
+    <input type="hidden" id="error" value="@TempData["error"]" />
+    <div class="boxed">
+        <div class="preloader">
+            <div class="clear-loading loading-effect-2">
+                <span></span>
+            </div>
+        </div>
+        <div class="top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="flat-infomation">
+                            <li class="phone">Call us: <a href="+2349080163224⁠" title="phone">+234 908 016 3224⁠; +234 803 938 8611; +234 902 726 2831</a></li>
+                            <li class="email">
+                                Email: <a href="mailto:support@ihealthgsfm.com" title="email">support@ihealthgsfm.com</a>
+                            </li>
+                      
+                        </ul><!-- /flat-infomation -->
+                        @*<div class="flat-questions">
+                            <a href="#" title="" class="questions">Have any questions?</a>
+                            <a href="#" title="" class="appointment">GET AN APPOINTMENT</a>
+                        </div> /.flat-questions*@ 
+
+                        <div class="flat-questions">
+                            @if (Session["Name"] != null)
+                            {
+                                ApplicationDbContext db = new ApplicationDbContext();
+                                var user = db.Users.Find(User.Identity.GetUserId());
+                                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+                                    String EncryptId = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(User.Identity.Name, s);
+                                    EncryptId = EncryptId.Replace("/", "$25");
+                                    EncryptId = EncryptId.Replace("+", "$24");
+                                    @*if (User.IsInRole("SuperAdmin"))
+                                    {
+                                        <a title="Click to Manage Account" class="appointment" href="/superAdm/Index">Dashboard</a>
+                                    }
+                                    else*@
+                            if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+                            {
+                                        <a title="Click to Manage Account" class="appointment" href="/Admin/Index">Dashboard</a>
+                                    }
+                                    else if (User.IsInRole("Users"))
+                                    {
+                                        @*<a href="" style="color:#ff6a00">@user.FirstName.ToString().ToUpper()<i class="icon icon-arrow-down"></i></a>*@
+                                        <a title="Click to Manage Account" class="appointment" href="/users/Userpanel">Dashboard</a>
+
+                                    }
+                                    else
+                                    {
+
+                                        @*<a href="" style="color:#ff6a00">@user.FirstName.ToString().ToUpper()<i class="icon icon-arrow-down"></i></a>*@
+                                        <a title="Click to Manage Account" class="appointment" href="/ING/Userpanel/?bc=@user.INISubcriberExtraDetails.BenefitCategory">Dashboard</a>
+
+                                    }
+                                    <a href="javascript:document.getElementById('logoutForm').submit()" class="appointment">Log Out</a>
+                                }
+
+                            }
+                            else
+                            {
+                                <a class="appointment" data-toggle="modal" href="#logReg">Login / Register</a>
+                            }
+
+                        </div><!-- /.flat-questions -->
+                        <div class="clearfix"></div><!-- /.clearfix -->
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.top -->
+        <!--Login / Register modal-->
+        <div class="modal fade" id="logReg">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title"><i class="fa fa-lock fa-2x"> Login</i></h3>
+                    </div>
+                    <div class="modal-body clearfix">
+                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-error" })
+
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <label for="email" class="control-label">Username/E-mail</label>
+                                <input type="text" class="form-control" name="Email" id="email"
+                                       placeholder="Username or Name@example.com*" autofocus required>
+
+                            </div>
+
+                            <div class="form-group col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+                                <label for="password" class="control-label">Password</label>
+                                <input type="password" class="form-control" name="Password" id="password"
+                                       placeholder="******" required>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-5 col-sm-offset-1 col-md-5 col-md-offset-1">
+                                    <button type="submit" class="btn btn-success btn-group-justified">Login</button>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    @Html.ActionLink("Forgot your password?", "ForgotPassword", "Account") <br>
+                                    A new user? <a class="" href="/account/reg_option">Register</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Login</button>-->
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <header id="header" class="header bg-color">
+            <div class="container">
+                <div class="row">
+                    <div class="header-wrap">
+                        <div class="col-md-2">
+                            <div id="logo" class="logo">
+                                <a href="/" title="">
+                                    <img src="~/Content/images/iHealth_logo.png" alt="iHealth" />
+                                </a>
+                            </div><!-- /#logo -->
+                        </div><!-- /.col-md-2 -->
+                        <div class="col-md-10">
+                            <div class="flat-show-search">
+                                <div class="show-search">
+                                    <a href="#"><i class="fa fa-search"></i></a>
+                                </div>
+                                <div class="top-search">
+                                    <form action="#" id="searchform-all" method="get">
+                                        <div>
+                                            <input type="text" id="s" class="sss" placeholder="Search...">
+                                            <input type="submit" value="" id="searchsubmit">
+                                        </div>
+                                    </form>
+                                </div> <!-- /.top-search -->
+                            </div>    <!-- /.flat-show-search -->
+                            <div class="nav-wrap">
+                                <div class="btn-menu">
+                                    <span></span>
+                                </div><!-- //mobile menu button -->
+                                <nav id="mainnav" class="mainnav">
+                                    <ul class="menu">
+                                        <li>
+                                            <a href="/" title="">Home</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Home/About" title="">About</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" title="">Parnter With Us<i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                                            <ul class="sub-menu">
+                                                <li><a href="/INg/networking" title="">Partnership Benefits</a></li>                                                                                        
+                                                @*<li><a href="/Ing/Hospital_list_for_ING" title="">Health Care Providers</a></li>*@  
+                                                <li><a href="/Account/iniregform" title="">Become A Partner</a></li>
+                                                 <li><a href="/ing/ClientBooster">Become A Service Booster</a></li>
+                                                 <li><a href="/ing/Training_guide" title="">Training Guide For Partners</a></li>
+                                            </ul><!-- /.sub-menu -->
+                                        </li>
+                                        <li><a href="/Ing/Hospital_list_for_ING" title="">Health Care Providers</a></li>
+                                        @*<li>
+                                            <a href="/ing/ClientBooster" title="">Service Boosters</a>
+                                        </li>*@
+                                        <li>
+                                            <a href="/premium/about">Buy Premium</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="/premium/about" title="">About Our Premium</a></li>
+                                                <li><a href="/ing/Health_Insurance_Benefits">Premium Benefits</a></li>
+                                            </ul>
+                                            
+                                        </li>
+                                        <li>
+                                            <a href="/blog/blog_list" title="">Blog</a>
+                                        </li>
+                                        @*<li>
+                                            <a href="/home/comingsoon/?type=shop" title="">Shop Health</a>
+                                        </li>
+                                        <li>
+                                            <a href="/home/comingsoon/?type=directory" title="">Directory</a>
+                                        </li>*@
+                                        @*<li>
+                                                <a href="http://marketplace.ihealthgsfm.com/" title="">Shop Health</a>
+                                            </li>*@
+                                        @*<li>
+                                            <a href="http://directory.ihealthgsfm.com/" title="">Directory</a>
+                                        </li>*@
+                                    </ul><!-- /.menu -->
+                                </nav><!-- /#mainnav -->
+                            </div><!-- /.nav-wrap -->
+                        </div><!-- /.col-md-9 -->
+                    </div><!-- /.header-wrap -->
+                </div><!-- /.row -->
+            </div><!-- /.container -->
+        </header><!-- /header -->
+
+        <div>
+            @RenderBody()
+        </div>
+        <footer id="footer">
+            <div class="footer-widgets">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="widget-infomation">
+                                <ul class="infomation-footer">
+                                    <li>
+                                        <i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:support@ihealthgsfm.com" title="">support@ihealthgsfm.com</a>
+                                    </li>
+                                    <li><i class="fa fa-phone" aria-hidden="true"></i><a href="#" title="">+234 908 016 3224⁠; +234 803 938 8611; +234 902 726 2831</a></li>
+                                    <li><i class="fa fa-map-marker" aria-hidden="true"></i><a href="#" title="">Discovery Mall, 215 Konoko Crescent, <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                                               &nbsp; Off Ademola Adetokunbo
+                                                                                               Crescent,<br />
+                                                                                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                                               &nbsp; Wuse 2, Abuja-FCT,  Nigeria.</a>
+                                    </li>
+                                </ul><!-- /.infomation-footer -->
+                            </div><!-- /.widget-infomation -->
+                        </div><!-- /.col-md-12 -->
+                    </div><!-- /.row -->
+                    <div class="row widget-box">
+                        <div class="col-md-4">
+                            <div class="widget widget-text">
+                            
+                            <h3 class="text text-success"><b>ABOUT US</b></h3>
+                                <br />
+                                <p>
+                                    iHealthGSFM – Nigeria’s premiere meeting point of quality health, good technology and
+                                    easy access.
+                                </p>
+                                <p>
+                                    Our core business is to make quality health care more accessible to you. We are a
+                                    holistic healthcare service company that uses technology to give you this access,
+                                    through our website on the internet (www.ihealthgsfm.com)and the internet of things
+                                    which gives you quality healthcare services from around the globe.
+                                </p>
+                            </div><!-- /.widget-text -->
+                        </div><!-- /.col-md-4 -->
+                        <div class="col-md-4">
+                            <div class="widget widget-services">
+                          
+                                <h3 class="text-success"><b>OTHER LINKS</b></h3>
+                                <br />
+                                <ul class="one-half first">
+                                    <li><a href="/Home/terms" title="">Terms & Conditions</a></li>
+                                    <li><a href="/Home/PrivacyPolicy" title="">Privacy Policy</a></li>
+                                    <li><a href="/Home/Faq" title="">FAQ</a></li>
+                                    <li><a href="#" title="">Help the Sick</a></li>
+                                    <li><a href="#" title="">Newsletter</a></li>
+                                    <li><a href="#" title="">Service, Quality Audit</a></li>
+                                    <li><a href="/support/contactus" title="">Contact us</a></li>
+                                </ul><!-- /.one-half -->
+                                <ul class="one-half">
+                                    <li><a href="/Careers/Careers" title="">Career and Networking</a></li>
+                                    <li><a href="#" title="">Coperate Governance</a></li>
+                                    <li><a href="#" title="">Mobile Health Service</a></li>
+                                    <li><a href="#" title="">International Health Service</a></li>
+                                    <li><a href="#" title="">Ambulance Service</a></li>
+                                    <li><a href="/Home/bookappointmentPage" title="">Book an Appointment</a></li>
+                                </ul><!-- /.one-half -->
+                            </div><!-- /.widget-services -->
+                        </div><!-- /.col-md-4 -->                   
+                        <div class="col-md-4">
+                            <div class="widget widget-subscribe">
+                                <h3 class="text text-success"><b>WE ARE SOCIAL</b></h3>
+                            <br />
+                                <a class="text-info" href="https://www.facebook.com/iHealthGSFM"><i class="fa fa-facebook-square fa-2x"></i></a> &nbsp;&nbsp;
+                                <a class="text-info" href="https://twitter.com/ihealthgsfm/"><i class="fa fa-twitter-square fa-2x"></i></a>&nbsp;&nbsp;
+                                <a class="text-danger" href="https://www.instagram.com/ihealthgsfm/"><i class="fa fa-instagram fa-2x"></i></a>
+                            
+                                <form action="#" method="post" accept-charset="utf-8">
+                                    <label for="form-email-footer">Email address:</label>
+                                    <div class="input-email">
+                                        <input type="email" name="email-form" id="form-email-footer"
+                                               placeholder="Your email address" />
+                                    </div>
+                                    <button type="button" class="button-subscribe">SUBMIT</button>
+                                </form>
+                            </div><!-- /.widget-subscribe -->
+
+                        </div><!-- /.col-md-4 -->
+                    </div><!-- /.row .widget-box -->
+                </div><!-- /.container -->
+            </div><!-- /.footer-widgets -->
+            <div class="footer-bottom">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="copyright">
+                                <p>
+                                    Copyright @DateTime.UtcNow.Year iHealth Nigeria GSFM. site developed by <a target="_blank" href="http://gilbor.com.ng">gilbor.com.ng</a> 
+                                   
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.footer-bottom -->
+        </footer><!-- /#footer -->
+        <div class="button-go-top">
+            <a href="#" title="" class="go-top">
+                <i class="fa fa-chevron-up"></i>
+            </a>
+        </div>
+
+    </div>
+    <!-- Javascript -->
+    <script type="text/javascript" src="~/Scripts/javascript/jquery.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/javascript/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/javascript/owl.carousel.js"></script>
+    <script type="text/javascript" src="~/Scripts/javascript/jquery.easing.js"></script>
+    <script type="text/javascript" src="~/Scripts/javascript/jquery.flexslider-min.js"></script>
+    <script type="text/javascript" src="~/Scripts/javascript/waypoints.min.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/javascript/jquery.cookie.js"></script>
+    <script type="text/javascript" src="~/Scripts/javascript/main.js"></script>
+
+
+    <!-- Revolution Slider -->
+    <script type="text/javascript" src="~/Content/revolution/js/jquery.themepunch.tools.min.js"></script>
+    <script type="text/javascript" src="~/Content/revolution/js/jquery.themepunch.revolution.min.js"></script>
+    <script type="text/javascript" src="~/Content/revolution/js/slider_v1.js"></script>
+
+    <!-- SLIDER REVOLUTION 5.0 EXTENSIONS  (Load Extensions only on Local File Systems !  The following part can be removed on Server for On Demand Loading) -->
+    <script type="text/javascript" src="~/Content/revolution/js/extensions/revolution.extension.actions.min.js"></script>
+    <script type="text/javascript" src="~/Content/revolution/js/extensions/revolution.extension.carousel.min.js"></script>
+    <script type="text/javascript" src="~/Content/revolution/js/extensions/revolution.extension.kenburn.min.js"></script>
+    <script type="text/javascript" src="~/Content/revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
+    <script type="text/javascript" src="~/Content/revolution/js/extensions/revolution.extension.migration.min.js"></script>
+    <script type="text/javascript" src="~/Content/revolution/js/extensions/revolution.extension.navigation.min.js"></script>
+    <script type="text/javascript" src="~/Content/revolution/js/extensions/revolution.extension.parallax.min.js"></script>
+    <script type="text/javascript" src="~/Content/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
+    <script type="text/javascript" src="~/Content/revolution/js/extensions/revolution.extension.video.min.js"></script>
+    <script src="~/Scripts/Plugins/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('#success').val()) {
+                displayMessage($('#success').val(), 'success');
+            }
+            if ($('#info').val()) {
+                displayMessage($('#info').val(), 'info');
+            }
+            if ($('#warning').val()) {
+                displayMessage($('#warning').val(), 'warning');
+            }
+            if ($('#error').val()) {
+                displayMessage($('#error').val(), 'error');
+            }
+        });
+        var displayMessage = function (message, msgType) {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "onClick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "8000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+
+            toastr[msgType](message);
+        };
+    </script>
+    @RenderSection("Scripts", false)
+    <!--BEGINS Go to www.addthis.com/dashboard to customize social media share tools -->
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-585ab43cbe262664"></script>
+    <script src="~/Scripts/AdminScripts/adminNotScripts.js" type="text/javascript"></script>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/57f9387c8bab9a1c1136a22a/default';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-105411970-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+    <!--Structure Data for Google Knowledge Base-->
+    <script type="application/ld+json">
+        {
+        "@@context": "http://schema.org",
+        "@@type": "Organization",
+        "name" : "iHealth Nigeria GSFM",
+        "url": "http://ihealthgsfm.com",
+        "sameAs" : [
+        "https://web.facebook.com/iHealthGSFM/",
+        "",
+        "",
+        ""
+        ]
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+        "@@context": "http://schema.org",
+        "@@type": "LocalBusiness",
+        "name" : "iHealth Nigeria GSFM",
+        "url": "http://ihealthgsfm.com",
+        "logo": "https://www.ihealthgsfm.com/Content/images/iHealth_logo.png",
+        "image": "https://scontent.flos3-1.fna.fbcdn.net/v/t1.0-9/21149976_1924807341107057_1936145266766299362_n.jpg?_nc_eui2=v1%3AAeFbPXx8nZx_UWgpVeI5aqvynJiqhmdCVpdV1D7mFkWpq7Pn_vGcJdwFGNku0r52NXUG3Mc02dIG92Icxov9uYEgKv9M2Rdcp4BCMnzP6vK_Zg&oh=632ece8bc38aa2d61e32b3b361c9fe22&oe=5B1BA892",
+        "description": "IHealthGSFM – Nigeria’s premiere meeting point of quality health, good technology and easy access. Our core aim is to make quality healthcare more accessible to you by providing a holistic healthcare services that use technology to give you this access, via our website (www.ihealthgsfm.com) and other relevant websites that provide quality healthcare services from around the globe.",
+        "telephone": "+234 908 016 3224",
+        "address": {
+        "@@type": "PostalAddress",
+        "addressLocality": "Abuja",
+        "addressRegion": "Federal Capital Territory",
+        "streetAddress": "Plot 1966 Maputo street Wuse Zone 3 Abuja",
+        "postalCode": "900283"
+        },
+        "openingHours": [
+        ""
+        ]
+        }
+    </script>
+</body>
+</html>

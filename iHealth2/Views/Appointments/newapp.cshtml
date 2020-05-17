@@ -1,0 +1,122 @@
+﻿@model IEnumerable<iHealth2.Models.AppBookingTb>
+
+@{
+    ViewBag.Title = "newapp";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="table-responsive mailbox-messages">
+            <table id="table" style="text-transform:capitalize">
+                <thead>
+                    <tr>
+                        <th>
+                            <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                <i class="fa fa-square-o"></i>
+                            </button>
+                        </th>
+                        <th>
+                           Ticket ID
+                        </th><th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Phone)
+                        </th>
+                       
+                        <th>
+                            Appointment With
+                        </th>
+                        <th>
+                            Location
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Message)
+                        </th>
+                        <th>
+                            Appointment Date
+                        </th>
+                       
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @*<button class="btn btn-danger" id="btnApprove" onclick="approvebiz('@EncryptId')">Mark as seen</button>*@
+                                <input type="checkbox" name="markedId" id="markedId" value="@item.id">
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.app_id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Phone)
+                           </td>
+                          
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Appointment_With)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.city), @Html.DisplayFor(modelItem => item.state)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Message)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Appointment_Date)
+                            </td>
+                           
+                            <td>
+                                @*@Html.ActionLink("Assign To", "AssignTo", new { id = item.id }, new { @class = "btn btn-info" }) |*@ 
+                                @Html.ActionLink("Approve", "ApproveAppointment", new { id = item.id }, new { @class = "btn btn-success" })
+                             </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button onclick="pendAppointment()" id="btnPend" disabled title="Pend Appointment" class="btn btn-warning">Pend Appointment &nbsp;<i class="glyphicon glyphicon-lock "></i></button>
+           @* <button onclick="approveAppointment()" id="btnappr" disabled title="Approve Appointment" class="btn btn-success">Approve Appointment &nbsp;<i class="glyphicon glyphicon-ok "></i></button>*@
+            <button onclick="delAppointment()" id="btnDel" disabled title="Delete Appointment" class="btn btn-danger">Delete Appointment &nbsp;<i class="glyphicon glyphicon-trash "></i></button>
+        </div>
+        </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script>
+        $('#table').bootstrapTable({
+
+            striped: true,
+            // cardView: true,
+            pagination: true,
+            pageSize: 15,
+            pageList: [15, 30, 50, 100, 200],
+            smartDisplay: false,
+            showToggle: true,
+            search: true,
+            showColumns: true,
+            showRefresh: true,
+            //    border : true
+            //align: 'center',
+            //valign: 'bottom'
+
+        });
+
+    </script>
+    <script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+    <script src="~/Scripts/Plugins/dpLoading-2.x.js"></script>
+    <script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+    <script src="~/Scripts/CustomScript/appscript.js" type="text/javascript"></script>
+    }

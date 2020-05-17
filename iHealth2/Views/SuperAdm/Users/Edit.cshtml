@@ -1,0 +1,145 @@
+﻿@model iHealth2.Models.EditViewModel
+@using SecuredUrl.Links
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_UserPanelLayout.cshtml";
+}
+
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(model => model.ID)
+                <div class="container">
+                    <table class="table table-bordered table-condensed table-striped" style="width:50%">
+                        <tr><td colspan="2"><span class="text-danger"> NOTE: Editable fields are marked with (*) and cannot be empty</span></td></tr>
+                        @*<tr><td colspan="2"><br /></td></tr>
+                       <tr>
+                            <th>
+                                TRACKING ID
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.TrackingID, new { htmlAttributes = new { disabled = true } })
+                                        @Html.ValidationMessageFor(model => model.TrackingID, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>*@
+                        <tr><td colspan="2"><br /></td></tr>
+                        <tr>
+                            <th>
+                                NAME
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { disabled = true } })
+                                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-error" })
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2"><br /></td></tr>
+                        <tr>
+                            <th>
+                                PHONE<span class="text-error" style="font-weight:800">*</span>
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "" } })
+                                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-error" })
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2"><br /></td></tr>
+                        <tr>
+                            <th>
+                                Nationality
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        @*@Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "disabled", disabled = true } })
+                                        @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })*@
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2"><br /></td></tr>
+                        <tr>
+                            <th>
+                               State
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        @*@Html.EditorFor(model => model.state, new { htmlAttributes = new { @class = "disabled", disabled = true } })
+                                        @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })*@
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2"><br /></td></tr>
+                        <tr>
+                            <th>
+                               City
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.city, new { htmlAttributes = new { @class = "disabled", disabled = true } })
+                                        @Html.ValidationMessageFor(model => model.city, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2"><br /></td></tr>
+                        <tr>
+                            <th>
+                               Address
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "disabled", disabled = true } })
+                                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2"><br /></td></tr>
+                        <tr>
+                            <td colspan="2" class="control-label">
+                                <input type="submit" class="btn btn-warning" value="Update" />
+
+                                @{
+                string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+                String EncryptId = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(Model.ID, s);
+                EncryptId = EncryptId.Replace("/", "$25");
+                EncryptId = EncryptId.Replace("+", "$24");
+                                }
+
+                                <a href="/users/profiles/?ids=@EncryptId" class="btn  btn-info">Back</a>
+                            </td>
+                        </tr>
+                    </table>
+
+
+                </div>
+            }
+
+        </div>
+    </div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<iHealth2.Models.SearchResultModel>
+<div id="_searchResults">
+    <table id="table">
+        <thead>
+            <tr>
+                <th>
+                    SN
+                </th>
+                <th>Category</th>
+                <th>Business Name</th>
+                <th>Contact Address</th>
+                <th>HotLine</th>
+                <th>Email</th>
+                <th>Website</th>
+            </tr>
+        </thead>
+        <tbody>
+          
+            @{ int sn = 0;}
+                @foreach (var item in Model)
+                {
+                    sn++;
+                    <tr>
+                        <td>@sn</td>
+                        <td>
+                            @item.Category
+                        </td>
+                        <td>@item.CompanyName</td>
+                        <td>@item.Address</td>
+                        <td class="text-error">@item.CompanyPhone</td>
+                        <td><a href="mailto:@item.CompanyEmail " style="color:#13ad24" target="_blank">@item.CompanyEmail</a></td>
+                        <td><a href="@item.Website" target="_blank">@item.Website</a></td>
+
+
+                    </tr>
+
+                }
+
+            
+        </tbody>
+    </table>
+</div>

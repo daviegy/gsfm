@@ -1,0 +1,133 @@
+﻿@model IEnumerable<iHealth2.Models.Hospital_list_viewModel>
+@{
+    ViewBag.Title = "Hospital_list";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<div class="page-title">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title-heading">
+                    <h1 class="h1-title">@if (TempData["catergory"].ToString() == "First_Hospital_List")
+                                         { 
+                                         <span>First Hospital List</span>
+                                         }
+                                         else if (TempData["catergory"].ToString() == "second_hospital_List")
+                                         {
+                                            <span>Second Hospital List</span>
+                                         }
+                                         else
+                                         {
+                                            <span>High Class Networker</span>
+                                         }</h1>
+                </div><!-- /.page-title-heading -->
+                <ul class="breadcrumbs">
+                    <li><a href="/" title="">Home<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    <li><a href="/Ing/Hospital_list_for_ing" title="">Hospital List<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    <li><a href="#" title="">@TempData["catergory"]</a></li>
+                </ul><!-- /.breadcrumbs -->
+                <div class="clearfix"></div><!-- /.clearfix -->
+            </div>
+        </div>
+    </div>
+</div><!-- /.page-title -->
+
+<section class="flat-row pd-aboutv3">
+    <div class="container">
+        <div class="row">
+            <h2 class="center">
+                @if (TempData["catergory"].ToString() == "First_Hospital_List")
+                {
+                    <b class="text-success"> First Hospital List for
+                  2 referrals [plan A], 4 referrals [plan B] and above</b>
+                }
+                else if (TempData["catergory"].ToString() == "second_hospital_List")
+                {
+                    <b class="text-success"> Second Hospital List for
+                4 referrals [plan A], 8 referrals [plan B] and above. 
+                You can also do cash top-up to use the hospitals on this list </b>
+                }
+                else
+                {
+                    <b class="text-success">High-Class Networker Hospital List for 10    referrals[HCN1], 15 referrals[HCN2] and 25 referrals [HCN].
+                 You can also do cash top-up to use the hospitals on this list</b>
+                }
+               
+            </h2>
+            <br />
+            <!--<div class="col-md-8 col-md-offset-2">-->
+            <div class="wrap-main-post about-v3">
+                <div class="box-content">
+                    <div class="table-responsive">
+                        <table id="table">
+                            <thead>
+                                <tr>
+                                    @*<th></th>
+                                        <th></th>*@
+                                    <th><b>STATE</b></th>
+                                    <th><b>CITY/TOWN</b></th>
+                                    <th><b>HOSPITAL</b></th>
+                                    <th><b>ADDRESS</b></th>
+                                    <th><b>PLANS</b></th>
+                                    <th><b>SPECIALTY</b></th>
+                                    @if (TempData["catergory"].ToString() == "High_Class_Networker")
+                                    {
+                                        <th><b>Reg No.</b></th>
+                                    }
+                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+
+                                        <td><b>@item.State.ToString().ToUpper()</b></td>
+                                        <td>@item.City.ToString().ToUpper()</td>
+                                        <td>@item.Hospital.ToString().ToUpper()</td>
+                                        <td>
+                                            @item.Address.ToString().ToUpper()
+                                        </td>
+                                        <td>
+                                            @item.Plans.ToString().ToUpper()
+                                        </td>
+                                        <td>@item.Speciality.ToString().ToUpper()</td>
+                                        @if (TempData["catergory"].ToString() == "High_Class_Networker")
+                                        {
+                                            <td>@item.reg_no</td>
+                                        }
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script>
+        $('#table').bootstrapTable({
+
+            striped: true,
+            // cardView: true,
+            pagination: true,
+            pageSize: 30,
+            pageList: [30, 200, 500, 900, 1500, 2000],
+            smartDisplay: false,
+            showToggle: false,
+            search: true,
+            //showColumns: true,
+            //showRefresh: true,
+            //    border : true
+            //align: 'center',
+            //valign: 'bottom'
+
+        });
+
+    </script>
+}

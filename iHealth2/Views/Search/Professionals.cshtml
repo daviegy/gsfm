@@ -1,0 +1,132 @@
+﻿@using IhealthPaging
+@model IhealthPaging.IPagedList<iHealth2.Models.find_professionals_viewModel>
+@{
+    ViewBag.Title = "Professionals";
+    Layout = "~/Views/Shared/_GenericLayout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <ol class="breadcrumb">
+               <li><b style="font-size:25pt">@ViewBag.profession</b></li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    @if (Model.Count() > 0)
+    {
+        foreach (var item in Model)
+        {
+            <div class="row ">
+                <div class="span5">
+                    @{
+            string featureImg = "";
+            if (item.image != null)
+            {
+                featureImg = "data:image/png;base64," + Convert.ToBase64String(item.image);
+                <img style="width:250px;height:320px" alt="" src="@featureImg" class="img-responsive">
+            }
+            else
+            {
+                <img style="width:250px;height:320px" alt="" src="~/Content/images/UserImagePlaceholder.png" class="img-responsive">
+            }
+}
+
+                </div>
+                <div class="span7">
+                    <div class="row">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <h4 class="title">@item.Name<br /><small>@item.profession</small></h4>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <p class="more" style="font-family:'Times New Roman', Times, serif; font-size:13pt">
+                                    @item.summary
+                                </p>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="panel-title">
+                                    <div class="col-md-5">
+                                        <div class="social_bookmarks text-right">
+                                            <a href="@item.fburl" target="_blank" title="Facebook" style="color:#3b5998"><i class="fa fa-facebook-square fa-2x"></i></a>
+                                            <a href="#" target="_blank" title="Google +" style="color:#d34836"><i class="fa fa-google-plus-square fa-2x"></i></a>
+                                            <a href="@item.twUrl" target="_blank" title="Twitter" style="color:#0084b4"><i class="fa fa-twitter-square fa-2x"></i></a>
+                                            <a href="@item.lnUrl" target="_blank" title="LinkedIn" style="color:#0077B5"><i class="fa fa-linkedin-square fa-2x"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="span9">
+                    <hr />
+                </div>
+            </div>
+        }
+        <div class="pager">
+            @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount)
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="span12">
+                <div class="alert alert-success"><h3>No record found</h3></div>
+            </div>
+        </div>
+  
+    }
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            // Configure/customize these variables.
+            var showChar = 100;  // How many characters are shown by default
+            var ellipsestext = "...";
+            var moretext = "Show more >";
+            var lesstext = "Show less";
+            $('.more').each(function () {
+                var content = $(this).html();
+
+                if (content.length > showChar) {
+
+                    var c = content.substr(0, showChar);
+                    var h = content.substr(showChar, content.length - showChar);
+
+                    var html = c + '<span class="moreellipses">' + ellipsestext + '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+
+                    $(this).html(html);
+                }
+
+            });
+
+            $(".morelink").click(function () {
+                if ($(this).hasClass("less")) {
+                    $(this).removeClass("less");
+                    $(this).html(moretext);
+                } else {
+                    $(this).addClass("less");
+                    $(this).html(lesstext);
+                }
+                $(this).parent().prev().toggle();
+                $(this).prev().toggle();
+                return false;
+            });
+        });
+    </script>
+    }
+
+

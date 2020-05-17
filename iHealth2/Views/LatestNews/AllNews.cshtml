@@ -1,0 +1,76 @@
+﻿@model IEnumerable<iHealth2.Models.LatestNews>
+
+@{
+    ViewBag.Title = "AllNews";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+
+<div class="breadcrumbs">
+    <a href="/">Home</a> &nbsp;/&nbsp;<a href="@Request.UrlReferrer.ToString()  " style="color:red">Back </a> &nbsp;/&nbsp;<span>News Stream</span>
+</div>
+<div class="container">
+    <div class="divPanel page-content">
+        <div class="row-fluid">
+            <div class="span9">
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <blockquote>
+
+                                    <h3 class="text-success" style="font-family:Calligraffitti; font-weight:700">News Stream</h3>
+                                    <small>Our list of <cite title="Source Title">Trending News From The Health Sector</cite></small>
+
+                                </blockquote>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int c = 0;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            c++;
+                            <tr>
+                              
+                                <td >
+                                    <b>@c.</b>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <i class="text-error">@Convert.ToDateTime(item.EntryDate).ToString("MMMM d,yyyy")</i><br /><br />
+                                    <a href="/LatestNews/HealthNews/?News_View=@item.ID" style="">@item.Title</a>
+                                    <br />
+                                </td>
+
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <script>
+    $('#table').bootstrapTable({
+
+        striped: true,
+        // cardView: true,
+        pagination: true,
+        pageSize:10,
+        pageList: [10, 25, 50, 100, 200],
+        smartDisplay: false,
+        showToggle: false,
+        search: true,
+        showColumns: true,
+        showRefresh: true,
+        //    border : true
+        //align: 'center',
+        //valign: 'bottom'
+
+    });
+    </script>
+}

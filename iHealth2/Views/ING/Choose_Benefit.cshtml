@@ -1,0 +1,88 @@
+﻿@using Microsoft.AspNet.Identity
+@using iHealth2.Models
+@{
+    ViewBag.Title = "Choose_Benefit";
+    Layout = "~/Views/Shared/_INISubcriberLayout.cshtml";
+    char x = (char)8358;
+    int dl_size = Convert.ToInt32(TempData["dl_size"]);
+    double current_bonus = Convert.ToDouble(TempData["bonus"]);
+    double ten_percent = current_bonus * 10 / 100;
+    double total_cash_bonus = current_bonus + ten_percent;
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    string s = System.Configuration.ConfigurationManager.AppSettings["MaxLevel"];
+    String UserID = iHealth2.CustomClasses.Cryptoclass.EncryptStringAES(user.Id, s);
+    UserID = UserID.Replace("/", "$25");
+    UserID = UserID.Replace("+", "$24");
+}
+<div class="panel panel-default">
+
+    <div class="panel-body">
+        <div class="alert alert-block alert-success">
+            <h4><i class="icon glyphicon glyphicon-alert"></i> Alert!</h4>
+            <h4>Congratulation you meet our monthly promotional target!</h4>
+        </div>
+        <div class="alert alert-block alert-info">
+            <h4><i class="icon glyphicon glyphicon-info-sign"></i> Info</h4>
+            <h4>Kindly, select below how you want to be rewarded? You can selected either Health or Cash Benefit</h4>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <a href="/ing/Choose_Benefits?type=Health_Benefit&claimer=@UserID" style="color:white">
+                    <div class="info-box bg-red">
+                        <span class="info-box-icon"><i class="fa fa-hospital-o"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Health Benefit</span>
+
+                            @if (dl_size >= 2 && dl_size < 5)
+                            {
+                                <span class="info-box-number">Health Insurance of 2 to 4 refferals</span>
+                            }
+                            else if (dl_size >= 4 && dl_size <10)
+                            {
+                                <span class="info-box-number">Health Insurance of 4 to 8 refferals</span>
+                            }
+                            else if (dl_size >= 10)
+                            {
+                                <span class="info-box-number">High-Class-Networkers</span>
+                            }
+
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 70%"></div>
+                            </div>
+                            <span class="progress-description">
+                                Click here to claim benefits
+                            </span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                </a>
+
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+
+            <div class="col-md-6 col-sm-6 col-xs-12 ">
+                <a href="/ing/Choose_Benefits/?type=Cash_Benefit&claimer=@UserID">
+                    <div class="info-box bg-green">
+                        <span class="info-box-icon"><span style="font-size:180%">@x</span></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Cash Benefits</span>
+                            <span class="info-box-number">Total Bonus: @x @String.Format("{0:n0}", current_bonus) + @x @String.Format("{0:n0}", ten_percent) (10%) = @x @String.Format("{0:n0}", total_cash_bonus)</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 70%"></div>
+                            </div>
+                            <span class="progress-description">
+                                Click here to claim benefits.
+                            </span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                </a>                <!-- /.info-box -->
+            </div>
+        </div>
+
+
+    </div>
+</div>

@@ -1,0 +1,220 @@
+﻿@model IEnumerable<iHealth2.Models.BusinessInfo>
+@using iHealth2.CustomClasses;
+@using iHealth2.Models
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "ApprovedComp";
+    ApplicationDbContext db = new ApplicationDbContext();
+    var user = db.Users.Find(User.Identity.GetUserId());
+    switch (user.UserType)
+    {
+
+        case "AD":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+            break;
+        case "SA":
+            Layout = "~/Views/Shared/_AdminLayout.cshtml";
+           // Layout = "~/Views/Shared/_SuperAdmLayout.cshtml";
+            break;
+
+    }
+}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <h2 class="text-danger" style="">Approved Businesses or Services</h2>
+        <div class="table-responsive mailbox-messages">
+            <table  id="table">
+                <thead>
+                    <tr>
+                        <th>
+                            <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                <i class="fa fa-square-o"></i>
+                            </button>
+                        </th>
+                        <th>
+                            @Html.DisplayName("Business Owner")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Business Name")
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Country)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.State)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.City)
+                        </th>
+                     
+                        <th>
+                            @Html.DisplayName("Business Email")
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Phone)
+                        </th>
+                        <th>
+                            @Html.DisplayName("Category")
+                        </th>
+                        <th>
+                            @Html.DisplayName("SubCategory")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Sub-SubCategory")
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Website)
+                        </th>
+
+                        @*<th>
+                            @Html.DisplayNameFor(model => model.Address)
+                        </th>*@
+
+                        <th>
+                            @Html.DisplayName("Registered Date")
+                        </th>
+
+                        <th>Approved Date</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {                        
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="processId" id="processId" value="@item.ID">
+                               
+                            </td>
+                         
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.businessName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Country)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.State)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.City)
+                            </td>
+                      
+                            <td>
+                                <a href="#SendMailModal" data-toggle="modal">@Html.DisplayFor(modelItem => item.Email)</a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Phone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.subCategory1)
+                            </td>
+
+                            <td>
+
+                                @Html.DisplayFor(modelItem => item.subCategory2)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Website)
+                            </td>
+
+                            @*<td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>*@
+
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.regDate)
+                            </td>
+
+                            <td>@Html.DisplayFor(modelItem => item.ApprovedDate)</td>
+
+                        </tr>
+                    }
+                </tbody>            
+             </table>
+           @if (User.IsInRole("SuperAdmin"))
+           {
+            <button class="btn btn-danger" disabled id="btnVerify" onclick="VerifyBiz()">Verify Business &nbsp;<i class="glyphicon glyphicon-ok-sign"></i></button>
+           }
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts//Plugins/bootstrap-table.js"></script>
+<script src="~/Scripts/AdminScripts/iCheck/icheck.js"></script>
+    <script>
+        $(document).ready(function (e) {
+
+            //Enable iCheck plugin for checkboxes
+            //iCheck for checkbox and radio inputs
+            var $b = $('input[type = "checkbox"]');
+            $('.mailbox-messages input[type="checkbox"]').iCheck({
+                checkboxClass: 'icheckbox_flat-blue',
+                radioClass: 'iradio_flat-blue'
+            });
+            //Enable check and uncheck all functionality
+            $(".checkbox-toggle").click(function () {
+                var clicks = $(this).data('clicks');
+                if (clicks) {
+                    //Uncheck all checkboxes
+                    //  alert("i just got clicked")
+                    $(".mailbox-messages input[type='checkbox']").iCheck("uncheck");
+                    $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+
+                } else {
+                    //Check all checkboxes
+                    $(".mailbox-messages input[type='checkbox']").iCheck("check", function () {
+                  
+                    });
+                    $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+                }
+                $(this).data("clicks", !clicks);
+            });
+
+            $('.mailbox-messages input[type="checkbox"]').on('ifToggled', function (e) {
+                if ($('#processId:checked').length > 0) {
+                    $("#btnVerify").prop('disabled', false)
+                  
+                }
+                else {
+                    $("#btnVerify").prop('disabled', true)
+                  
+                }
+
+            })
+
+
+
+        });
+        $('#table').bootstrapTable({
+
+            striped: true,
+            // cardView: true,
+            pagination: true,
+            pageSize: 10,
+            pageList: [10, 25, 50, 100, 200],
+            smartDisplay: false,
+            showToggle: true,
+            search: true,
+            showColumns: true,
+            showRefresh: true,
+            border: true,
+            align: 'center',
+            valign: 'bottom'
+
+        });
+    </script>
+    <script src="~/Scripts/Plugins/sweetalert.min.js"></script>
+    <script src="~/Scripts/Plugins/dpLoading-2.x.js"></script>
+    <script src="~/Scripts/customscript/CompScript.js"></script>
+}
